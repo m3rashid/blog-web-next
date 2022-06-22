@@ -1,0 +1,15 @@
+{
+	"recommendations": [
+		"dbaeumer.vscode-eslint",
+		"rangav.vscode-thunder-client",
+		"PKief.material-icon-theme",
+		"ms-vsliveshare.vsliveshare",
+		"ms-vsliveshare.vsliveshare-audio",
+		"mhutchie.git-graph",
+		"IronGeek.vscode-env",
+		"eamodio.gitlens",
+	],
+	"unwantedRecommendations": [
+		
+	]
+}
