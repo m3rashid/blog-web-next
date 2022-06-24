@@ -13,7 +13,7 @@ import { showNotification } from '@mantine/notifications'
 
 import { deepClone } from '../utils'
 import ChooseTypeButton from './select'
-import { ICreatePost, postAtom, PostType } from '../../atoms/post'
+import { ICreatePost, postAtom, PostType } from '../atoms/post'
 
 const useStyles = createStyles((theme) => ({
   textboxContainer: {

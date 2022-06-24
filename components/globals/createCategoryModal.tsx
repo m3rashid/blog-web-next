@@ -7,7 +7,6 @@ import {
 } from '@mantine/core'
 import React from 'react'
 import { AlphabetLatin, Webhook } from 'tabler-icons-react'
-import { useSafeApiCall } from '../api/safeApiCall'
 
 interface IProps {
   modalOpen: boolean
@@ -25,7 +24,9 @@ const useStyles = createStyles((theme) => ({
 }))
 
 const CreateCategoryModal: React.FC<IProps> = ({ modalOpen, setModalOpen }) => {
-  const { safeApiCall, loading } = useSafeApiCall()
+  const [loading, setLoading] = React.useState(false)
+
+  // const { safeApiCall, loading } = useSafeApiCall()
   const [category, setCategory] = React.useState({ name: '', slug: '' })
   const { classes } = useStyles()
 
@@ -35,15 +36,14 @@ const CreateCategoryModal: React.FC<IProps> = ({ modalOpen, setModalOpen }) => {
   }
 
   const handleCreateCategory = async () => {
-    const res = await safeApiCall({
-      body: category,
-      endpoint: '/category/create',
-      notif: { id: 'create-category', show: true },
-    })
-
-    if (!res) return
-    setModalOpen(false)
-    setCategory({ name: '', slug: '' })
+    // const res = await safeApiCall({
+    //   body: category,
+    //   endpoint: '/category/create',
+    //   notif: { id: 'create-category', show: true },
+    // })
+    // if (!res) return
+    // setModalOpen(false)
+    // setCategory({ name: '', slug: '' })
   }
 
   return (

@@ -1,39 +1,39 @@
 import React from 'react'
-import { useRecoilValue } from 'recoil'
-import { Link, useNavigate } from 'react-router-dom'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import { Table, Anchor, ScrollArea, Button } from '@mantine/core'
 
-import { authAtom } from '../atoms/auth'
-import { useSafeApiCall } from '../../../components/api/safeApiCall'
 import PageWrapper from '../../../components/globals/pageWrapper'
 
 interface IProps {}
 
 const MyPosts: React.FC<IProps> = () => {
-  const auth = useRecoilValue(authAtom)
-  const navigate = useNavigate()
+  const { data: session } = useSession()
+  const router = useRouter()
+  const [loading, setLoading] = React.useState(false)
   const [posts, setPosts] = React.useState<any[]>([])
-  const { safeApiCall } = useSafeApiCall()
+  // const { safeApiCall } = useSafeApiCall()
 
-  const getAuthorPosts = async () => {
-    const res = await safeApiCall({
-      body: { authorId: auth.user.profile },
-      endpoint: '/post/author',
-      notif: { id: 'get-author-posts' },
-    })
+  // const getAuthorPosts = async () => {
+  //   const res = await safeApiCall({
+  //     body: { authorId: auth.user.profile },
+  //     endpoint: '/post/author',
+  //     notif: { id: 'get-author-posts' },
+  //   })
 
-    if (!res) return
-    setPosts(res.data)
-  }
+  //   if (!res) return
+  //   setPosts(res.data)
+  // }
 
   React.useEffect(() => {
-    if (!auth.isAuthenticated) {
-      navigate('/auth', { replace: true })
+    if (!session) {
+      router.replace('/auth')
       return
     }
-    getAuthorPosts().then().catch()
+    // getAuthorPosts().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.isAuthenticated])
+  }, [session])
 
   return (
     <PageWrapper>
@@ -54,7 +54,7 @@ const MyPosts: React.FC<IProps> = () => {
                 <tr key={row._id}>
                   <td>{index + 1}</td>
                   <td>
-                    <Anchor component={Link} to={`/post/${row.slug}`}>
+                    <Anchor component={Link} href={`/post/${row.slug}`}>
                       {row.title}
                     </Anchor>
                   </td>
@@ -67,7 +67,9 @@ const MyPosts: React.FC<IProps> = () => {
                     ))}
                   </td>
                   <td>
-                    <Button onClick={() => navigate(`/post/edit/${row.slug}`)}>
+                    <Button
+                      onClick={() => router.push(`/post/edit/${row.slug}`)}
+                    >
                       Edit
                     </Button>
                   </td>

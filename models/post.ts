@@ -87,4 +87,5 @@ const postSchema = new mongoose.Schema<IPost>(
   { timestamps: true }
 )
 
-export const Post = mongoose.model<IPost>('Post', postSchema)
+export const Post =
+  mongoose.models.Post || mongoose.model<IPost>('Post', postSchema)

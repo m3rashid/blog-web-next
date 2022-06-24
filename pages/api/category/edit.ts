@@ -1,4 +1,10 @@
-export const editCategory = async (req: Request, res: Response) => {
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import connectDb from '../../../models'
+import { Category } from '../../../models/category'
+
+const editCategory = async (req: NextApiRequest, res: NextApiResponse) => {
+  await connectDb()
   const { categoryId } = req.body
   const category = await Category.findById(categoryId)
   if (!category) throw new Error('Category not found')
@@ -9,3 +15,5 @@ export const editCategory = async (req: Request, res: Response) => {
   )
   return res.send(newCategory)
 }
+
+export default editCategory

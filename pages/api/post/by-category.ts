@@ -1,4 +1,13 @@
-export const getPostsByCategory = async (req: Request, res: Response) => {
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import connectDb from '../../../models'
+import { Category } from '../../../models/category'
+
+const getPostsByCategory = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  await connectDb()
   const { slug } = req.body
 
   const posts = await Category.aggregate([
@@ -11,16 +20,7 @@ export const getPostsByCategory = async (req: Request, res: Response) => {
         as: 'posts',
       },
     },
-    {
-      $project: {
-        _id: 0,
-        name: 0,
-        slug: 0,
-        createdAt: 0,
-        updatedAt: 0,
-        __v: 0,
-      },
-    },
+    { $project: { name: 0, slug: 0, createdAt: 0, updatedAt: 0, __v: 0 } },
     { $unwind: { path: '$posts', preserveNullAndEmptyArrays: false } },
     {
       $project: {
@@ -38,9 +38,7 @@ export const getPostsByCategory = async (req: Request, res: Response) => {
         as: 'categories',
       },
     },
-    {
-      $project: { categories: { _id: 0, createdAt: 0, updatedAt: 0, __v: 0 } },
-    },
+    { $project: { categories: { createdAt: 0, updatedAt: 0, __v: 0 } } },
   ])
 
   if (!posts || posts.length === 0) {
@@ -48,3 +46,5 @@ export const getPostsByCategory = async (req: Request, res: Response) => {
   }
   return res.status(200).json(posts)
 }
+
+export default getPostsByCategory

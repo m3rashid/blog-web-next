@@ -1,9 +1,16 @@
 import { HydratedDocument } from 'mongoose'
-import { Author, IAuthor } from '../../../models/author'
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import connectDb from '../../../models'
 import { User } from '../../../models/user'
+import { Author, IAuthor } from '../../../models/author'
 import { bannedWordsForSlug } from '../../../utils/bannedWordsForSlug'
 
-export const createAuthorProfile = async (req: Request, res: Response) => {
+const createAuthorProfile = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  await connectDb()
   const userId = req.userId
 
   const {
@@ -41,3 +48,5 @@ export const createAuthorProfile = async (req: Request, res: Response) => {
 
   return res.status(200).json({ author: saved, user: savedAuth })
 }
+
+export default createAuthorProfile

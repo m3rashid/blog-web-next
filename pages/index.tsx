@@ -1,15 +1,52 @@
 import React from 'react'
-import { Box, createStyles, Group, SimpleGrid } from '@mantine/core'
-import Hero from '../components/hero'
-import PageWrapper from '../components/globals/pageWrapper'
-import { useRecoilValue } from 'recoil'
-import { postsForCardAtom } from '../atoms/postCard'
-import PostCard from '../components/post/postcard'
-import Categories from '../components/categories'
-import { useStyles } from './post'
 import Head from 'next/head'
+import { Box, createStyles, Group, SimpleGrid } from '@mantine/core'
 
-interface IProps {}
+import Hero from '../components/hero'
+import Categories from '../components/categories'
+import PageWrapper from '../components/globals/pageWrapper'
+import { instance } from '../components/helpers/instance'
+import PostCard from '../components/post/postcard'
+import { IPostCardForCard } from '../components/helpers/types'
+
+interface IProps {
+  posts: IPostCardForCard[]
+}
+
+export const useStyles = createStyles((theme) => ({
+  firstChild: {
+    width: '64%',
+    [theme.fn.smallerThan('sm')]: {
+      width: '100%',
+    },
+  },
+  secondChild: {
+    width: '33%',
+    [theme.fn.smallerThan('sm')]: {
+      width: '100%',
+    },
+  },
+  title: {
+    fontFamily: theme.fontFamily,
+    fontSize: 50,
+    wordBreak: 'break-all',
+    whiteSpace: 'break-spaces',
+    [theme.fn.smallerThan('sm')]: {
+      fontSize: 25,
+    },
+  },
+  titleBox: {
+    width: '64%',
+    [theme.fn.smallerThan('sm')]: {
+      width: '100%',
+    },
+  },
+  lowerGrid: {
+    [theme.fn.smallerThan('sm')]: {
+      width: '100%',
+    },
+  },
+}))
 
 export const useHomePageStyles = createStyles((theme) => ({
   inner: {
@@ -20,8 +57,7 @@ export const useHomePageStyles = createStyles((theme) => ({
   },
 }))
 
-const Home: React.FC<IProps> = () => {
-  const posts = useRecoilValue(postsForCardAtom)
+const Home: React.FC<IProps> = ({ posts }) => {
   const { classes } = useStyles()
   const { classes: thisPageClasses } = useHomePageStyles()
 
@@ -73,7 +109,10 @@ const Home: React.FC<IProps> = () => {
             {posts.map((post) => (
               <PostCard
                 key={post._id}
-                categories={post.categories.map((c) => c.name)}
+                categories={post.categories.map((c) => ({
+                  name: c.name,
+                  _id: c._id + post._id,
+                }))}
                 image={post.bannerImageUrl}
                 title={post.title}
                 slug={post.slug}
@@ -90,3 +129,14 @@ const Home: React.FC<IProps> = () => {
 }
 
 export default Home
+
+export async function getStaticProps() {
+  const res = await instance.post('/post/card')
+  const posts = res.data || []
+  return {
+    props: {
+      posts,
+    },
+    revalidate: 100,
+  }
+}

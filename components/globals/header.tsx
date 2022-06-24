@@ -1,4 +1,3 @@
-import { useBooleanToggle } from '@mantine/hooks'
 import {
   Burger,
   Center,
@@ -10,10 +9,15 @@ import {
   Paper,
   Transition,
 } from '@mantine/core'
+import { useRouter } from 'next/router'
 import { Moon, Sun } from 'tabler-icons-react'
-import { useNavigate } from 'react-router-dom'
+import { useBooleanToggle } from '@mantine/hooks'
 
 import HeaderProfileDropdown from './headerProfileDropdown'
+import React from 'react'
+import { instance } from '../helpers/instance'
+import { useSetRecoilState } from 'recoil'
+import { categoryAtom } from '../atoms/categories'
 
 export const HEADER_HEIGHT = 70
 export const useStyles = createStyles((theme) => ({
@@ -155,8 +159,26 @@ interface IProps {
 }
 
 const TopHeader: React.FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
+  const setCategories = useSetRecoilState(categoryAtom)
+
+  React.useEffect(() => {
+    instance
+      .post('/category/all')
+      .then((res) => {
+        setCategories(
+          res.data.map((cat: any) => ({
+            label: cat.name,
+            slug: cat.slug,
+            value: cat._id,
+          }))
+        )
+      })
+      .catch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const [opened, toggleOpened] = useBooleanToggle(false)
-  const navigate = useNavigate()
+  const router = useRouter()
   const { classes } = useStyles()
 
   const Icon = colorScheme === 'dark' ? Sun : Moon
@@ -173,7 +195,7 @@ const TopHeader: React.FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
   return (
     <Header height={HEADER_HEIGHT} className={classes.root}>
       <Container size="lg" className={classes.header}>
-        <div className={classes.logoContainer} onClick={() => navigate('/')}>
+        <div className={classes.logoContainer} onClick={() => router.push('/')}>
           <Image className={classes.logo} src={imgLogo} height="60px" alt="" />
           <div className={classes.cubicle}>Cubicle</div>
         </div>

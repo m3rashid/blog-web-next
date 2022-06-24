@@ -1,4 +1,10 @@
-export const editPost = async (req: Request, res: Response) => {
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import connectDb from '../../../models'
+import { Post } from '../../../models/post'
+
+const editPost = async (req: NextApiRequest, res: NextApiResponse) => {
+  await connectDb()
   const { postId, data, published, title, bannerImageUrl } = req.body
   const post = await Post.findById(postId)
   if (!post) throw new Error('Post not found')
@@ -11,3 +17,5 @@ export const editPost = async (req: Request, res: Response) => {
   })
   res.status(200).json(updated)
 }
+
+export default editPost

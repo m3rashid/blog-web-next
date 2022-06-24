@@ -10,8 +10,6 @@ import {
   Title,
 } from '@mantine/core'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
 import {
   BrandFacebook,
   BrandGithub,
@@ -21,11 +19,11 @@ import {
   BrandYoutube,
   World,
 } from 'tabler-icons-react'
-import { useSafeApiCall } from '../../../components/api/safeApiCall'
-import { authAtom } from '../atoms/auth'
 import PageWrapper from '../../../components/globals/pageWrapper'
 import { SingleSectionRender } from '../../../components/post/showRender'
-import { IAuthor } from '../types'
+import { IAuthor } from '../../../components/helpers/types'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const useStyles = createStyles((theme) => ({
   input: {
@@ -38,9 +36,10 @@ const useStyles = createStyles((theme) => ({
 interface IProps {}
 
 const EditAuthorProfile: React.FC<IProps> = () => {
-  const navigate = useNavigate()
-  const auth = useRecoilValue(authAtom)
-  const { safeApiCall, loading } = useSafeApiCall()
+  const { data: session } = useSession()
+  const router = useRouter()
+  const [loading, setLoading] = React.useState(false)
+  // const { safeApiCall, loading } = useSafeApiCall()
   const [authorDetails, setAuthorDetails] = React.useState<IAuthor>({
     name: '',
     slug: '',
@@ -55,28 +54,28 @@ const EditAuthorProfile: React.FC<IProps> = () => {
     youtubeUrl: '',
   })
 
-  const handleGetAuthor = async () => {
-    const res = await safeApiCall({
-      body: { slug: auth.user.author?.slug },
-      endpoint: '/author/get-details',
-      notif: { id: 'get-author-details' },
-    })
+  // const handleGetAuthor = async () => {
+  //   const res = await safeApiCall({
+  //     body: { slug: router.query.slug },
+  //     endpoint: '/author/get-details',
+  //     notif: { id: 'get-author-details' },
+  //   })
 
-    if (!res) {
-      return
-    }
-    setAuthorDetails(res.data)
-  }
+  //   if (!res) {
+  //     return
+  //   }
+  //   setAuthorDetails(res.data)
+  // }
 
   React.useEffect(() => {
-    if (!auth.isAuthenticated) {
-      navigate('/auth', { replace: true })
+    if (!session) {
+      router.replace('/auth')
       return
     }
 
-    handleGetAuthor().then().catch()
+    // handleGetAuthor().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.isAuthenticated])
+  }, [session])
 
   const { classes } = useStyles()
 
@@ -90,13 +89,12 @@ const EditAuthorProfile: React.FC<IProps> = () => {
   }
 
   const handleEditAuthor = async () => {
-    const res = await safeApiCall({
-      endpoint: '/author/edit',
-      body: { ...authorDetails },
-      notif: { id: 'edit-author-details-page', show: true },
-    })
-
-    if (!res) return
+    // const res = await safeApiCall({
+    //   endpoint: '/author/edit',
+    //   body: { ...authorDetails },
+    //   notif: { id: 'edit-author-details-page', show: true },
+    // })
+    // if (!res) return
   }
 
   if (!authorDetails) {

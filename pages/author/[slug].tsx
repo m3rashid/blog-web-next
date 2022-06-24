@@ -19,10 +19,9 @@ import {
   Text,
   Title,
 } from '@mantine/core'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
-import { IAuthor } from '../types'
-import { useSafeApiCall } from '../../components/api/safeApiCall'
+import { IAuthor } from '../../components/helpers/types'
 import PageWrapper from '../../components/globals/pageWrapper'
 import { SingleSectionRender } from '../../components/post/showRender'
 
@@ -85,30 +84,28 @@ export const AuthorSocials: React.FC<{ authorDetails: IAuthor }> = ({
 }
 
 const AuthorProfile: React.FC<IProps> = () => {
-  const navigate = useNavigate()
-  const { slug } = useParams()
-  const { safeApiCall } = useSafeApiCall()
+  const router = useRouter()
   const [authorDetails, setAuthorDetails] = React.useState<IAuthor>()
 
-  const handleGetAuthor = async () => {
-    const res = await safeApiCall({
-      body: { slug },
-      endpoint: '/author/get-details',
-      notif: { id: 'get-author-details' },
-    })
+  // const handleGetAuthor = async () => {
+  //   const res = await safeApiCall({
+  //     body: { slug: router.query.slug },
+  //     endpoint: '/author/get-details',
+  //     notif: { id: 'get-author-details' },
+  //   })
 
-    if (!res) {
-      return
-    }
-    setAuthorDetails(res.data)
-  }
+  //   if (!res) {
+  //     return
+  //   }
+  //   setAuthorDetails(res.data)
+  // }
 
   React.useEffect(() => {
-    if (!slug || slug === 'undefined') {
-      navigate('/author/me/create', { replace: true })
+    if (!router.query.slug || router.query.slug === 'undefined') {
+      router.replace('/author/me/create')
       return
     }
-    handleGetAuthor().then().catch()
+    // handleGetAuthor().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -169,3 +166,7 @@ const AuthorProfile: React.FC<IProps> = () => {
 }
 
 export default AuthorProfile
+
+export async function getStaticProps() {}
+
+export async function getStaticPaths() {}

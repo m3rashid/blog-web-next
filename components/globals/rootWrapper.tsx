@@ -11,7 +11,6 @@ import { NotificationsProvider } from '@mantine/notifications'
 
 import ScrollToTop from './scrollToTop'
 import TopHeader from '../globals/header'
-import { BrowserRouter } from 'react-router-dom'
 import Footer from './footer'
 
 interface IProps {
@@ -40,35 +39,33 @@ const RootWrapper: React.FC<IProps> = ({ children }) => {
   }
 
   return (
-    <BrowserRouter>
-      <RecoilRoot>
-        <ColorSchemeProvider
-          colorScheme={colorScheme}
-          toggleColorScheme={toggleColorScheme}
+    <RecoilRoot>
+      <ColorSchemeProvider
+        colorScheme={colorScheme}
+        toggleColorScheme={toggleColorScheme}
+      >
+        <MantineProvider
+          theme={{
+            ...theme,
+            colors: { ...theme.colors, brand: ['#15AABF'] },
+          }}
+          withGlobalStyles
+          withNormalizeCSS
         >
-          <MantineProvider
-            theme={{
-              ...theme,
-              colors: { ...theme.colors, brand: ['#15AABF'] },
-            }}
-            withGlobalStyles
-            withNormalizeCSS
-          >
-            <NotificationsProvider limit={5} position="top-right">
-              <ModalsProvider>
-                <TopHeader
-                  colorScheme={colorScheme}
-                  toggleColorScheme={toggleColorScheme}
-                />
-                {children}
-                <Footer />
-                <ScrollToTop />
-              </ModalsProvider>
-            </NotificationsProvider>
-          </MantineProvider>
-        </ColorSchemeProvider>
-      </RecoilRoot>
-    </BrowserRouter>
+          <NotificationsProvider limit={5} position="top-right">
+            <ModalsProvider>
+              <TopHeader
+                colorScheme={colorScheme}
+                toggleColorScheme={toggleColorScheme}
+              />
+              {children}
+              <Footer />
+              <ScrollToTop />
+            </ModalsProvider>
+          </NotificationsProvider>
+        </MantineProvider>
+      </ColorSchemeProvider>
+    </RecoilRoot>
   )
 }
 

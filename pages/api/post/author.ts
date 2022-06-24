@@ -1,4 +1,10 @@
-export const getAuthorPosts = async (req: Request, res: Response) => {
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import connectDb from '../../../models'
+import { Post } from '../../../models/post'
+
+const getAuthorPosts = async (req: NextApiRequest, res: NextApiResponse) => {
+  await connectDb()
   const { authorId } = req.body
   const posts = await Post.aggregate([
     // @ts-ignore
@@ -31,3 +37,5 @@ export const getAuthorPosts = async (req: Request, res: Response) => {
   ])
   return res.status(200).json(posts)
 }
+
+export default getAuthorPosts

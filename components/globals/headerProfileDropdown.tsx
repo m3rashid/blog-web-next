@@ -8,28 +8,21 @@ import {
   User,
   UserOff,
 } from 'tabler-icons-react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { Avatar, Divider, Menu } from '@mantine/core'
-import { SetterOrUpdater, useRecoilState } from 'recoil'
 import { showNotification } from '@mantine/notifications'
 
-import { authAtom, IAuthState } from '../../atoms/auth'
 import CreateCategoryModal from './createCategoryModal'
+import { signOut, useSession } from 'next-auth/react'
 
-const LoggedInActions = ({
-  auth,
-  setAuth,
-  setModalOpen,
-}: {
-  auth: IAuthState
-  setAuth: SetterOrUpdater<IAuthState>
+const LoggedInActions: React.FC<{
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-}) => {
-  const navigate = useNavigate()
+}> = ({ setModalOpen }) => {
+  const router = useRouter()
+  const { data: session } = useSession()
 
   const handleLogout = () => {
-    window.localStorage.removeItem('token')
-    setAuth({ isAuthenticated: false, user: {} as any })
+    signOut()
     showNotification({
       title: 'Logged out Successfully',
       message: 'You have been logged out',
@@ -41,13 +34,13 @@ const LoggedInActions = ({
       <Menu.Label>Profile</Menu.Label>
       <Menu.Item
         icon={<User size={14} />}
-        onClick={() => navigate(`/author/${auth.user.author?.slug}`)}
+        // onClick={() => router.push(`/author/${session.user.author?.slug}`)}
       >
         Profile
       </Menu.Item>
       <Menu.Item
         icon={<Edit size={14} />}
-        onClick={() => navigate('/author/me/create')}
+        onClick={() => router.push('/author/me/create')}
       >
         Modify Profile
       </Menu.Item>
@@ -57,13 +50,13 @@ const LoggedInActions = ({
       <Menu.Label>Author Actions</Menu.Label>
       <Menu.Item
         icon={<Article size={14} />}
-        onClick={() => navigate('/author/me/posts')}
+        onClick={() => router.push('/author/me/posts')}
       >
         All Posts
       </Menu.Item>
       <Menu.Item
         icon={<Edit size={14} />}
-        onClick={() => navigate('/post/create')}
+        onClick={() => router.push('/post/create')}
       >
         Create Post
       </Menu.Item>
@@ -85,12 +78,15 @@ const LoggedInActions = ({
 }
 
 const NotLoggedInActions = () => {
-  const navigate = useNavigate()
+  const router = useRouter()
 
   return (
     <>
       <Menu.Label>Session</Menu.Label>
-      <Menu.Item icon={<Login size={14} />} onClick={() => navigate('/auth')}>
+      <Menu.Item
+        icon={<Login size={14} />}
+        onClick={() => router.push('/auth')}
+      >
         Login
       </Menu.Item>
     </>
@@ -100,7 +96,7 @@ const NotLoggedInActions = () => {
 interface IProps {}
 
 const HeaderProfileDropdown: React.FC<IProps> = () => {
-  const [auth, setAuth] = useRecoilState(authAtom)
+  const { data: session } = useSession()
   const [modalOpen, setModalOpen] = React.useState(false)
 
   return (
@@ -114,16 +110,12 @@ const HeaderProfileDropdown: React.FC<IProps> = () => {
             color="yellow"
             style={{ cursor: 'pointer' }}
           >
-            {auth.isAuthenticated ? <User /> : <UserOff />}
+            {session ? <User /> : <UserOff />}
           </Avatar>
         }
       >
-        {auth.isAuthenticated ? (
-          <LoggedInActions
-            auth={auth}
-            setAuth={setAuth}
-            setModalOpen={setModalOpen}
-          />
+        {session ? (
+          <LoggedInActions setModalOpen={setModalOpen} />
         ) : (
           <NotLoggedInActions />
         )}

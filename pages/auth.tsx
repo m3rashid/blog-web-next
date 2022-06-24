@@ -11,33 +11,33 @@ import {
   Button,
   Container,
 } from '@mantine/core'
-import { showNotification } from '@mantine/notifications'
+import { useRouter } from 'next/router'
+import { useSession, signIn } from 'next-auth/react'
 import { Error404 } from 'tabler-icons-react'
+import { showNotification } from '@mantine/notifications'
 
 import PageWrapper from '../components/globals/pageWrapper'
-import { useSafeApiCall } from '../components/api/safeApiCall'
-import { useRecoilState } from 'recoil'
-import { authAtom } from '../atoms/auth'
-import { useNavigate } from 'react-router-dom'
+import { useNotification } from '../components/helpers/useNotification'
 
 type IAuthType = 'login' | 'register'
 
 const Auth = () => {
-  const [user, setUser] = useRecoilState(authAtom)
-  const navigate = useNavigate()
+  const router = useRouter()
+  const { data: session } = useSession()
+  const { loadingNotif, updateFailureNotif, updateSuccessNotif } =
+    useNotification({ id: 'login-signup' })
 
   React.useEffect(() => {
-    if (user.isAuthenticated) {
-      navigate('/', { replace: true })
+    if (session) {
+      router.replace('/')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.isAuthenticated])
+  }, [session])
 
   const [authType, setAuthType] = React.useState<IAuthType>('login')
+  const [loading, setLoading] = React.useState(false)
   const emailRef = React.useRef<HTMLInputElement>(null)
   const passwordRef = React.useRef<HTMLInputElement>(null)
-
-  const { safeApiCall, loading } = useSafeApiCall()
 
   const handleChangeAuthType = () => {
     if (authType === 'login') setAuthType('register')
@@ -45,31 +45,33 @@ const Auth = () => {
   }
 
   const handleSubmit = async () => {
+    setLoading(true)
+    loadingNotif()
     const values = {
       email: emailRef.current?.value,
       password: passwordRef.current?.value,
     }
     if (!values.email || !values.password) {
-      showNotification({
-        color: 'red',
-        icon: <Error404 />,
-        title: 'Invalid Data',
-        message: 'Please fill in all fields',
-        autoClose: 5000,
+      updateFailureNotif({
+        errorMsg: {
+          title: 'Invalid Data',
+          message: 'Please fill in all fields',
+        },
       })
       return
     }
-
-    const res = await safeApiCall({
-      endpoint: `/auth/${authType}`,
-      body: values,
-      notif: { id: 'auth', show: true },
-    })
-
-    if (!res) return // error
-    const { token, user } = res.data
-    window.localStorage.setItem('token', token)
-    setUser({ user: user, isAuthenticated: true })
+    const res = await signIn('credentials', { ...values, callbackUrl: '/' })
+    if (!res) {
+      updateFailureNotif({
+        errorMsg: {
+          title: 'Internal Server error',
+          message: 'Could not get response from server',
+        },
+      })
+      // login failed
+      return
+    }
+    setLoading(false)
   }
 
   return (

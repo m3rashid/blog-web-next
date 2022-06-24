@@ -1,6 +1,10 @@
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import connectDb from '../../../models'
 import { Author } from '../../../models/author'
 
-export const editAuthorProfile = async (req: Request, res: Response) => {
+const editAuthorProfile = async (req: NextApiRequest, res: NextApiResponse) => {
+  await connectDb()
   const { slug } = req.body
   const author = await Author.findOne({ slug })
 
@@ -12,3 +16,5 @@ export const editAuthorProfile = async (req: Request, res: Response) => {
 
   return res.send(newAuthor)
 }
+
+export default editAuthorProfile

@@ -1,11 +1,11 @@
 import React from 'react'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
-import DOMPurify from 'dompurify'
+import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/github-dark-dimmed.css'
 import { Box, Code, createStyles } from '@mantine/core'
 
-import { ICreatePost } from '../../atoms/post'
+import { ICreatePost } from '../atoms/post'
 
 marked.setOptions({
   langPrefix: 'hljs language-',

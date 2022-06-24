@@ -1,6 +1,6 @@
 import React from 'react'
 import { nanoid } from 'nanoid'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import {
   Box,
   Button,
@@ -11,14 +11,13 @@ import {
   Title,
 } from '@mantine/core'
 
-import { authAtom } from '../atoms/auth'
-import { useNavigate } from 'react-router-dom'
-import { postAtom, PostType } from '../atoms/post'
-import { useSafeApiCall } from '../../components/api/safeApiCall'
+import { postAtom, PostType } from '../../components/atoms/post'
 import TitleSlug, { IPostMeta } from '../../components/post/titleSlug'
 import ShowRender from '../../components/post/showRender'
 import ChooseTypeButton from '../../components/post/select'
 import PageWrapper from '../../components/globals/pageWrapper'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 const CreateOrEditPost = React.lazy(
   () => import('../../components/post/createOrEditPost')
 )
@@ -51,21 +50,23 @@ export const useStyles = createStyles((theme) => ({
 interface IProps {}
 
 const CreatePost: React.FC<IProps> = () => {
-  const user = useRecoilValue(authAtom)
-  const navigate = useNavigate()
+  const { data: session } = useSession()
+  const router = useRouter()
 
   React.useEffect(() => {
-    if (!user.isAuthenticated) {
-      navigate('/auth', { replace: true })
-    } else if (!user.user.profile) {
-      navigate('/author/me/create', { replace: true })
+    if (!session) {
+      router.replace('/auth')
     }
+    // else if (!session.user.profile) {
+    //   navigate('/author/me/create', { replace: true })
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.isAuthenticated])
+  }, [session])
 
   const [data, setData] = useRecoilState(postAtom)
   const [type, setType] = React.useState<PostType>('text')
   const [publish, setPublish] = React.useState(true)
+  const [loading, setLoading] = React.useState(false)
 
   const postMetaInitialState: IPostMeta = React.useMemo(
     () => ({
@@ -81,26 +82,24 @@ const CreatePost: React.FC<IProps> = () => {
     React.useState<IPostMeta>(postMetaInitialState)
 
   const { classes } = useStyles()
-  const { safeApiCall, loading } = useSafeApiCall()
 
   const saveAndPublish = async () => {
-    const res = await safeApiCall({
-      body: {
-        title: postMeta.title,
-        slug: postMeta.slug,
-        data: data,
-        bannerImageUrl: postMeta.bannerImageUrl,
-        authorId: user.user.profile,
-        categories: postMeta.categories,
-        published: publish,
-      },
-      endpoint: '/post/create',
-      notif: { id: 'create-post', show: true },
-    })
-
-    if (!res) return
-    setPostMeta(postMetaInitialState)
-    setData([])
+    // const res = await safeApiCall({
+    //   body: {
+    //     title: postMeta.title,
+    //     slug: postMeta.slug,
+    //     data: data,
+    //     bannerImageUrl: postMeta.bannerImageUrl,
+    //     // authorId: user.user.profile,
+    //     categories: postMeta.categories,
+    //     published: publish,
+    //   },
+    //   endpoint: '/post/create',
+    //   notif: { id: 'create-post', show: true },
+    // })
+    // if (!res) return
+    // setPostMeta(postMetaInitialState)
+    // setData([])
   }
 
   const handleAddSection = () => {

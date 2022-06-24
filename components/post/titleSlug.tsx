@@ -8,7 +8,7 @@ import {
   TextInput,
 } from '@mantine/core'
 import { useRecoilValue } from 'recoil'
-import { categoryAtom } from '../../atoms/categories'
+import { categoryAtom } from '../atoms/categories'
 
 const useStyles = createStyles((theme) => ({
   buttonTop: {

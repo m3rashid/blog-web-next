@@ -8,19 +8,27 @@ import {
   SimpleGrid,
   Title,
 } from '@mantine/core'
-import Head from 'next/head'
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import { useSafeApiCall } from '../../components/api/safeApiCall'
+import Head from 'next/head'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 
+import { useStyles } from '..'
 import Author from '../../components/author'
-import Categories from '../../components/categories'
 import Comments from '../../components/comments'
-import PageWrapper from '../../components/globals/pageWrapper'
-import ShowRender from '../../components/post/showRender'
+import Categories from '../../components/categories'
 import RelatedPosts from '../../components/relatedPosts'
-import { IAuthor, ICategory } from '../types'
-const CreateComment = React.lazy(() => import('../../components/createComment'))
+import PageWrapper from '../../components/globals/pageWrapper'
+import { instance } from '../../components/helpers/instance'
+import {
+  IAuthor,
+  ICategory,
+  IRelatedPosts,
+} from '../../components/helpers/types'
+const CreateComment = dynamic(() => import('../../components/createComment'), {
+  ssr: false,
+})
+import ShowRender from '../../components/post/showRender'
 
 export interface IPost {
   bannerImageUrl: string
@@ -36,66 +44,20 @@ export interface IPost {
   updatedAt?: string
 }
 
-export const useStyles = createStyles((theme) => ({
-  firstChild: {
-    width: '64%',
-    [theme.fn.smallerThan('sm')]: {
-      width: '100%',
-    },
-  },
-  secondChild: {
-    width: '33%',
-    [theme.fn.smallerThan('sm')]: {
-      width: '100%',
-    },
-  },
-  title: {
-    fontFamily: theme.fontFamily,
-    fontSize: 50,
-    wordBreak: 'break-all',
-    whiteSpace: 'break-spaces',
-    [theme.fn.smallerThan('sm')]: {
-      fontSize: 25,
-    },
-  },
-  titleBox: {
-    width: '64%',
-    [theme.fn.smallerThan('sm')]: {
-      width: '100%',
-    },
-  },
-  lowerGrid: {
-    [theme.fn.smallerThan('sm')]: {
-      width: '100%',
-    },
-  },
-}))
+interface IProps {
+  postDetail: IPost
+  relatedPosts: IRelatedPosts[]
+}
 
-interface IProps {}
-
-const Post: React.FC<IProps> = () => {
-  const { slug } = useParams()
-  const { safeApiCall } = useSafeApiCall()
+const Post: React.FC<IProps> = ({ postDetail, relatedPosts }) => {
+  const router = useRouter()
   const { classes } = useStyles()
-  const [postDetail, setPostDetail] = React.useState<IPost>()
-
-  const getPost = async () => {
-    const res = await safeApiCall({
-      endpoint: '/post/details',
-      body: { slug },
-      notif: { id: 'get-post' },
-    })
-    if (!res) return
-    setPostDetail(res.data)
-  }
 
   React.useEffect(() => {
     window.scrollTo(0, 0)
-    getPost().then().catch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug])
+  }, [router.query.slug])
 
-  if (!postDetail) {
+  if (router.isFallback) {
     return (
       <PageWrapper>
         <Group style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -105,7 +67,19 @@ const Post: React.FC<IProps> = () => {
     )
   }
 
-  const postTitle = post.title || 'Post'
+  if (!postDetail) {
+    return (
+      <PageWrapper>
+        <Group style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Title className={classes.title} my={10} order={3}>
+            Article not found
+          </Title>
+        </Group>
+      </PageWrapper>
+    )
+  }
+
+  const postTitle = postDetail.title || 'Post'
   const keywords = postTitle.split(' ')
   const result = keywords.filter((word: string) => word.length > 4)
 
@@ -113,20 +87,20 @@ const Post: React.FC<IProps> = () => {
     <PageWrapper>
       <Head>
         <title>{postTitle} | Cubicle</title>
-        <meta name="description" content={post.excerpt} />
+        <meta name="description" content={postDetail.excerpt} />
         <meta name="keywords" content={result.join(', ')} />
         <meta name="og:title" content={postTitle + ' | Cubicle'} />
-        <meta name="og:description" content={post.excerpt} />
+        <meta name="og:description" content={postDetail.excerpt} />
         <meta
           name="og:url"
-          content={'https://cubicle.vercel.app/post/' + post.slug}
+          content={'https://cubicle.vercel.app/post/' + postDetail.slug}
         />
         <meta name="twitter:title" content={postTitle + ' | Cubicle'} />
-        <meta name="twitter:description" content={post.excerpt} />
+        <meta name="twitter:description" content={postDetail.excerpt} />
 
-        <meta name="image" content={post.featuredImage} />
-        <meta name="og:image" content={post.featuredImage} />
-        <meta name="twitter:image" content={post.featuredImage} />
+        <meta name="image" content={postDetail.bannerImageUrl} />
+        <meta name="og:image" content={postDetail.bannerImageUrl} />
+        <meta name="twitter:image" content={postDetail.bannerImageUrl} />
       </Head>
       <Box className={classes.titleBox}>
         <Title className={classes.title} my={10}>
@@ -147,7 +121,7 @@ const Post: React.FC<IProps> = () => {
 
         <SimpleGrid spacing={20} className={classes.secondChild}>
           <Author author={postDetail.author as IAuthor} />
-          <RelatedPosts slug={slug as string} />
+          <RelatedPosts relatedPosts={relatedPosts} />
           <Categories />
           <CreateComment postId={postDetail._id as string} />
         </SimpleGrid>
@@ -157,3 +131,23 @@ const Post: React.FC<IProps> = () => {
 }
 
 export default Post
+
+export async function getStaticProps({ params }: { params: { slug: string } }) {
+  const res = await instance.post('/post/details', { slug: params.slug })
+  return {
+    props: {
+      postDetail: res.data.postDetail,
+      relatedPosts: res.data.relatedPosts,
+    },
+    revalidate: 100,
+  }
+}
+
+export async function getStaticPaths() {
+  const res = await instance.post('/post/card')
+  const posts = res.data
+  return {
+    paths: posts.map(({ slug }: { slug: string }) => ({ params: { slug } })),
+    fallback: true,
+  }
+}

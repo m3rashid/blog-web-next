@@ -9,18 +9,16 @@ import {
   Title,
 } from '@mantine/core'
 import { nanoid } from 'nanoid'
+import { useRecoilState } from 'recoil'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import { Article, Photo } from 'tabler-icons-react'
-import { useNavigate, useParams } from 'react-router-dom'
 
-import PageWrapper from '../../../components/globals/pageWrapper'
-import { PostType } from '../atoms/post'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { authAtom } from '../atoms/auth'
-import { useSafeApiCall } from '../../../components/api/safeApiCall'
-import { postAtom } from '../atoms/post'
 import { useStyles } from '../create'
-import ChooseTypeButton from '../../../components/post/select'
 import ShowRender from '../../../components/post/showRender'
+import ChooseTypeButton from '../../../components/post/select'
+import PageWrapper from '../../../components/globals/pageWrapper'
+import { PostType, postAtom } from '../../../components/atoms/post'
 const CreateOrEditPost = React.lazy(
   () => import('../../../components/post/createOrEditPost')
 )
@@ -28,10 +26,11 @@ const CreateOrEditPost = React.lazy(
 interface IProps {}
 
 const EditPost: React.FC<IProps> = () => {
-  const { slug } = useParams()
-  const navigate = useNavigate()
-  const { safeApiCall, loading } = useSafeApiCall()
-  const user = useRecoilValue(authAtom)
+  const router = useRouter()
+  const [loading, setLoading] = React.useState(false)
+
+  // const { safeApiCall, loading } = useSafeApiCall()
+  const { data: session } = useSession()
   const [data, setData] = useRecoilState(postAtom)
   const [postData, setPostData] = React.useState({
     title: '',
@@ -41,49 +40,49 @@ const EditPost: React.FC<IProps> = () => {
     bannerImageUrl: '',
   })
 
-  const getPost = async () => {
-    const res = await safeApiCall({
-      endpoint: '/post/details',
-      body: { slug },
-      notif: { id: 'get-post' },
-    })
-    if (!res) return
-    setData(res.data.data)
-    setPostData({
-      postId: res.data._id,
-      slug: res.data.slug,
-      publish: res.data.published,
-      title: res.data.title,
-      bannerImageUrl: res.data.bannerImageUrl,
-    })
-  }
+  // const getPost = async () => {
+  //   const res = await safeApiCall({
+  //     endpoint: '/post/details',
+  //     body: { slug: router.query.slug },
+  //     notif: { id: 'get-post' },
+  //   })
+  //   if (!res) return
+  //   setData(res.data.data)
+  //   setPostData({
+  //     postId: res.data._id,
+  //     slug: res.data.slug,
+  //     publish: res.data.published,
+  //     title: res.data.title,
+  //     bannerImageUrl: res.data.bannerImageUrl,
+  //   })
+  // }
 
   React.useEffect(() => {
-    if (!user.isAuthenticated) {
-      navigate('/auth', { replace: true })
+    if (!session) {
+      router.replace('/auth')
       return
     }
-    getPost().then().catch()
+    // getPost().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.isAuthenticated])
+  }, [session])
 
   const [type, setType] = React.useState<PostType>('text')
   const { classes } = useStyles()
 
   const saveAndPublish = async () => {
-    const res = await safeApiCall({
-      body: {
-        data: data,
-        postId: postData.postId,
-        published: postData.publish,
-        title: postData.title,
-        bannerImageUrl: postData.bannerImageUrl,
-      },
-      endpoint: '/post/edit',
-      notif: { id: 'edit-post', show: true },
-    })
-    if (!res) return
-    setData([])
+    // const res = await safeApiCall({
+    //   body: {
+    //     data: data,
+    //     postId: postData.postId,
+    //     published: postData.publish,
+    //     title: postData.title,
+    //     bannerImageUrl: postData.bannerImageUrl,
+    //   },
+    //   endpoint: '/post/edit',
+    //   notif: { id: 'edit-post', show: true },
+    // })
+    // if (!res) return
+    // setData([])
   }
 
   const handleAddSection = () => {

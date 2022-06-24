@@ -8,7 +8,7 @@ import {
   Box,
   Group,
 } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -43,13 +43,16 @@ const useStyles = createStyles((theme) => ({
 interface IProps {
   image: string
   title: string
-  categories: string[]
+  categories: {
+    name: string
+    _id: string
+  }[]
   slug: string
 }
 
 const PostCard: React.FC<IProps> = ({ image, title, categories, slug }) => {
   const { classes } = useStyles()
-  const navigate = useNavigate()
+  const router = useRouter()
 
   return (
     <Paper
@@ -66,10 +69,10 @@ const PostCard: React.FC<IProps> = ({ image, title, categories, slug }) => {
     >
       <Box>
         <Group style={{ gap: '5px' }}>
-          {categories.map((category) => {
+          {categories.map((cat) => {
             return (
-              <Text key={category} className={classes.category} size="xs">
-                {category}
+              <Text key={cat._id} className={classes.category} size="xs">
+                {cat.name}
               </Text>
             )
           })}
@@ -78,7 +81,7 @@ const PostCard: React.FC<IProps> = ({ image, title, categories, slug }) => {
           {title}
         </Title>
       </Box>
-      <Button onClick={() => navigate(`/post/${slug}`)}>Read article</Button>
+      <Button onClick={() => router.push(`/post/${slug}`)}>Read article</Button>
     </Paper>
   )
 }

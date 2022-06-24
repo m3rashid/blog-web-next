@@ -1,4 +1,12 @@
-export const createPost = async (req: Request, res: Response) => {
+import { HydratedDocument } from 'mongoose'
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import connectDb from '../../../models'
+import { IPost, Post } from '../../../models/post'
+import { bannedWordsForSlug } from '../../../utils/bannedWordsForSlug'
+
+const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
+  await connectDb()
   const { title, slug, data, bannerImageUrl, authorId, categories, published } =
     req.body
 
@@ -17,3 +25,5 @@ export const createPost = async (req: Request, res: Response) => {
   const saved = await post.save()
   res.status(201).json(saved)
 }
+
+export default createPost

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Breadcrumbs, createStyles, Text } from '@mantine/core'
-import { useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
 const useStyles = createStyles((theme) => ({
   crumbs: {
@@ -15,7 +15,7 @@ interface IProps {}
 
 const BreadCrumbs: React.FC<IProps> = () => {
   const { classes } = useStyles()
-  const { pathname: path } = useLocation()
+  const { asPath: path } = useRouter()
 
   const paths = React.useMemo(() => {
     if (path === '/') return null

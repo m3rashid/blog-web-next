@@ -1,43 +1,51 @@
-import { Box, Group, SimpleGrid } from '@mantine/core'
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import { useSafeApiCall } from '../../components/api/safeApiCall'
-import { IPostCardForCard } from '../atoms/postCard'
-import Categories from '../../components/categories'
-import PageWrapper from '../../components/globals/pageWrapper'
-import PostCard from '../../components/post/postcard'
-import { useHomePageStyles } from '../'
-import { useStyles } from '../post'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { Box, Group, Loader, SimpleGrid, Title } from '@mantine/core'
 
-interface IProps {}
+import { useStyles } from '..'
+import { useHomePageStyles } from '..'
+import Categories from '../../components/categories'
+import PostCard from '../../components/post/postcard'
+import PageWrapper from '../../components/globals/pageWrapper'
+import { IPostCardForCard } from '../../components/helpers/types'
+import { instance } from '../../components/helpers/instance'
 
-const Category: React.FC<IProps> = () => {
+interface IProps {
+  posts: IPostCardForCard[]
+}
+
+const Category: React.FC<IProps> = ({ posts }) => {
   const router = useRouter()
-  const { slug } = useParams()
-  const [posts, setPosts] = React.useState<IPostCardForCard[]>()
-
-  const { safeApiCall } = useSafeApiCall()
-
-  const getPosts = async () => {
-    const res = await safeApiCall({
-      body: { slug },
-      endpoint: '/post/by-category',
-      notif: { id: 'get-post-by-category-slug' },
-    })
-    if (!res) return
-    setPosts(res.data)
-  }
 
   const { classes } = useStyles()
   const { classes: thisPageClasses } = useHomePageStyles()
 
   React.useEffect(() => {
     window.scrollTo(0, 0)
-    getPosts().then().catch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug])
+  }, [router.query.slug])
+
+  if (router.isFallback) {
+    return (
+      <PageWrapper>
+        <Group style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Loader />
+        </Group>
+      </PageWrapper>
+    )
+  }
+
+  if (!posts || posts.length == 0) {
+    return (
+      <PageWrapper>
+        <Group style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Title className={classes.title} my={10} order={3}>
+            No articles found
+          </Title>
+        </Group>
+      </PageWrapper>
+    )
+  }
 
   return (
     <PageWrapper>
@@ -74,19 +82,18 @@ const Category: React.FC<IProps> = () => {
       <Group style={{ alignItems: 'flex-start' }}>
         <SimpleGrid spacing={20} className={classes.firstChild}>
           <SimpleGrid className={thisPageClasses.inner} spacing={20}>
-            {posts && posts?.length > 0 ? (
-              posts.map((post) => (
-                <PostCard
-                  key={post._id}
-                  categories={post.categories.map((c) => c.name)}
-                  image={post.bannerImageUrl}
-                  title={post.title}
-                  slug={post.slug}
-                />
-              ))
-            ) : (
-              <Box>No posts found</Box>
-            )}
+            {posts.map((post) => (
+              <PostCard
+                key={post._id}
+                categories={post.categories.map((c) => ({
+                  name: c.name,
+                  _id: c._id + post._id,
+                }))}
+                image={post.bannerImageUrl}
+                title={post.title}
+                slug={post.slug}
+              />
+            ))}
           </SimpleGrid>
         </SimpleGrid>
         <SimpleGrid spacing={20} className={classes.secondChild}>
@@ -98,3 +105,22 @@ const Category: React.FC<IProps> = () => {
 }
 
 export default Category
+
+export async function getStaticProps({ params }: { params: { slug: string } }) {
+  const res = await instance.post('/post/by-category', { slug: params.slug })
+  return {
+    props: { posts: res.data },
+    revalidate: 100,
+  }
+}
+
+export async function getStaticPaths() {
+  const res = await instance.post('/category/all')
+  const categories = res.data
+  return {
+    paths: categories.map(({ slug }: { slug: string }) => ({
+      params: { slug },
+    })),
+    fallback: true,
+  }
+}

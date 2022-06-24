@@ -1,8 +1,9 @@
-import { Anchor, Box, Paper, Title } from '@mantine/core'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { useRecoilValue } from 'recoil'
-import { categoryAtom } from '../atoms/categories'
+import { Anchor, Box, Paper, Title } from '@mantine/core'
+
+import { categoryAtom } from './atoms/categories'
 
 interface IProps {}
 
@@ -23,7 +24,7 @@ const Categories: React.FC<IProps> = () => {
             <Anchor
               style={{ fontWeight: 600 }}
               component={Link}
-              to={`/category/${cat.slug}`}
+              href={`/category/${cat.slug}`}
             >
               {cat.label}
             </Anchor>

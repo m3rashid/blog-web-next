@@ -11,7 +11,6 @@ import {
 import { showNotification } from '@mantine/notifications'
 import React from 'react'
 import { AlphabetLatin, Error404 } from 'tabler-icons-react'
-import { useSafeApiCall } from '../api/safeApiCall'
 import { SingleSectionRender } from './post/showRender'
 
 const useStyles = createStyles((theme) => ({
@@ -33,7 +32,7 @@ interface IComment {
 
 const CreateComment: React.FC<IProps> = ({ postId }) => {
   const { classes } = useStyles()
-  const { safeApiCall, loading } = useSafeApiCall()
+  const [loading, setLoading] = React.useState(false)
 
   const [comment, setComment] = React.useState<IComment>({
     name: window.localStorage.getItem('myName') || '',
@@ -61,17 +60,17 @@ const CreateComment: React.FC<IProps> = ({ postId }) => {
       window.localStorage.removeItem('myName')
     }
 
-    const res = await safeApiCall({
-      body: {
-        name: comment.name,
-        comment: comment.comment,
-        postId: postId,
-      },
-      endpoint: '/comment/create',
-      notif: { id: 'create-comment', show: true },
-    })
+    // const res = await safeApiCall({
+    //   body: {
+    //     name: comment.name,
+    //     comment: comment.comment,
+    //     postId: postId,
+    //   },
+    //   endpoint: '/comment/create',
+    //   notif: { id: 'create-comment', show: true },
+    // })
 
-    if (!res) return
+    // if (!res) return
     setComment((prev) => ({ ...prev, comment: '' }))
   }
 

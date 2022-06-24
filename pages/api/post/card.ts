@@ -1,4 +1,10 @@
-export const getPostsForCard = async (req: Request, res: Response) => {
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import connectDb from '../../../models'
+import { Post } from '../../../models/post'
+
+const getPostsForCard = async (req: NextApiRequest, res: NextApiResponse) => {
+  await connectDb()
   const posts = await Post.aggregate([
     { $limit: 6 },
     {
@@ -14,9 +20,11 @@ export const getPostsForCard = async (req: Request, res: Response) => {
         title: 1,
         slug: 1,
         bannerImageUrl: 1,
-        categories: { name: 1, slug: 1 },
+        categories: { name: 1, slug: 1, _id: 1 },
       },
     },
   ])
   res.status(200).json(posts)
 }
+
+export default getPostsForCard

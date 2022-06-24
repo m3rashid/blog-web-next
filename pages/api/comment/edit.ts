@@ -1,4 +1,10 @@
-export const editComment = async (req: Request, res: Response) => {
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import connectDb from '../../../models'
+import { Comment } from '../../../models/comment'
+
+const editComment = async (req: NextApiRequest, res: NextApiResponse) => {
+  await connectDb()
   const { commentId } = req.body
 
   const comment = await Comment.findById(commentId)
@@ -10,3 +16,5 @@ export const editComment = async (req: Request, res: Response) => {
   )
   return res.status(200).json(newComment)
 }
+
+export default editComment
