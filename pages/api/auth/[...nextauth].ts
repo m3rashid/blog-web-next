@@ -1,5 +1,5 @@
-import NextAuth from 'next-auth'
 import bcrypt from 'bcrypt'
+import NextAuth from 'next-auth'
 import CredentialProvider from 'next-auth/providers/credentials'
 
 import connectDb from '../../../models'
@@ -19,7 +19,7 @@ export default NextAuth({
         if (!credentials) return null
         const users = await User.aggregate([
           // @ts-ignore
-          { $match: { email: email, deleted: false } },
+          { $match: { email: credentials.email, deleted: false } },
           {
             $lookup: {
               from: 'authors',
@@ -55,23 +55,29 @@ export default NextAuth({
   callbacks: {
     jwt: ({ token, user }) => {
       if (user) {
+        const data: any = { _id: user._id, email: user.email }
+        if (user.profile) {
+          data['profile'] = user.profile
+          data['author'] = user.author
+        }
         token.id = user.id
+        token.sub = JSON.stringify(data)
       }
       return token
     },
     session: ({ session, token }) => {
       if (token) {
         session.id = token.id
+        session.user = JSON.parse(token.sub ?? '')
       }
       return session
     },
   },
-  secret: 'asdfasdfasdf',
+  secret: process.env.AUTH_SECRET,
   jwt: {
-    secret: 'asdfasdfasdf',
+    secret: process.env.JWT_SECRET,
   },
   pages: {
     signIn: '/auth',
-    newUser: '/auth',
   },
 })

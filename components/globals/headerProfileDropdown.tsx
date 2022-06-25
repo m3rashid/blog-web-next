@@ -22,7 +22,7 @@ const LoggedInActions: React.FC<{
   const { data: session } = useSession()
 
   const handleLogout = () => {
-    signOut()
+    signOut({ redirect: false })
     showNotification({
       title: 'Logged out Successfully',
       message: 'You have been logged out',

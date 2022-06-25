@@ -13,9 +13,8 @@ import {
 } from '@mantine/core'
 import { useRouter } from 'next/router'
 import { useSession, signIn } from 'next-auth/react'
-import { Error404 } from 'tabler-icons-react'
-import { showNotification } from '@mantine/notifications'
 
+import { instance } from '../components/helpers/instance'
 import PageWrapper from '../components/globals/pageWrapper'
 import { useNotification } from '../components/helpers/useNotification'
 
@@ -40,8 +39,55 @@ const Auth = () => {
   const passwordRef = React.useRef<HTMLInputElement>(null)
 
   const handleChangeAuthType = () => {
-    if (authType === 'login') setAuthType('register')
-    else setAuthType('login')
+    if (authType === 'login') {
+      setAuthType('register')
+    } else {
+      setAuthType('login')
+    }
+  }
+
+  const handleLogin = async (values: { email?: string; password?: string }) => {
+    try {
+      const res = await signIn('credentials', {
+        ...values,
+        callbackUrl: '/',
+        redirect: false,
+      })
+      updateSuccessNotif({
+        successMsg: {
+          title: 'Login Success',
+          message: 'Your login was successful',
+        },
+      })
+      setLoading(false)
+    } catch (err) {
+      updateFailureNotif({
+        errorMsg: {
+          title: 'Internal Server error',
+          message: 'Could not get response from server',
+        },
+      })
+      setLoading(false)
+    }
+  }
+
+  const handleRegister = async (values: {
+    email?: string
+    password?: string
+  }) => {
+    try {
+      const res = await instance.post('/author/register-user', values)
+      setLoading(false)
+    } catch (err) {
+      updateFailureNotif({
+        errorMsg: {
+          title: 'Error in register',
+          message: 'There was an error in register, please try again later',
+        },
+      })
+      setLoading(false)
+      return
+    }
   }
 
   const handleSubmit = async () => {
@@ -60,18 +106,11 @@ const Auth = () => {
       })
       return
     }
-    const res = await signIn('credentials', { ...values, callbackUrl: '/' })
-    if (!res) {
-      updateFailureNotif({
-        errorMsg: {
-          title: 'Internal Server error',
-          message: 'Could not get response from server',
-        },
-      })
-      // login failed
-      return
+    if (authType === 'login') {
+      handleLogin(values)
+    } else {
+      handleRegister(values)
     }
-    setLoading(false)
   }
 
   return (
@@ -94,6 +133,7 @@ const Auth = () => {
           >{`${authType === 'login' ? 'Login' : 'Register'} here`}</Title>
 
           <TextInput
+            id="email"
             label="Email"
             placeholder="user@example.com"
             ref={emailRef}
@@ -101,6 +141,7 @@ const Auth = () => {
           />
           <PasswordInput
             label="Password"
+            id="password"
             placeholder="Your password"
             required
             ref={passwordRef}

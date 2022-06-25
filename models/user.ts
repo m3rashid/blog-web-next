@@ -3,10 +3,11 @@ import mongoose from 'mongoose'
 import { IAuthor } from './author'
 
 export interface IUser {
+  _id?: mongoose.Types.ObjectId
   email: string
   password: string
-  profile: IAuthor
-  deleted: boolean
+  profile?: IAuthor
+  deleted?: boolean
 }
 
 const userSchema = new mongoose.Schema<IUser>(
