@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Post } from 'models/post'
+import { requireAuth } from 'middlewares/auth'
 
 const deletePost = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -10,4 +11,4 @@ const deletePost = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json('Post Deleted')
 }
 
-export default deletePost
+export default requireAuth(deletePost)

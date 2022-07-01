@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Comment } from 'models/comment'
+import { defaultHandler } from 'middlewares/default'
 
 const deleteComment = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -12,4 +13,4 @@ const deleteComment = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json(deleted)
 }
 
-export default deleteComment
+export default defaultHandler(deleteComment)

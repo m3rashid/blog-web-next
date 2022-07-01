@@ -20,11 +20,11 @@ export interface IPost {
   slug: string
   data: IPostData[]
   bannerImageUrl: string
-  comments: IComment[]
+  comments?: IComment[]
   author: IAuthor
   categories: ICategory[]
   published: boolean
-  deleted: boolean
+  deleted?: boolean
 }
 
 const postSchema = new mongoose.Schema<IPost>(

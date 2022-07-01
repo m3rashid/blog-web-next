@@ -23,8 +23,10 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
 import { IAuthor } from 'components/helpers/types'
+import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { SingleSectionRender } from 'components/post/showRender'
+import useHttp from 'components/helpers/useHttp'
 
 const useStyles = createStyles((theme) => ({
   input: {
@@ -39,8 +41,7 @@ interface IProps {}
 const EditAuthorProfile: React.FC<IProps> = () => {
   const { data: session } = useSession()
   const router = useRouter()
-  const [loading, setLoading] = React.useState(false)
-  // const { safeApiCall, loading } = useSafeApiCall()
+  const { loading, request } = useHttp('edit-author')
   const [authorDetails, setAuthorDetails] = React.useState<IAuthor>({
     name: '',
     slug: '',
@@ -55,26 +56,27 @@ const EditAuthorProfile: React.FC<IProps> = () => {
     youtubeUrl: '',
   })
 
-  // const handleGetAuthor = async () => {
-  //   const res = await safeApiCall({
-  //     body: { slug: router.query.slug },
-  //     endpoint: '/author/get-details',
-  //     notif: { id: 'get-author-details' },
-  //   })
-
-  //   if (!res) {
-  //     return
-  //   }
-  //   setAuthorDetails(res.data)
-  // }
+  const handleGetAuthor = async () => {
+    const res = await instance.post('/author/get-details', {
+      slug: router.query.slug,
+    })
+    if (!res) {
+      return
+    }
+    setAuthorDetails(res.data)
+  }
 
   React.useEffect(() => {
     if (!session) {
       router.replace('/auth')
       return
     }
-
-    // handleGetAuthor().then().catch()
+    // @ts-ignore
+    if (!session?.user?.profile) {
+      router.replace('/author/me/create')
+      return
+    }
+    handleGetAuthor().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
@@ -90,12 +92,14 @@ const EditAuthorProfile: React.FC<IProps> = () => {
   }
 
   const handleEditAuthor = async () => {
-    // const res = await safeApiCall({
-    //   endpoint: '/author/edit',
-    //   body: { ...authorDetails },
-    //   notif: { id: 'edit-author-details-page', show: true },
-    // })
-    // if (!res) return
+    const { data } = await request({
+      endpoint: '/author/edit',
+      body: { ...authorDetails },
+      successMsg: { message: 'Author updated successfully' },
+      errorMsg: { title: 'Edit author failed' },
+    })
+    if (!data) return
+    setAuthorDetails(data)
   }
 
   if (!authorDetails) {

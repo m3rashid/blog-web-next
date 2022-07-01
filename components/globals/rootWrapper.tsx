@@ -1,17 +1,17 @@
-import React from 'react'
 import {
   ColorSchemeProvider,
   MantineProvider,
   ColorScheme,
   MantineThemeOverride,
 } from '@mantine/core'
+import React from 'react'
 import { RecoilRoot } from 'recoil'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 
-import ScrollToTop from 'components/globals/scrollToTop'
-import TopHeader from 'components/globals/header'
 import Footer from 'components/globals/footer'
+import TopHeader from 'components/globals/header'
+import ScrollToTop from 'components/globals/scrollToTop'
 
 interface IProps {
   children: React.ReactNode

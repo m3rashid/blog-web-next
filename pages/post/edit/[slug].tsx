@@ -16,8 +16,10 @@ import { useSession } from 'next-auth/react'
 import { Article, Photo } from 'tabler-icons-react'
 
 import { useStyles } from 'pages/post/create'
+import useHttp from 'components/helpers/useHttp'
 import ShowRender from 'components/post/showRender'
 import ChooseTypeButton from 'components/post/select'
+import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { PostType, postAtom } from 'components/atoms/post'
 const CreateOrEditPost = dynamic(
@@ -28,11 +30,11 @@ interface IProps {}
 
 const EditPost: React.FC<IProps> = () => {
   const router = useRouter()
-  const [loading, setLoading] = React.useState(false)
-
-  // const { safeApiCall, loading } = useSafeApiCall()
+  const { loading, request } = useHttp('save-and-publish')
   const { data: session } = useSession()
   const [data, setData] = useRecoilState(postAtom)
+  const [type, setType] = React.useState<PostType>('text')
+  const { classes } = useStyles()
   const [postData, setPostData] = React.useState({
     title: '',
     publish: true,
@@ -41,54 +43,50 @@ const EditPost: React.FC<IProps> = () => {
     bannerImageUrl: '',
   })
 
-  // const getPost = async () => {
-  //   const res = await safeApiCall({
-  //     endpoint: '/post/details',
-  //     body: { slug: router.query.slug },
-  //     notif: { id: 'get-post' },
-  //   })
-  //   if (!res) return
-  //   setData(res.data.data)
-  //   setPostData({
-  //     postId: res.data._id,
-  //     slug: res.data.slug,
-  //     publish: res.data.published,
-  //     title: res.data.title,
-  //     bannerImageUrl: res.data.bannerImageUrl,
-  //   })
-  // }
+  const getPost = async () => {
+    const res = await instance.post('/post/details', {
+      slug: router.query.slug,
+    })
+    if (!res) return
+    setData(res.data.postDetail.data)
+    setPostData({
+      postId: res.data.postDetail._id,
+      slug: res.data.postDetail.slug,
+      publish: res.data.postDetail.published,
+      title: res.data.postDetail.title,
+      bannerImageUrl: res.data.postDetail.bannerImageUrl,
+    })
+  }
 
   React.useEffect(() => {
     if (!session) {
       router.replace('/auth')
       return
     }
-    // getPost().then().catch()
+    getPost().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  const [type, setType] = React.useState<PostType>('text')
-  const { classes } = useStyles()
-
   const saveAndPublish = async () => {
-    // const res = await safeApiCall({
-    //   body: {
-    //     data: data,
-    //     postId: postData.postId,
-    //     published: postData.publish,
-    //     title: postData.title,
-    //     bannerImageUrl: postData.bannerImageUrl,
-    //   },
-    //   endpoint: '/post/edit',
-    //   notif: { id: 'edit-post', show: true },
-    // })
-    // if (!res) return
-    // setData([])
+    const { data: saveAndPublishRes } = await request({
+      endpoint: '/post/edit',
+      body: {
+        data: data,
+        postId: postData.postId,
+        published: postData.publish,
+        title: postData.title,
+        bannerImageUrl: postData.bannerImageUrl,
+      },
+    })
+    if (!saveAndPublishRes) return
+    setData([])
   }
 
   const handleAddSection = () => {
     setData((prev) => [...prev, { id: nanoid(), type: type, content: '' }])
   }
+
+  if (!data) return null
 
   return (
     <PageWrapper>

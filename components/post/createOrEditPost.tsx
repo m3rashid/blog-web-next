@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Box,
   Button,
@@ -7,6 +6,7 @@ import {
   Paper,
   Textarea,
 } from '@mantine/core'
+import React from 'react'
 import { useRecoilState } from 'recoil'
 import { AlertOctagon } from 'tabler-icons-react'
 import { showNotification } from '@mantine/notifications'
@@ -38,10 +38,8 @@ interface IProps {
 
 const CreateOrEditPost: React.FC<IProps> = ({ id }) => {
   const [data, setData] = useRecoilState(postAtom)
-
   const concerned = data.find((section) => section.id === id)
   const [content, setContent] = React.useState(concerned?.content || '')
-
   const { classes } = useStyles()
 
   const setType = (val: PostType) => {

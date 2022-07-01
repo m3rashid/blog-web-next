@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Category } from 'models/category'
+import { defaultHandler } from 'middlewares/default'
 
 const getPostsByCategory = async (
   req: NextApiRequest,
@@ -47,4 +48,4 @@ const getPostsByCategory = async (
   return res.status(200).json(posts)
 }
 
-export default getPostsByCategory
+export default defaultHandler(getPostsByCategory)

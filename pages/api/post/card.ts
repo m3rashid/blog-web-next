@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Post } from 'models/post'
+import { defaultHandler } from 'middlewares/default'
 
 const getPostsForCard = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -27,4 +28,4 @@ const getPostsForCard = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json(posts)
 }
 
-export default getPostsForCard
+export default defaultHandler(getPostsForCard)

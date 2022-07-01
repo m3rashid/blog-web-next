@@ -13,12 +13,13 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { useSession } from 'next-auth/react'
 
-import { postAtom, PostType } from 'components/atoms/post'
-import TitleSlug, { IPostMeta } from 'components/post/titleSlug'
+import useHttp from 'components/helpers/useHttp'
 import ShowRender from 'components/post/showRender'
 import ChooseTypeButton from 'components/post/select'
 import PageWrapper from 'components/globals/pageWrapper'
+import { postAtom, PostType } from 'components/atoms/post'
 import CreateOrEditPost from 'components/post/createOrEditPost'
+import TitleSlug, { IPostMeta } from 'components/post/titleSlug'
 
 export const useStyles = createStyles((theme) => ({
   buttonTop: {
@@ -48,24 +49,13 @@ export const useStyles = createStyles((theme) => ({
 interface IProps {}
 
 const CreatePost: React.FC<IProps> = () => {
-  const { data: session } = useSession()
   const router = useRouter()
-
-  React.useEffect(() => {
-    if (!session) {
-      router.replace('/auth')
-    }
-    // else if (!session.user.profile) {
-    //   navigate('/author/me/create', { replace: true })
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session])
-
+  const { classes } = useStyles()
+  const { data: session } = useSession()
   const [data, setData] = useRecoilState(postAtom)
-  const [type, setType] = React.useState<PostType>('text')
   const [publish, setPublish] = React.useState(true)
-  const [loading, setLoading] = React.useState(false)
-
+  const { loading, request } = useHttp('create-post')
+  const [type, setType] = React.useState<PostType>('text')
   const postMetaInitialState: IPostMeta = React.useMemo(
     () => ({
       title: '',
@@ -76,28 +66,36 @@ const CreatePost: React.FC<IProps> = () => {
     []
   )
 
+  React.useEffect(() => {
+    if (!session) {
+      router.replace('/auth')
+      // @ts-ignore
+    } else if (!session?.user?.profile) {
+      router.replace('/author/me/create')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session])
+
   const [postMeta, setPostMeta] =
     React.useState<IPostMeta>(postMetaInitialState)
 
-  const { classes } = useStyles()
-
   const saveAndPublish = async () => {
-    // const res = await safeApiCall({
-    //   body: {
-    //     title: postMeta.title,
-    //     slug: postMeta.slug,
-    //     data: data,
-    //     bannerImageUrl: postMeta.bannerImageUrl,
-    //     // authorId: user.user.profile,
-    //     categories: postMeta.categories,
-    //     published: publish,
-    //   },
-    //   endpoint: '/post/create',
-    //   notif: { id: 'create-post', show: true },
-    // })
-    // if (!res) return
-    // setPostMeta(postMetaInitialState)
-    // setData([])
+    const { data: saveRes } = await request({
+      endpoint: '/post/create',
+      body: {
+        title: postMeta.title,
+        slug: postMeta.slug,
+        data: data,
+        bannerImageUrl: postMeta.bannerImageUrl,
+        // @ts-ignore
+        authorId: session?.user?.profile,
+        categories: postMeta.categories,
+        published: publish,
+      },
+    })
+    if (!saveRes) return
+    setPostMeta(postMetaInitialState)
+    setData([])
   }
 
   const handleAddSection = () => {

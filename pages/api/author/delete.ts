@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Author } from 'models/author'
+import { requireAuth } from 'middlewares/auth'
 
 const deleteAuthorProfile = async (
   req: NextApiRequest,
@@ -17,4 +18,4 @@ const deleteAuthorProfile = async (
   return res.send(saved)
 }
 
-export default deleteAuthorProfile
+export default requireAuth(deleteAuthorProfile)

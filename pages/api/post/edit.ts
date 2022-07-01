@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Post } from 'models/post'
+import { requireAuth } from 'middlewares/auth'
 
 const editPost = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -18,4 +19,4 @@ const editPost = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json(updated)
 }
 
-export default editPost
+export default requireAuth(editPost)

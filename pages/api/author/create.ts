@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { User } from 'models/user'
+import { requireAuth } from 'middlewares/auth'
 import { Author, IAuthor } from 'models/author'
 import { bannedWordsForSlug } from 'utils/bannedWordsForSlug'
 
@@ -11,7 +12,7 @@ const createAuthorProfile = async (
   res: NextApiResponse
 ) => {
   await connectDb()
-  const userId = req.userId
+  const userId = req.user.id
 
   const {
     name,
@@ -49,4 +50,4 @@ const createAuthorProfile = async (
   return res.status(200).json({ author: saved, user: savedAuth })
 }
 
-export default createAuthorProfile
+export default requireAuth(createAuthorProfile)

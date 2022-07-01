@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { IPost, Post } from 'models/post'
+import { requireAuth } from 'middlewares/auth'
 import { bannedWordsForSlug } from 'utils/bannedWordsForSlug'
 
 const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -26,4 +27,4 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(201).json(saved)
 }
 
-export default createPost
+export default requireAuth(createPost)

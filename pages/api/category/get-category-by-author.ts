@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
+import { defaultHandler } from 'middlewares/default'
 
 const getCategoriesByAuthor = async (
   req: NextApiRequest,
@@ -9,4 +10,4 @@ const getCategoriesByAuthor = async (
   await connectDb()
 }
 
-export default getCategoriesByAuthor
+export default defaultHandler(getCategoriesByAuthor)

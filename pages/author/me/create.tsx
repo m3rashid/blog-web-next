@@ -24,6 +24,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { showNotification } from '@mantine/notifications'
 
+import useHttp from 'components/helpers/useHttp'
 import { IAuthor } from 'components/helpers/types'
 import PageWrapper from 'components/globals/pageWrapper'
 import { SingleSectionRender } from 'components/post/showRender'
@@ -40,16 +41,18 @@ interface IProps {}
 
 const CreateEditProfile: React.FC<IProps> = () => {
   const { data: session } = useSession()
-  const router = useRouter()
   const { classes } = useStyles()
+  const router = useRouter()
 
   React.useEffect(() => {
     if (!session) {
       router.replace('/auth')
     }
-    // if (auth.user.profile) {
-    //   navigate('/author/me/edit', { replace: true })
-    // }
+    // @ts-ignore
+    if (session?.user?.profile) {
+      router.replace('/author/me/edit')
+      return
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
@@ -71,9 +74,7 @@ const CreateEditProfile: React.FC<IProps> = () => {
   )
 
   const [authorData, setAuthorData] = React.useState<IAuthor>(initialState)
-  const [loading, setLoading] = React.useState(false)
-
-  // const { safeApiCall, loading } = useSafeApiCall()
+  const { loading, request } = useHttp('add-author')
 
   const handleChange = (
     e:
@@ -97,17 +98,13 @@ const CreateEditProfile: React.FC<IProps> = () => {
       })
       return
     }
-    // const res = await safeApiCall({
-    //   body: authorData,
-    //   endpoint: '/author/create',
-    //   notif: { id: 'create-author', show: true },
-    // })
-    // if (!res) return
-    // setAuthorData(initialState)
-    // setAuth((prev) => ({
-    //   ...prev,
-    //   user: res.data.author._id,
-    // }))
+    const { data } = await request({
+      endpoint: '/author/create',
+      body: { ...authorData },
+    })
+    if (!data) return
+    setAuthorData(initialState)
+    // setAuth((prev) => ({ ...prev, user: data.author._id }))
   }
 
   return (

@@ -1,6 +1,5 @@
 import {
   Box,
-  createStyles,
   Group,
   Image,
   Loader,

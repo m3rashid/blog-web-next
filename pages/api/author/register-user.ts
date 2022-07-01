@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { IUser, User } from 'models/user'
+import { defaultHandler } from 'middlewares/default'
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -21,4 +22,4 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json(savedUser)
 }
 
-export default register
+export default defaultHandler(register)

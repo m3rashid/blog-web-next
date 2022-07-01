@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Comment } from 'models/comment'
+import { defaultHandler } from 'middlewares/default'
 
 const editComment = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -17,4 +18,4 @@ const editComment = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json(newComment)
 }
 
-export default editComment
+export default defaultHandler(editComment)

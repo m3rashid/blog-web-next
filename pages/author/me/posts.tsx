@@ -5,33 +5,36 @@ import { useSession } from 'next-auth/react'
 import { Table, Anchor, ScrollArea, Button } from '@mantine/core'
 
 import PageWrapper from 'components/globals/pageWrapper'
+import { instance } from 'components/helpers/instance'
 
 interface IProps {}
 
 const MyPosts: React.FC<IProps> = () => {
-  const { data: session } = useSession()
   const router = useRouter()
-  const [loading, setLoading] = React.useState(false)
+  const { data: session } = useSession()
   const [posts, setPosts] = React.useState<any[]>([])
-  // const { safeApiCall } = useSafeApiCall()
 
-  // const getAuthorPosts = async () => {
-  //   const res = await safeApiCall({
-  //     body: { authorId: auth.user.profile },
-  //     endpoint: '/post/author',
-  //     notif: { id: 'get-author-posts' },
-  //   })
-
-  //   if (!res) return
-  //   setPosts(res.data)
-  // }
+  const getAuthorPosts = async () => {
+    const res = await instance.post('/post/author', {
+      // @ts-ignore
+      authorId: session?.user?.profile,
+    })
+    if (!res) return
+    setPosts(res.data)
+  }
 
   React.useEffect(() => {
     if (!session) {
       router.replace('/auth')
       return
     }
-    // getAuthorPosts().then().catch()
+    // @ts-ignore
+    if (!session?.user?.profile) {
+      router.replace('/author/me/create')
+      return
+    }
+
+    getAuthorPosts().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 

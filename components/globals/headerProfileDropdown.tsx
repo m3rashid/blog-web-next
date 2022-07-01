@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   ArrowsLeftRight,
   Article,
@@ -8,6 +7,7 @@ import {
   User,
   UserOff,
 } from 'tabler-icons-react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import { Avatar, Divider, Menu } from '@mantine/core'
 import { signOut, useSession } from 'next-auth/react'
@@ -34,7 +34,8 @@ const LoggedInActions: React.FC<{
       <Menu.Label>Profile</Menu.Label>
       <Menu.Item
         icon={<User size={14} />}
-        // onClick={() => router.push(`/author/${session.user.author?.slug}`)}
+        // @ts-ignore
+        onClick={() => router.push(`/author/${session?.user?.author?.slug}`)}
       >
         Profile
       </Menu.Item>

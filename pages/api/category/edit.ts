@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Category } from 'models/category'
+import { requireAuth } from 'middlewares/auth'
 
 const editCategory = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -16,4 +17,4 @@ const editCategory = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.send(newCategory)
 }
 
-export default editCategory
+export default requireAuth(editCategory)

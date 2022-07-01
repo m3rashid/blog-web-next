@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Category } from 'models/category'
+import { requireAuth } from 'middlewares/auth'
 
 const deleteCategory = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -14,4 +15,4 @@ const deleteCategory = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.send('Category Deleted')
 }
 
-export default deleteCategory
+export default requireAuth(deleteCategory)

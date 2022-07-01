@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Post } from 'models/post'
+import { defaultHandler } from 'middlewares/default'
 
 const getPostDetails = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -115,4 +116,4 @@ const getPostDetails = async (req: NextApiRequest, res: NextApiResponse) => {
   })
 }
 
-export default getPostDetails
+export default defaultHandler(getPostDetails)

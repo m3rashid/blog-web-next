@@ -24,8 +24,7 @@ import { useRouter } from 'next/router'
 import { IAuthor } from 'components/helpers/types'
 import PageWrapper from 'components/globals/pageWrapper'
 import { SingleSectionRender } from 'components/post/showRender'
-
-interface IProps {}
+import { instance } from 'components/helpers/instance'
 
 export const AuthorSocials: React.FC<{ authorDetails: IAuthor }> = ({
   authorDetails,
@@ -83,29 +82,28 @@ export const AuthorSocials: React.FC<{ authorDetails: IAuthor }> = ({
   )
 }
 
+interface IProps {}
+
 const AuthorProfile: React.FC<IProps> = () => {
   const router = useRouter()
   const [authorDetails, setAuthorDetails] = React.useState<IAuthor>()
 
-  // const handleGetAuthor = async () => {
-  //   const res = await safeApiCall({
-  //     body: { slug: router.query.slug },
-  //     endpoint: '/author/get-details',
-  //     notif: { id: 'get-author-details' },
-  //   })
-
-  //   if (!res) {
-  //     return
-  //   }
-  //   setAuthorDetails(res.data)
-  // }
+  const handleGetAuthor = async () => {
+    const res = await instance.post('/author/get-details', {
+      slug: router.query.slug,
+    })
+    if (!res) {
+      return
+    }
+    setAuthorDetails(res.data)
+  }
 
   React.useEffect(() => {
     if (!router.query.slug || router.query.slug === 'undefined') {
       router.replace('/author/me/create')
       return
     }
-    // handleGetAuthor().then().catch()
+    handleGetAuthor().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

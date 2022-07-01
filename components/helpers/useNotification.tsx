@@ -29,11 +29,8 @@ export const useNotification = ({ id }: { id: string }) => {
     return updateNotification({
       id: id,
       color: 'teal',
-      title: successMsg?.title || res.data.message || 'Successful',
-      message:
-        res?.data.message ||
-        successMsg?.message ||
-        'Your request was successful',
+      title: successMsg?.title || 'Successful',
+      message: successMsg?.message || 'Your request was successful',
       icon: <CircleCheck />,
       autoClose: 5000,
       disallowClose: false,
@@ -53,7 +50,6 @@ export const useNotification = ({ id }: { id: string }) => {
       title: errorMsg?.title || 'Error',
       message:
         errorMsg?.message ||
-        err?.message ||
         'An error occurred while getting response from server. Please try again later.',
       icon: <Error404 />,
       autoClose: 5000,

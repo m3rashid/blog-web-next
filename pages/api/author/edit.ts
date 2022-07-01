@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
 import { Author } from 'models/author'
+import { requireAuth } from 'middlewares/auth'
 
 const editAuthorProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
@@ -17,4 +18,4 @@ const editAuthorProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.send(newAuthor)
 }
 
-export default editAuthorProfile
+export default requireAuth(editAuthorProfile)

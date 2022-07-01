@@ -12,7 +12,7 @@ export interface IAuthor {
   instagramUrl?: string
   linkedinUrl?: string
   youtubeUrl?: string
-  deleted: boolean
+  deleted?: boolean
 }
 
 const authorSchema = new mongoose.Schema<IAuthor>(
