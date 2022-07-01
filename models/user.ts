@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import { IAuthor } from './author'
+import { IAuthor } from 'models/author'
 
 export interface IUser {
   _id?: mongoose.Types.ObjectId

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import connectDb from '../../../models'
-import { Category } from '../../../models/category'
+import connectDb from 'models'
+import { Category } from 'models/category'
 
 const deleteCategory = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()

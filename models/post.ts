@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
-import { IComment } from './comment'
-import { IAuthor } from './author'
-import { ICategory } from './category'
+import { IAuthor } from 'models/author'
+import { IComment } from 'models/comment'
+import { ICategory } from 'models/category'
 
 export enum POST_DATA_TYPE {
   CODE = 'code',

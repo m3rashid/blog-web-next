@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   createStyles,
   Title,
@@ -7,9 +6,10 @@ import {
   Container,
   Group,
 } from '@mantine/core'
-
-import PageWrapper from '../components/globals/pageWrapper'
+import React from 'react'
 import Link from 'next/link'
+
+import PageWrapper from 'components/globals/pageWrapper'
 
 export const useStyles = createStyles((theme) => ({
   root: {

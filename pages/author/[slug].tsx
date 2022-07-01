@@ -21,9 +21,9 @@ import {
 } from '@mantine/core'
 import { useRouter } from 'next/router'
 
-import { IAuthor } from '../../components/helpers/types'
-import PageWrapper from '../../components/globals/pageWrapper'
-import { SingleSectionRender } from '../../components/post/showRender'
+import { IAuthor } from 'components/helpers/types'
+import PageWrapper from 'components/globals/pageWrapper'
+import { SingleSectionRender } from 'components/post/showRender'
 
 interface IProps {}
 

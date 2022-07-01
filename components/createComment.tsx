@@ -11,7 +11,8 @@ import {
 import { showNotification } from '@mantine/notifications'
 import React from 'react'
 import { AlphabetLatin, Error404 } from 'tabler-icons-react'
-import { SingleSectionRender } from './post/showRender'
+
+import { SingleSectionRender } from 'components/post/showRender'
 
 const useStyles = createStyles((theme) => ({
   input: {

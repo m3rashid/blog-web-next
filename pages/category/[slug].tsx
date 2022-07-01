@@ -1,15 +1,14 @@
 import React from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Box, Group, Loader, SimpleGrid, Title } from '@mantine/core'
+import { Group, Loader, SimpleGrid, Title } from '@mantine/core'
 
-import { useStyles } from '..'
-import { useHomePageStyles } from '..'
-import Categories from '../../components/categories'
-import PostCard from '../../components/post/postcard'
-import PageWrapper from '../../components/globals/pageWrapper'
-import { IPostCardForCard } from '../../components/helpers/types'
-import { instance } from '../../components/helpers/instance'
+import Categories from 'components/categories'
+import PostCard from 'components/post/postcard'
+import { useStyles, useHomePageStyles } from 'pages'
+import { instance } from 'components/helpers/instance'
+import PageWrapper from 'components/globals/pageWrapper'
+import { IPostCardForCard } from 'components/helpers/types'
 
 interface IProps {
   posts: IPostCardForCard[]

@@ -18,3 +18,13 @@
   padding: 0;
   margin: 0;
 }
+
+a {
+  text-decoration: none;
+  color: #15aabf;
+  font-weight: 600;
+}
+
+a:hover {
+  text-decoration: underline;
+}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, createStyles } from '@mantine/core'
 
-import BreadCrumbs from './breadCrumbs'
+import BreadCrumbs from 'components/globals/breadCrumbs'
 
 export const useStyles = createStyles((theme) => ({
   root: {

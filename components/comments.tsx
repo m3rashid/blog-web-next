@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { Avatar, Box, Group, Paper, Stack, Text, Title } from '@mantine/core'
 
-import { SingleSectionRender } from './post/showRender'
+import { SingleSectionRender } from 'components/post/showRender'
 
 interface IProps {
   comments: any[]

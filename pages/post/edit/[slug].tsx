@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Box,
   Button,
@@ -8,19 +7,21 @@ import {
   TextInput,
   Title,
 } from '@mantine/core'
+import React from 'react'
 import { nanoid } from 'nanoid'
-import { useRecoilState } from 'recoil'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import { useRecoilState } from 'recoil'
 import { useSession } from 'next-auth/react'
 import { Article, Photo } from 'tabler-icons-react'
 
-import { useStyles } from '../create'
-import ShowRender from '../../../components/post/showRender'
-import ChooseTypeButton from '../../../components/post/select'
-import PageWrapper from '../../../components/globals/pageWrapper'
-import { PostType, postAtom } from '../../../components/atoms/post'
-const CreateOrEditPost = React.lazy(
-  () => import('../../../components/post/createOrEditPost')
+import { useStyles } from 'pages/post/create'
+import ShowRender from 'components/post/showRender'
+import ChooseTypeButton from 'components/post/select'
+import PageWrapper from 'components/globals/pageWrapper'
+import { PostType, postAtom } from 'components/atoms/post'
+const CreateOrEditPost = dynamic(
+  () => import('components/post/createOrEditPost')
 )
 
 interface IProps {}

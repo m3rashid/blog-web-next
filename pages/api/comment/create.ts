@@ -1,9 +1,9 @@
 import { HydratedDocument } from 'mongoose'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import connectDb from '../../../models'
-import { Post } from '../../../models/post'
-import { Comment, IComment } from '../../../models/comment'
+import connectDb from 'models'
+import { Post } from 'models/post'
+import { Comment, IComment } from 'models/comment'
 
 const createComment = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()

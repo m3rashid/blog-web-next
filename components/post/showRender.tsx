@@ -5,7 +5,7 @@ import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/github-dark-dimmed.css'
 import { Box, Code, createStyles } from '@mantine/core'
 
-import { ICreatePost } from '../atoms/post'
+import { ICreatePost } from 'components/atoms/post'
 
 marked.setOptions({
   langPrefix: 'hljs language-',

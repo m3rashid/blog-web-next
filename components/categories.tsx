@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRecoilValue } from 'recoil'
 import { Anchor, Box, Paper, Title } from '@mantine/core'
 
-import { categoryAtom } from './atoms/categories'
+import { categoryAtom } from 'components/atoms/categories'
 
 interface IProps {}
 

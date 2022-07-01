@@ -10,10 +10,10 @@ import {
 } from 'tabler-icons-react'
 import { useRouter } from 'next/router'
 import { Avatar, Divider, Menu } from '@mantine/core'
+import { signOut, useSession } from 'next-auth/react'
 import { showNotification } from '@mantine/notifications'
 
-import CreateCategoryModal from './createCategoryModal'
-import { signOut, useSession } from 'next-auth/react'
+import CreateCategoryModal from 'components/globals/createCategoryModal'
 
 const LoggedInActions: React.FC<{
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>

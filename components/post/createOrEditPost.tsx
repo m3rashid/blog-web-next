@@ -11,9 +11,9 @@ import { useRecoilState } from 'recoil'
 import { AlertOctagon } from 'tabler-icons-react'
 import { showNotification } from '@mantine/notifications'
 
-import { deepClone } from '../utils'
-import ChooseTypeButton from './select'
-import { ICreatePost, postAtom, PostType } from '../atoms/post'
+import { deepClone } from 'utils/deepClone'
+import ChooseTypeButton from 'components/post/select'
+import { ICreatePost, postAtom, PostType } from 'components/atoms/post'
 
 const useStyles = createStyles((theme) => ({
   textboxContainer: {

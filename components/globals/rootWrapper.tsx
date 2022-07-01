@@ -9,9 +9,9 @@ import { RecoilRoot } from 'recoil'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 
-import ScrollToTop from './scrollToTop'
-import TopHeader from '../globals/header'
-import Footer from './footer'
+import ScrollToTop from 'components/globals/scrollToTop'
+import TopHeader from 'components/globals/header'
+import Footer from 'components/globals/footer'
 
 interface IProps {
   children: React.ReactNode

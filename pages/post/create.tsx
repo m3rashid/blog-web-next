@@ -1,6 +1,3 @@
-import React from 'react'
-import { nanoid } from 'nanoid'
-import { useRecoilState } from 'recoil'
 import {
   Box,
   Button,
@@ -10,17 +7,18 @@ import {
   Switch,
   Title,
 } from '@mantine/core'
-
-import { postAtom, PostType } from '../../components/atoms/post'
-import TitleSlug, { IPostMeta } from '../../components/post/titleSlug'
-import ShowRender from '../../components/post/showRender'
-import ChooseTypeButton from '../../components/post/select'
-import PageWrapper from '../../components/globals/pageWrapper'
-import { useSession } from 'next-auth/react'
+import React from 'react'
+import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
-const CreateOrEditPost = React.lazy(
-  () => import('../../components/post/createOrEditPost')
-)
+import { useRecoilState } from 'recoil'
+import { useSession } from 'next-auth/react'
+
+import { postAtom, PostType } from 'components/atoms/post'
+import TitleSlug, { IPostMeta } from 'components/post/titleSlug'
+import ShowRender from 'components/post/showRender'
+import ChooseTypeButton from 'components/post/select'
+import PageWrapper from 'components/globals/pageWrapper'
+import CreateOrEditPost from 'components/post/createOrEditPost'
 
 export const useStyles = createStyles((theme) => ({
   buttonTop: {

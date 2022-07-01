@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { createStyles, Group, Image, Paper, Text, Title } from '@mantine/core'
 
-import { IRelatedPosts } from './helpers/types'
+import { IRelatedPosts } from 'components/helpers/types'
 
 interface IProps {
   relatedPosts: IRelatedPosts[]

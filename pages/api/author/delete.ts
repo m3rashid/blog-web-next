@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import connectDb from '../../../models'
-import { Author } from '../../../models/author'
+import connectDb from 'models'
+import { Author } from 'models/author'
 
 const deleteAuthorProfile = async (
   req: NextApiRequest,

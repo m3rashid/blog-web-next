@@ -1,9 +1,11 @@
 import bcrypt from 'bcrypt'
 import NextAuth from 'next-auth'
+import { ObjectId } from 'mongoose'
 import CredentialProvider from 'next-auth/providers/credentials'
 
-import connectDb from '../../../models'
-import { User } from '../../../models/user'
+import connectDb from 'models'
+import { User } from 'models/user'
+import { IUser } from 'components/helpers/types'
 
 connectDb()
 
@@ -55,12 +57,15 @@ export default NextAuth({
   callbacks: {
     jwt: ({ token, user }) => {
       if (user) {
-        const data: any = { _id: user._id, email: user.email }
-        if (user.profile) {
-          data['profile'] = user.profile
-          data['author'] = user.author
+        const data: IUser = {
+          id: user._id as ObjectId,
+          email: user.email as string,
         }
-        token.id = user.id
+        if (user.profile) {
+          data['profile'] = user.profile as string
+          data['author'] = user.author as IUser['author']
+        }
+        token.id = user._id
         token.sub = JSON.stringify(data)
       }
       return token
@@ -68,7 +73,7 @@ export default NextAuth({
     session: ({ session, token }) => {
       if (token) {
         session.id = token.id
-        session.user = JSON.parse(token.sub ?? '')
+        session.user = JSON.parse(token.sub ?? '') as IUser
       }
       return session
     },

@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStyles, Select } from '@mantine/core'
 
-import { PostType } from '../atoms/post'
+import { PostType } from 'components/atoms/post'
 
 const useStyles = createStyles((theme) => ({
   select: {

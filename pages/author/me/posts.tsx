@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { Table, Anchor, ScrollArea, Button } from '@mantine/core'
 
-import PageWrapper from '../../../components/globals/pageWrapper'
+import PageWrapper from 'components/globals/pageWrapper'
 
 interface IProps {}
 

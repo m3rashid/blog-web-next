@@ -1,8 +1,8 @@
 import React from 'react'
 import { Avatar, Box, Group, Paper, Text, Title } from '@mantine/core'
 
-import { IAuthor } from './helpers/types'
-import { AuthorSocials } from '../pages/author/[slug]'
+import { IAuthor } from 'components/helpers/types'
+import { AuthorSocials } from 'pages/author/[slug]'
 
 interface IProps {
   author: IAuthor

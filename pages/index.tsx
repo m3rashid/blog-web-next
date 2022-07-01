@@ -2,12 +2,12 @@ import React from 'react'
 import Head from 'next/head'
 import { Box, createStyles, Group, SimpleGrid } from '@mantine/core'
 
-import Hero from '../components/hero'
-import Categories from '../components/categories'
-import PageWrapper from '../components/globals/pageWrapper'
-import { instance } from '../components/helpers/instance'
-import PostCard from '../components/post/postcard'
-import { IPostCardForCard } from '../components/helpers/types'
+import Hero from 'components/hero'
+import Categories from 'components/categories'
+import PageWrapper from 'components/globals/pageWrapper'
+import { instance } from 'components/helpers/instance'
+import PostCard from 'components/post/postcard'
+import { IPostCardForCard } from 'components/helpers/types'
 
 interface IProps {
   posts: IPostCardForCard[]

@@ -1,9 +1,9 @@
 import { HydratedDocument } from 'mongoose'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import connectDb from '../../../models'
-import { IPost, Post } from '../../../models/post'
-import { bannedWordsForSlug } from '../../../utils/bannedWordsForSlug'
+import connectDb from 'models'
+import { IPost, Post } from 'models/post'
+import { bannedWordsForSlug } from 'utils/bannedWordsForSlug'
 
 const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()

@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   TextInput,
   PasswordInput,
@@ -11,12 +10,13 @@ import {
   Button,
   Container,
 } from '@mantine/core'
+import React from 'react'
 import { useRouter } from 'next/router'
 import { useSession, signIn } from 'next-auth/react'
 
-import { instance } from '../components/helpers/instance'
-import PageWrapper from '../components/globals/pageWrapper'
-import { useNotification } from '../components/helpers/useNotification'
+import { instance } from 'components/helpers/instance'
+import PageWrapper from 'components/globals/pageWrapper'
+import { useNotification } from 'components/helpers/useNotification'
 
 type IAuthType = 'login' | 'register'
 

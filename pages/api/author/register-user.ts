@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt'
 import { HydratedDocument } from 'mongoose'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import connectDb from '../../../models'
-import { IUser, User } from '../../../models/user'
+import connectDb from 'models'
+import { IUser, User } from 'models/user'
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()

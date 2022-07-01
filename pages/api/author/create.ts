@@ -1,10 +1,10 @@
 import { HydratedDocument } from 'mongoose'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import connectDb from '../../../models'
-import { User } from '../../../models/user'
-import { Author, IAuthor } from '../../../models/author'
-import { bannedWordsForSlug } from '../../../utils/bannedWordsForSlug'
+import connectDb from 'models'
+import { User } from 'models/user'
+import { Author, IAuthor } from 'models/author'
+import { bannedWordsForSlug } from 'utils/bannedWordsForSlug'
 
 const createAuthorProfile = async (
   req: NextApiRequest,

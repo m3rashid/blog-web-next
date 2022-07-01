@@ -9,15 +9,15 @@ import {
   Paper,
   Transition,
 } from '@mantine/core'
+import React from 'react'
 import { useRouter } from 'next/router'
+import { useSetRecoilState } from 'recoil'
 import { Moon, Sun } from 'tabler-icons-react'
 import { useBooleanToggle } from '@mantine/hooks'
 
-import HeaderProfileDropdown from './headerProfileDropdown'
-import React from 'react'
-import { instance } from '../helpers/instance'
-import { useSetRecoilState } from 'recoil'
-import { categoryAtom } from '../atoms/categories'
+import { instance } from 'components/helpers/instance'
+import { categoryAtom } from 'components/atoms/categories'
+import HeaderProfileDropdown from 'components/globals/headerProfileDropdown'
 
 export const HEADER_HEIGHT = 70
 export const useStyles = createStyles((theme) => ({

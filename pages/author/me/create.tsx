@@ -22,11 +22,11 @@ import {
 } from 'tabler-icons-react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-
-import { IAuthor } from '../../../components/helpers/types'
 import { showNotification } from '@mantine/notifications'
-import PageWrapper from '../../../components/globals/pageWrapper'
-import { SingleSectionRender } from '../../../components/post/showRender'
+
+import { IAuthor } from 'components/helpers/types'
+import PageWrapper from 'components/globals/pageWrapper'
+import { SingleSectionRender } from 'components/post/showRender'
 
 const useStyles = createStyles((theme) => ({
   input: {

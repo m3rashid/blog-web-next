@@ -1,5 +1,3 @@
-import React from 'react'
-import { Article, Webhook, Photo, Notification } from 'tabler-icons-react'
 import {
   createStyles,
   Group,
@@ -7,8 +5,11 @@ import {
   Paper,
   TextInput,
 } from '@mantine/core'
+import React from 'react'
 import { useRecoilValue } from 'recoil'
-import { categoryAtom } from '../atoms/categories'
+import { Article, Webhook, Photo, Notification } from 'tabler-icons-react'
+
+import { categoryAtom } from 'components/atoms/categories'
 
 const useStyles = createStyles((theme) => ({
   buttonTop: {

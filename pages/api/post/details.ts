@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import connectDb from '../../../models'
-import { Post } from '../../../models/post'
+import connectDb from 'models'
+import { Post } from 'models/post'
 
 const getPostDetails = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()

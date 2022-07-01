@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import connectDb from '../../../models'
+import connectDb from 'models'
 
 const getCategoriesByPost = async (
   req: NextApiRequest,
