@@ -1,5 +1,3 @@
-import { ObjectId } from 'mongoose'
-
 export interface IAuthor {
   _id?: string
   name: string
@@ -56,14 +54,4 @@ export interface IRelatedPosts {
   slug: string
   bannerImageUrl: string
   createdAt: string
-}
-
-export interface IUser {
-  id: ObjectId | string
-  email: string
-  profile?: ObjectId | string
-  author?: {
-    name: string
-    slug: string
-  }
 }

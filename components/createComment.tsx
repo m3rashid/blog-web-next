@@ -8,10 +8,10 @@ import {
   TextInput,
   Title,
 } from '@mantine/core'
-import { showNotification } from '@mantine/notifications'
 import React from 'react'
-import { AlphabetLatin, Error404 } from 'tabler-icons-react'
+import { AlphabetLatin } from 'tabler-icons-react'
 
+import useHttp from 'components/helpers/useHttp'
 import { SingleSectionRender } from 'components/post/showRender'
 
 const useStyles = createStyles((theme) => ({
@@ -33,8 +33,7 @@ interface IComment {
 
 const CreateComment: React.FC<IProps> = ({ postId }) => {
   const { classes } = useStyles()
-  const [loading, setLoading] = React.useState(false)
-
+  const { loading, request } = useHttp('create-comment')
   const [comment, setComment] = React.useState<IComment>({
     name: window.localStorage.getItem('myName') || '',
     comment: '',
@@ -42,36 +41,18 @@ const CreateComment: React.FC<IProps> = ({ postId }) => {
   })
 
   const handleAddComment = async () => {
-    if (!comment.name || !comment.comment) {
-      showNotification({
-        id: 'empty-comment',
-        title: 'Empty Comment',
-        message: 'All fields are required',
-        color: 'red',
-        icon: <Error404 />,
-        autoClose: 5000,
-        disallowClose: false,
-      })
-      return
-    }
+    if (comment.remember) window.localStorage.setItem('myName', comment.name)
+    else window.localStorage.removeItem('myName')
 
-    if (comment.remember) {
-      window.localStorage.setItem('myName', comment.name)
-    } else {
-      window.localStorage.removeItem('myName')
-    }
-
-    // const res = await safeApiCall({
-    //   body: {
-    //     name: comment.name,
-    //     comment: comment.comment,
-    //     postId: postId,
-    //   },
-    //   endpoint: '/comment/create',
-    //   notif: { id: 'create-comment', show: true },
-    // })
-
-    // if (!res) return
+    const { data: saveRes } = await request({
+      endpoint: '/comment/create',
+      body: {
+        name: comment.name,
+        comment: comment.comment,
+        postId: postId,
+      },
+    })
+    if (!saveRes) return
     setComment((prev) => ({ ...prev, comment: '' }))
   }
 

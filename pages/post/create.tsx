@@ -62,6 +62,7 @@ const CreatePost: React.FC<IProps> = () => {
       slug: '',
       bannerImageUrl: '',
       categories: [],
+      keywords: '',
     }),
     []
   )
@@ -69,9 +70,6 @@ const CreatePost: React.FC<IProps> = () => {
   React.useEffect(() => {
     if (!session) {
       router.replace('/auth')
-      // @ts-ignore
-    } else if (!session?.user?.profile) {
-      router.replace('/author/me/create')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
@@ -86,9 +84,8 @@ const CreatePost: React.FC<IProps> = () => {
         title: postMeta.title,
         slug: postMeta.slug,
         data: data,
+        keywords: postMeta.keywords,
         bannerImageUrl: postMeta.bannerImageUrl,
-        // @ts-ignore
-        authorId: session?.user?.profile,
         categories: postMeta.categories,
         published: publish,
       },

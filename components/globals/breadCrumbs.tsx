@@ -1,6 +1,6 @@
 import React from 'react'
-import { Breadcrumbs, createStyles, Text } from '@mantine/core'
 import { useRouter } from 'next/router'
+import { Breadcrumbs, createStyles, Text } from '@mantine/core'
 
 const useStyles = createStyles((theme) => ({
   crumbs: {

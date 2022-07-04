@@ -6,15 +6,25 @@ import { requireAuth } from 'middlewares/auth'
 
 const editPost = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
-  const { postId, data, published, title, bannerImageUrl } = req.body
+  const {
+    postId,
+    title,
+    data,
+    published,
+    bannerImageUrl,
+    keywords,
+    categories,
+  } = req.body
   const post = await Post.findById(postId)
   if (!post) throw new Error('Post not found')
 
   const updated = await post.updateOne({
-    data,
-    published,
     title,
+    data,
+    keywords,
     bannerImageUrl,
+    categories,
+    published,
   })
   res.status(200).json(updated)
 }

@@ -4,9 +4,9 @@ import { Box, createStyles, Group, SimpleGrid } from '@mantine/core'
 
 import Hero from 'components/hero'
 import Categories from 'components/categories'
-import PageWrapper from 'components/globals/pageWrapper'
-import { instance } from 'components/helpers/instance'
 import PostCard from 'components/post/postcard'
+import { instance } from 'components/helpers/instance'
+import PageWrapper from 'components/globals/pageWrapper'
 import { IPostCardForCard } from 'components/helpers/types'
 
 interface IProps {

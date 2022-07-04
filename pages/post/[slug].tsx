@@ -20,7 +20,7 @@ import RelatedPosts from 'components/relatedPosts'
 import ShowRender from 'components/post/showRender'
 import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
-import { IAuthor, ICategory, IRelatedPosts } from 'components/helpers/types'
+import { ICategory, IRelatedPosts } from 'components/helpers/types'
 const CreateComment = dynamic(() => import('components/createComment'), {
   ssr: false,
 })
@@ -28,10 +28,10 @@ const CreateComment = dynamic(() => import('components/createComment'), {
 export interface IPost {
   bannerImageUrl: string
   categories: ICategory[]
+  keywords: string
   data: any
   comments: any[]
   _id?: string
-  author: IAuthor | string
   slug: string
   title: string
   excerpt: string
@@ -75,15 +75,13 @@ const Post: React.FC<IProps> = ({ postDetail, relatedPosts }) => {
   }
 
   const postTitle = postDetail.title || 'Post'
-  const keywords = postTitle.split(' ')
-  const result = keywords.filter((word: string) => word.length > 4)
 
   return (
     <PageWrapper>
       <Head>
         <title>{postTitle} | Cubicle</title>
         <meta name="description" content={postDetail.excerpt} />
-        <meta name="keywords" content={result.join(', ')} />
+        <meta name="keywords" content={postDetail.keywords} />
         <meta name="og:title" content={postTitle + ' | Cubicle'} />
         <meta name="og:description" content={postDetail.excerpt} />
         <meta
@@ -115,7 +113,7 @@ const Post: React.FC<IProps> = ({ postDetail, relatedPosts }) => {
         </SimpleGrid>
 
         <SimpleGrid spacing={20} className={classes.secondChild}>
-          <Author author={postDetail.author as IAuthor} />
+          <Author />
           <RelatedPosts relatedPosts={relatedPosts} />
           <Categories />
           <CreateComment postId={postDetail._id as string} />

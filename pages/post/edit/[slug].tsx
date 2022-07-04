@@ -8,6 +8,7 @@ import {
   Title,
 } from '@mantine/core'
 import React from 'react'
+import Head from 'next/head'
 import { nanoid } from 'nanoid'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -90,6 +91,14 @@ const EditPost: React.FC<IProps> = () => {
 
   return (
     <PageWrapper>
+      <Head>
+        <title>{postData.title}</title>
+        <meta
+          name="description"
+          content="Cubicle is a blog website which mainly focuses on the life of programmers in general. Also, includes programming tips, tricks and tutorials"
+        />
+        <meta name="image" content="https://cubicle.vercel.app/favicon.png" />
+      </Head>
       <Box className={classes.buttonTop}>
         <Button onClick={saveAndPublish} loading={loading}>
           Save {postData.publish ? ' and Publish' : ' as draft'}

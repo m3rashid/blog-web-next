@@ -31,27 +31,10 @@ const LoggedInActions: React.FC<{
 
   return (
     <>
-      <Menu.Label>Profile</Menu.Label>
-      <Menu.Item
-        icon={<User size={14} />}
-        // @ts-ignore
-        onClick={() => router.push(`/author/${session?.user?.author?.slug}`)}
-      >
-        Profile
-      </Menu.Item>
-      <Menu.Item
-        icon={<Edit size={14} />}
-        onClick={() => router.push('/author/me/create')}
-      >
-        Modify Profile
-      </Menu.Item>
-
-      <Divider />
-
       <Menu.Label>Author Actions</Menu.Label>
       <Menu.Item
         icon={<Article size={14} />}
-        onClick={() => router.push('/author/me/posts')}
+        onClick={() => router.push('/me/posts')}
       >
         All Posts
       </Menu.Item>

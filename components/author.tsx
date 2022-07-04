@@ -1,26 +1,73 @@
+import {
+  BrandGithub,
+  BrandInstagram,
+  BrandLinkedin,
+  BrandTwitter,
+  BrandYoutube,
+  World,
+} from 'tabler-icons-react'
 import React from 'react'
-import { Avatar, Box, Group, Paper, Text, Title } from '@mantine/core'
+import { Anchor, Avatar, Box, Group, Paper, Title } from '@mantine/core'
 
-import { IAuthor } from 'components/helpers/types'
-import { AuthorSocials } from 'pages/author/[slug]'
+import { authorDetails } from 'components/userDetail'
 
-interface IProps {
-  author: IAuthor
-}
+interface IProps {}
 
-const Author: React.FC<IProps> = ({ author }) => {
+const Author: React.FC<IProps> = () => {
   return (
     <Paper shadow="xs" radius="md" p={20}>
       <Group>
-        <Avatar size="xl" radius={100} src={author.avatar} mb={4} />
+        <Avatar size="xl" radius={100} src={authorDetails.avatar} mb={4} />
         <Box>
           <Title sx={(theme) => ({ fontFamily: theme.fontFamily })} order={3}>
-            {author.name}
+            {authorDetails.name}
           </Title>
-          <Text style={{ fontWeight: 700 }}>@{author.slug}</Text>
         </Box>
       </Group>
-      <AuthorSocials authorDetails={author} />
+      <Group style={{ marginTop: '20px' }}>
+        {authorDetails.website && (
+          <Anchor<'a'> href={authorDetails.website} target="_blank">
+            <World />
+          </Anchor>
+        )}
+        {authorDetails.linkedIn && (
+          <Anchor<'a'>
+            href={`https://linkedin.com/in/${authorDetails.linkedIn}`}
+            target="_blank"
+          >
+            <BrandLinkedin />
+          </Anchor>
+        )}
+        {authorDetails.github && (
+          <Anchor<'a'>
+            href={`https://github.com/${authorDetails.github}`}
+            target="_blank"
+          >
+            <BrandGithub />
+          </Anchor>
+        )}
+        {authorDetails.twitter && (
+          <Anchor<'a'>
+            href={`https://twitter.com/${authorDetails.twitter}`}
+            target="_blank"
+          >
+            <BrandTwitter />
+          </Anchor>
+        )}
+        {authorDetails.youtube && (
+          <Anchor<'a'> href={authorDetails.youtube} target="_blank">
+            <BrandYoutube />
+          </Anchor>
+        )}
+        {authorDetails.instagram && (
+          <Anchor<'a'>
+            href={`https://instagram.com/${authorDetails.instagram}`}
+            target="_blank"
+          >
+            <BrandInstagram />
+          </Anchor>
+        )}
+      </Group>
     </Paper>
   )
 }

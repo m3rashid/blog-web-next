@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 
-import { IAuthor } from 'models/author'
 import { IComment } from 'models/comment'
 import { ICategory } from 'models/category'
 
@@ -18,10 +17,10 @@ export interface IPostData {
 export interface IPost {
   title: string
   slug: string
+  keywords: string
   data: IPostData[]
   bannerImageUrl: string
   comments?: IComment[]
-  author: IAuthor
   categories: ICategory[]
   published: boolean
   deleted?: boolean
@@ -37,6 +36,10 @@ const postSchema = new mongoose.Schema<IPost>(
       type: String,
       required: true,
       unique: true,
+    },
+    keywords: {
+      type: String,
+      required: true,
     },
     data: [
       {
@@ -65,10 +68,6 @@ const postSchema = new mongoose.Schema<IPost>(
         ref: 'Comment',
       },
     ],
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Author',
-    },
     categories: [
       {
         type: mongoose.Schema.Types.ObjectId,

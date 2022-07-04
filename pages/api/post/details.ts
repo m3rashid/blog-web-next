@@ -26,22 +26,12 @@ const getPostDetails = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     },
     {
-      $lookup: {
-        from: 'authors',
-        localField: 'author',
-        foreignField: '_id',
-        as: 'author',
-      },
-    },
-    { $unwind: { path: '$author', preserveNullAndEmptyArrays: true } },
-    {
       $project: {
         title: 1,
         slug: 1,
         data: 1,
         bannerImageUrl: 1,
         comments: 1,
-        author: 1,
         categories: { name: 1, slug: 1 },
         createdAt: 1,
         updatedAt: 1,

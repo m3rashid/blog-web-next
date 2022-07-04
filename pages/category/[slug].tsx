@@ -63,7 +63,7 @@ const Category: React.FC<IProps> = ({ posts }) => {
           name="og:description"
           content="Cubicle is a blog website which mainly focuses on the life of programmers in general. Also, includes programming tips, tricks and tutorials"
         />
-        <meta name="twitter:title" content={'Cubicle'} />
+        <meta name="twitter:title" content="Cubicle" />
         <meta
           name="twitter:description"
           content="Cubicle is a blog website which mainly focuses on the life of programmers in general. Also, includes programming tips, tricks and tutorials"
@@ -109,7 +109,7 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
   const res = await instance.post('/post/by-category', { slug: params.slug })
   return {
     props: { posts: res.data },
-    revalidate: 100,
+    revalidate: 20,
   }
 }
 

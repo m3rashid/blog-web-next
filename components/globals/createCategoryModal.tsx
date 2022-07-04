@@ -8,6 +8,8 @@ import {
 import React from 'react'
 import { AlphabetLatin, Webhook } from 'tabler-icons-react'
 
+import useHttp from 'components/helpers/useHttp'
+
 interface IProps {
   modalOpen: boolean
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -24,9 +26,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 const CreateCategoryModal: React.FC<IProps> = ({ modalOpen, setModalOpen }) => {
-  const [loading, setLoading] = React.useState(false)
-
-  // const { safeApiCall, loading } = useSafeApiCall()
+  const { loading, request } = useHttp('create-category')
   const [category, setCategory] = React.useState({ name: '', slug: '' })
   const { classes } = useStyles()
 
@@ -36,14 +36,14 @@ const CreateCategoryModal: React.FC<IProps> = ({ modalOpen, setModalOpen }) => {
   }
 
   const handleCreateCategory = async () => {
-    // const res = await safeApiCall({
-    //   body: category,
-    //   endpoint: '/category/create',
-    //   notif: { id: 'create-category', show: true },
-    // })
-    // if (!res) return
-    // setModalOpen(false)
-    // setCategory({ name: '', slug: '' })
+    if (category.name.trim() === '' || category.slug.trim() === '') return
+    const { data: saveRes } = await request({
+      endpoint: '/category/create',
+      body: category,
+    })
+    setModalOpen(false)
+    if (!saveRes) return
+    setCategory({ name: '', slug: '' })
   }
 
   return (

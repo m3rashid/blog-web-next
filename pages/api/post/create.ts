@@ -8,18 +8,17 @@ import { bannedWordsForSlug } from 'utils/bannedWordsForSlug'
 
 const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDb()
-  const { title, slug, data, bannerImageUrl, authorId, categories, published } =
+  const { title, slug, data, bannerImageUrl, keywords, categories, published } =
     req.body
 
-  if (slug.length < 5) throw new Error('Slug too short')
   if (bannedWordsForSlug.includes(slug)) throw new Error('Invalid slug')
 
   const post: HydratedDocument<IPost> = new Post({
     title,
     slug,
     data,
+    keywords,
     bannerImageUrl,
-    author: authorId,
     categories,
     published,
   })

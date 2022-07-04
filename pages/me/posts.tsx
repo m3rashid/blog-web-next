@@ -1,11 +1,12 @@
 import React from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { Table, Anchor, ScrollArea, Button } from '@mantine/core'
 
-import PageWrapper from 'components/globals/pageWrapper'
 import { instance } from 'components/helpers/instance'
+import PageWrapper from 'components/globals/pageWrapper'
 
 interface IProps {}
 
@@ -15,10 +16,7 @@ const MyPosts: React.FC<IProps> = () => {
   const [posts, setPosts] = React.useState<any[]>([])
 
   const getAuthorPosts = async () => {
-    const res = await instance.post('/post/author', {
-      // @ts-ignore
-      authorId: session?.user?.profile,
-    })
+    const res = await instance.post('/post/author', {})
     if (!res) return
     setPosts(res.data)
   }
@@ -28,18 +26,20 @@ const MyPosts: React.FC<IProps> = () => {
       router.replace('/auth')
       return
     }
-    // @ts-ignore
-    if (!session?.user?.profile) {
-      router.replace('/author/me/create')
-      return
-    }
-
     getAuthorPosts().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
   return (
     <PageWrapper>
+      <Head>
+        <title>My Posts</title>
+        <meta
+          name="description"
+          content="Cubicle is a blog website which mainly focuses on the life of programmers in general. Also, includes programming tips, tricks and tutorials"
+        />
+        <meta name="image" content="https://cubicle.vercel.app/favicon.png" />
+      </Head>
       <ScrollArea>
         <Table sx={{ minWidth: 800 }} verticalSpacing="md" highlightOnHover>
           <thead>

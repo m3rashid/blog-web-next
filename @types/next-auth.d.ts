@@ -1,17 +1,9 @@
-import 'next-auth'
+import NextAuth, { DefaultSession } from 'next-auth'
 
-interface IUser {
-  id: string
-  email: string
-  profile?: string
-  author?: {
-    name: string
-    slug: string
-  }
-}
+import { IAuthorDetails } from 'components/userDetail'
 
-declare module 'next-auth/client' {
-  export interface DefaultSession {
-    user: IUser
+declare module 'next-auth' {
+  interface Session {
+    user: IAuthorDetails & DefaultSession['user']
   }
 }

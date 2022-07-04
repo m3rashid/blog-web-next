@@ -1,7 +1,7 @@
 import { NextApiHandler } from 'next'
 import { getToken } from 'next-auth/jwt'
 
-import { IUser } from 'components/helpers/types'
+import { IAuthorDetails } from 'components/userDetail'
 
 const secret = process.env.JWT_SECRET!
 
@@ -16,7 +16,7 @@ export const requireAuth = (handler: NextApiHandler): NextApiHandler => {
       if (!token) {
         return res.status(401).json('Unauthorized')
       }
-      req.user = JSON.parse(token.sub ?? '') as IUser
+      req.user = JSON.parse(token.sub ?? '') as IAuthorDetails
       await handler(req, res)
     } catch (err: any) {
       console.log(err.message)

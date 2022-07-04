@@ -7,7 +7,13 @@ import {
 } from '@mantine/core'
 import React from 'react'
 import { useRecoilValue } from 'recoil'
-import { Article, Webhook, Photo, Notification } from 'tabler-icons-react'
+import {
+  Article,
+  Webhook,
+  Photo,
+  Notification,
+  ListCheck,
+} from 'tabler-icons-react'
 
 import { categoryAtom } from 'components/atoms/categories'
 
@@ -31,6 +37,7 @@ export interface IPostMeta {
   slug: string
   bannerImageUrl: string
   categories: string[]
+  keywords: string
 }
 
 interface IProps {
@@ -99,6 +106,16 @@ const TitleSlug: React.FC<IProps> = ({ postMeta, setPostMeta }) => {
         className={classes.multiselect}
         maxDropdownHeight={160}
         placeholder="Select categories for your post"
+      />
+      <TextInput
+        name="keywords"
+        value={postMeta.keywords}
+        required
+        icon={<ListCheck />}
+        className={classes.input}
+        style={{ marginTop: '15px' }}
+        onChange={handleChange}
+        placeholder="Enter keywords for your post"
       />
     </Paper>
   )
