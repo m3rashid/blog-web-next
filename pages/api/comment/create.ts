@@ -1,4 +1,4 @@
-import { HydratedDocument } from 'mongoose'
+import { HydratedDocument, ObjectId } from 'mongoose'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import connectDb from 'models'
@@ -15,6 +15,7 @@ const createComment = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await Post.findOneAndUpdate(
     { _id: postId },
+    // @ts-ignore
     { $push: { comments: saved._id } }
   )
 

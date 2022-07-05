@@ -25,7 +25,7 @@ const getPostsForCard = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     },
   ])
-  res.status(200).json(posts)
+  return res.status(200).json(posts)
 }
 
 export default defaultHandler(getPostsForCard)

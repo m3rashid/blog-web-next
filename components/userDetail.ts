@@ -1,17 +1,4 @@
-export interface IAuthorDetails {
-  id: string
-  name: string
-  avatar: string
-  website: string
-  linkedIn: string
-  github: string
-  twitter: string
-  youtube: string
-  email: string
-  instagram: string
-}
-
-export const authorDetails: IAuthorDetails = {
+export const authorDetails = {
   id: 'admin-user-mdrashidhussain',
   name: 'MD Rashid Hussain',
   avatar: 'https://m3rashid.netlify.app/images/rashid.png',
@@ -23,3 +10,5 @@ export const authorDetails: IAuthorDetails = {
   email: 'm3rashid.hussain@gmail.com',
   instagram: 'm3_rashid',
 }
+
+export type IAuthorDetails = typeof authorDetails

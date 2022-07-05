@@ -1,10 +1,7 @@
 import NextAuth from 'next-auth'
 import CredentialProvider from 'next-auth/providers/credentials'
 
-import connectDb from 'models'
 import { authorDetails, IAuthorDetails } from 'components/userDetail'
-
-connectDb()
 
 export default NextAuth({
   providers: [
@@ -16,8 +13,8 @@ export default NextAuth({
       },
       authorize: async (credentials) => {
         if (!credentials) return null
-        else if (!credentials.username || !credentials.password) return null
-        else if (
+        if (!credentials.username || !credentials.password) return null
+        if (
           credentials.username === process.env.ADMIN_USERNAME &&
           credentials.password === process.env.ADMIN_PASSWORD
         ) {

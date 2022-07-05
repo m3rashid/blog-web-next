@@ -23,7 +23,7 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
     published,
   })
   const saved = await post.save()
-  res.status(201).json(saved)
+  return res.status(201).json(saved)
 }
 
 export default requireAuth(createPost)

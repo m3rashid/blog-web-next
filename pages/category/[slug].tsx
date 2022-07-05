@@ -108,7 +108,9 @@ export default Category
 export async function getStaticProps({ params }: { params: { slug: string } }) {
   const res = await instance.post('/post/by-category', { slug: params.slug })
   return {
-    props: { posts: res.data },
+    props: {
+      posts: res.data,
+    },
     revalidate: 20,
   }
 }
@@ -118,7 +120,9 @@ export async function getStaticPaths() {
   const categories = res.data
   return {
     paths: categories.map(({ slug }: { slug: string }) => ({
-      params: { slug },
+      params: {
+        slug,
+      },
     })),
     fallback: true,
   }

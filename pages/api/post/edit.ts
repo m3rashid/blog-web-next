@@ -26,7 +26,7 @@ const editPost = async (req: NextApiRequest, res: NextApiResponse) => {
     categories,
     published,
   })
-  res.status(200).json(updated)
+  return res.status(200).json(updated)
 }
 
 export default requireAuth(editPost)

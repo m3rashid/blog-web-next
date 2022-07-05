@@ -13,7 +13,7 @@ export const requireAuth = (handler: NextApiHandler): NextApiHandler => {
       }
 
       const token = await getToken({ req, secret })
-      if (!token) {
+      if (!token || !token.sub) {
         return res.status(401).json('Unauthorized')
       }
       req.user = JSON.parse(token.sub ?? '') as IAuthorDetails
