@@ -40,7 +40,7 @@ const LoggedInActions: React.FC<{
       </Menu.Item>
       <Menu.Item
         icon={<Edit size={14} />}
-        onClick={() => router.push('/post/create')}
+        onClick={() => router.push('/blogs/create')}
       >
         Create Post
       </Menu.Item>

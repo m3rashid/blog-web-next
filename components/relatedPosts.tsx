@@ -44,7 +44,7 @@ const RelatedPosts: React.FC<IProps> = ({ relatedPosts }) => {
           noWrap
           spacing={0}
           key={post._id}
-          onClick={() => router.push(`/post/${post.slug}`)}
+          onClick={() => router.push(`/blogs/${post.slug}`)}
           style={{ marginBottom: '10px', cursor: 'pointer' }}
         >
           <Image alt="" src={post.bannerImageUrl} height={80} width={80} />

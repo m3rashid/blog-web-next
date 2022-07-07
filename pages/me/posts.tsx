@@ -57,7 +57,7 @@ const MyPosts: React.FC<IProps> = () => {
                 <tr key={row._id}>
                   <td>{index + 1}</td>
                   <td>
-                    <Anchor component={Link} href={`/post/${row.slug}`}>
+                    <Anchor component={Link} href={`/blogs/${row.slug}`}>
                       {row.title}
                     </Anchor>
                   </td>
@@ -71,7 +71,7 @@ const MyPosts: React.FC<IProps> = () => {
                   </td>
                   <td>
                     <Button
-                      onClick={() => router.push(`/post/edit/${row.slug}`)}
+                      onClick={() => router.push(`/blogs/edit/${row.slug}`)}
                     >
                       Edit
                     </Button>

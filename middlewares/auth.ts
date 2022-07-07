@@ -1,7 +1,7 @@
 import { NextApiHandler } from 'next'
 import { getToken } from 'next-auth/jwt'
 
-import { IAuthorDetails } from 'components/userDetail'
+import { IAuthorDetails } from 'components/data/userDetail'
 
 const secret = process.env.JWT_SECRET!
 

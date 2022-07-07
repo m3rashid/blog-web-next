@@ -179,8 +179,8 @@ const TopHeader: React.FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
   const router = useRouter()
   const { classes } = useStyles()
 
-  const Icon = colorScheme === 'dark' ? Sun : Moon
   const imgLogo = '/favicon.png'
+  const Icon = colorScheme === 'dark' ? Sun : Moon
 
   const ThemeChanger = () => (
     <Group position="center" my="xl">
@@ -194,7 +194,12 @@ const TopHeader: React.FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
     <Header height={HEADER_HEIGHT} className={classes.root}>
       <Container size="lg" className={classes.header}>
         <div className={classes.logoContainer} onClick={() => router.push('/')}>
-          <Image className={classes.logo} src={imgLogo} height="60px" alt="" />
+          <Image
+            className={classes.logo}
+            src={imgLogo}
+            height="60px"
+            alt="cubicle logo"
+          />
           <div className={classes.cubicle}>Cubicle</div>
         </div>
 

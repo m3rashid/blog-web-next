@@ -81,7 +81,9 @@ const PostCard: React.FC<IProps> = ({ image, title, categories, slug }) => {
           {title}
         </Title>
       </Box>
-      <Button onClick={() => router.push(`/post/${slug}`)}>Read article</Button>
+      <Button onClick={() => router.push(`/blogs/${slug}`)}>
+        Read article
+      </Button>
     </Paper>
   )
 }

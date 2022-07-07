@@ -86,7 +86,7 @@ const Post: React.FC<IProps> = ({ postDetail, relatedPosts }) => {
         <meta name="og:description" content={postDetail.excerpt} />
         <meta
           name="og:url"
-          content={'https://cubicle.vercel.app/post/' + postDetail.slug}
+          content={'https://cubicle.vercel.app/blogs/' + postDetail.slug}
         />
         <meta name="twitter:title" content={postTitle + ' | Cubicle'} />
         <meta name="twitter:description" content={postDetail.excerpt} />

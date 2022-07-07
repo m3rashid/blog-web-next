@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import CredentialProvider from 'next-auth/providers/credentials'
 
-import { authorDetails, IAuthorDetails } from 'components/userDetail'
+import { authorDetails, IAuthorDetails } from 'components/data/userDetail'
 
 export default NextAuth({
   providers: [
