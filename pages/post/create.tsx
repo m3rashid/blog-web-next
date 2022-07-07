@@ -20,31 +20,7 @@ import PageWrapper from 'components/globals/pageWrapper'
 import { postAtom, PostType } from 'components/atoms/post'
 import CreateOrEditPost from 'components/post/createOrEditPost'
 import TitleSlug, { IPostMeta } from 'components/post/titleSlug'
-
-export const useStyles = createStyles((theme) => ({
-  buttonTop: {
-    display: 'flex',
-    gap: '10px',
-    marginBottom: '20px',
-    flexDirection: 'row-reverse',
-  },
-  input: {
-    flexGrow: 1,
-  },
-  switch: {
-    display: 'flex',
-    flexDirection: 'row-reverse',
-    gap: '10px',
-    padding: '0 10px',
-  },
-  switchInput: {
-    fontSize: '0.7rem',
-  },
-  switchLabel: {
-    padding: 0,
-    fontWeight: 600,
-  },
-}))
+import { useStyles } from 'components/styles/createPost'
 
 interface IProps {}
 

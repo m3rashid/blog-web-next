@@ -12,7 +12,6 @@ import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
-import { useStyles } from 'pages'
 import Author from 'components/author'
 import Comments from 'components/comments'
 import Categories from 'components/categories'
@@ -21,6 +20,7 @@ import ShowRender from 'components/post/showRender'
 import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { ICategory, IRelatedPosts } from 'components/helpers/types'
+import { useStyles } from 'components/styles/home'
 const CreateComment = dynamic(() => import('components/createComment'), {
   ssr: false,
 })

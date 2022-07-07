@@ -160,20 +160,18 @@ interface IProps {
 
 const TopHeader: React.FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
   const setCategories = useSetRecoilState(categoryAtom)
+  const getAllCategories = async () => {
+    const res = await instance.post('/category/all')
+    const data = res.data.map((cat: any) => ({
+      label: cat.name,
+      slug: cat.slug,
+      value: cat._id,
+    }))
+    setCategories(data)
+  }
 
   React.useEffect(() => {
-    instance
-      .post('/category/all')
-      .then((res) => {
-        setCategories(
-          res.data.map((cat: any) => ({
-            label: cat.name,
-            slug: cat.slug,
-            value: cat._id,
-          }))
-        )
-      })
-      .catch()
+    getAllCategories().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

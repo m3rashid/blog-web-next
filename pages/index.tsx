@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import { Box, createStyles, Group, SimpleGrid } from '@mantine/core'
+import { Box, Group, SimpleGrid } from '@mantine/core'
 
 import Hero from 'components/hero'
 import Categories from 'components/categories'
@@ -8,54 +8,11 @@ import PostCard from 'components/post/postcard'
 import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { IPostCardForCard } from 'components/helpers/types'
+import { useHomePageStyles, useStyles } from 'components/styles/home'
 
 interface IProps {
   posts: IPostCardForCard[]
 }
-
-export const useStyles = createStyles((theme) => ({
-  firstChild: {
-    width: '64%',
-    [theme.fn.smallerThan('sm')]: {
-      width: '100%',
-    },
-  },
-  secondChild: {
-    width: '33%',
-    [theme.fn.smallerThan('sm')]: {
-      width: '100%',
-    },
-  },
-  title: {
-    fontFamily: theme.fontFamily,
-    fontSize: 50,
-    wordBreak: 'break-all',
-    whiteSpace: 'break-spaces',
-    [theme.fn.smallerThan('sm')]: {
-      fontSize: 25,
-    },
-  },
-  titleBox: {
-    width: '64%',
-    [theme.fn.smallerThan('sm')]: {
-      width: '100%',
-    },
-  },
-  lowerGrid: {
-    [theme.fn.smallerThan('sm')]: {
-      width: '100%',
-    },
-  },
-}))
-
-export const useHomePageStyles = createStyles((theme) => ({
-  inner: {
-    gridTemplateColumns: '1fr 1fr',
-    [theme.fn.smallerThan('sm')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-}))
 
 const Home: React.FC<IProps> = ({ posts }) => {
   const { classes } = useStyles()

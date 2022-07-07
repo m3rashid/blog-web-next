@@ -21,9 +21,7 @@ const Auth = () => {
     useNotification({ id: 'login-signup' })
 
   React.useEffect(() => {
-    if (session) {
-      router.replace('/')
-    }
+    if (session) router.replace('/')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 

@@ -3,12 +3,12 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Group, Loader, SimpleGrid, Title } from '@mantine/core'
 
-import Categories from 'components/categories'
 import PostCard from 'components/post/postcard'
-import { useStyles, useHomePageStyles } from 'pages'
+import { useStyles } from 'components/styles/home'
 import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { IPostCardForCard } from 'components/helpers/types'
+import { useCategoryStyles } from 'components/styles/categories'
 
 interface IProps {
   posts: IPostCardForCard[]
@@ -18,7 +18,7 @@ const Category: React.FC<IProps> = ({ posts }) => {
   const router = useRouter()
 
   const { classes } = useStyles()
-  const { classes: thisPageClasses } = useHomePageStyles()
+  const { classes: thisPageClasses } = useCategoryStyles()
 
   React.useEffect(() => {
     window.scrollTo(0, 0)
@@ -29,18 +29,6 @@ const Category: React.FC<IProps> = ({ posts }) => {
       <PageWrapper>
         <Group style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Loader />
-        </Group>
-      </PageWrapper>
-    )
-  }
-
-  if (!posts || posts.length == 0) {
-    return (
-      <PageWrapper>
-        <Group style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Title className={classes.title} my={10} order={3}>
-            No articles found
-          </Title>
         </Group>
       </PageWrapper>
     )
@@ -78,27 +66,28 @@ const Category: React.FC<IProps> = ({ posts }) => {
           content="https://cubicle.vercel.app/favicon.png"
         />
       </Head>
-      <Group style={{ alignItems: 'flex-start' }}>
-        <SimpleGrid spacing={20} className={classes.firstChild}>
-          <SimpleGrid className={thisPageClasses.inner} spacing={20}>
-            {posts.map((post) => (
-              <PostCard
-                key={post._id}
-                categories={post.categories.map((c) => ({
-                  name: c.name,
-                  _id: c._id + post._id,
-                }))}
-                image={post.bannerImageUrl}
-                title={post.title}
-                slug={post.slug}
-              />
-            ))}
-          </SimpleGrid>
+      {!posts || posts.length == 0 ? (
+        <Group style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Title className={classes.title} my={10} order={3}>
+            No articles found
+          </Title>
+        </Group>
+      ) : (
+        <SimpleGrid className={thisPageClasses.inner} spacing={20}>
+          {posts.map((post) => (
+            <PostCard
+              key={post._id}
+              categories={post.categories.map((c) => ({
+                name: c.name,
+                _id: c._id + post._id,
+              }))}
+              image={post.bannerImageUrl}
+              title={post.title}
+              slug={post.slug}
+            />
+          ))}
         </SimpleGrid>
-        <SimpleGrid spacing={20} className={classes.secondChild}>
-          <Categories />
-        </SimpleGrid>
-      </Group>
+      )}
     </PageWrapper>
   )
 }

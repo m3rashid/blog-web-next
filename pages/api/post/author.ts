@@ -20,6 +20,7 @@ const getPostsForAuthor = async (req: NextApiRequest, res: NextApiResponse) => {
         title: 1,
         slug: 1,
         bannerImageUrl: 1,
+        published: 1,
         categories: { name: 1, slug: 1, _id: 1 },
       },
     },

@@ -16,13 +16,13 @@ import { useRecoilState } from 'recoil'
 import { useSession } from 'next-auth/react'
 import { Article, Photo } from 'tabler-icons-react'
 
-import { useStyles } from 'pages/post/create'
 import useHttp from 'components/helpers/useHttp'
 import ShowRender from 'components/post/showRender'
 import ChooseTypeButton from 'components/post/select'
 import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { PostType, postAtom } from 'components/atoms/post'
+import { useStyles } from 'components/styles/createPost'
 const CreateOrEditPost = dynamic(
   () => import('components/post/createOrEditPost')
 )
