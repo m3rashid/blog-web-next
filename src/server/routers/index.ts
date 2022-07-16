@@ -1,9 +1,11 @@
 import { createRouter } from 'server/createRouter'
-// import { userRouter } from 'server/routers/user'
-import { eventRouter } from 'server/routers/events'
+import { categoryRouter } from 'server/routers/category'
+import { postRouter } from 'server/routers/post'
+import { commentRouter } from 'server/routers/comment'
 
 export const appRouter = createRouter()
-  // .merge('users.', userRouter)
-  .merge('events.', eventRouter)
+  .merge('post.', postRouter)
+  .merge('category.', categoryRouter)
+  .merge('comment.', commentRouter)
 
 export type AppRouter = typeof appRouter

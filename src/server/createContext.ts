@@ -1,8 +1,8 @@
 import { getToken } from 'next-auth/jwt'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { prisma } from 'utils/prisma'
 import { IAuthorDetails } from 'components/data/userDetail'
+import connectDb from 'server/models'
 
 export async function createContext({
   req,
@@ -11,11 +11,12 @@ export async function createContext({
   req: NextApiRequest
   res: NextApiResponse
 }) {
+  await connectDb()
   const token = await getToken({ req, secret: process.env.JWT_SECRET! })
-  if (!token) return { req, res, prisma }
+  if (!token) return { req, res, user: null }
 
   const user = JSON.parse(token.sub ?? '') as IAuthorDetails
-  return { req, res, prisma, user }
+  return { req, res, user }
 }
 
 export type Context = ReturnType<typeof createContext>
