@@ -9,6 +9,7 @@ import React from 'react'
 import { AlphabetLatin, Webhook } from 'tabler-icons-react'
 
 import useHttp from 'components/helpers/useHttp'
+import { trpc } from 'utils/trpc'
 
 interface IProps {
   modalOpen: boolean
@@ -37,10 +38,14 @@ const CreateCategoryModal: React.FC<IProps> = ({ modalOpen, setModalOpen }) => {
 
   const handleCreateCategory = async () => {
     if (category.name.trim() === '' || category.slug.trim() === '') return
-    const { data: saveRes } = await request({
-      endpoint: '/category/create',
-      body: category,
-    })
+    const { data } = trpc.useMutation([
+      'pro_category.create-category',
+      { name: category.name, slug: category.slug },
+    ])
+    // const { data: saveRes } = await request({
+    //   endpoint: '/category/create',
+    //   body: category,
+    // })
     setModalOpen(false)
     if (!saveRes) return
     setCategory({ name: '', slug: '' })

@@ -1,5 +1,6 @@
-import PageWrapper from 'components/globals/pageWrapper'
 import React from 'react'
+
+import PageWrapper from 'components/globals/pageWrapper'
 
 interface IProps {}
 

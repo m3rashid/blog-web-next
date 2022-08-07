@@ -46,11 +46,7 @@ const Auth = () => {
       return
     }
     try {
-      await signIn('credentials', {
-        ...values,
-        callbackUrl: '/',
-        redirect: false,
-      })
+      await signIn('credentials', { ...values, callbackUrl: '/' })
       updateSuccessNotif({
         successMsg: {
           title: 'Login Success',

@@ -1,22 +1,28 @@
-import { getToken } from 'next-auth/jwt'
-import { NextApiRequest, NextApiResponse } from 'next'
+import * as trpc from '@trpc/server'
+import * as trpcNext from '@trpc/server/adapters/next'
+import { unstable_getServerSession as getServerSession } from 'next-auth'
 
-import { IAuthorDetails } from 'components/data/userDetail'
+import { authOptions as nextAuthOptions } from '../pages/api/auth/[...nextauth]'
+
 import connectDb from 'server/models'
 
-export async function createContext({
-  req,
-  res,
-}: {
-  req: NextApiRequest
-  res: NextApiResponse
-}) {
-  await connectDb()
-  const token = await getToken({ req, secret: process.env.JWT_SECRET! })
-  if (!token) return { req, res, user: null }
+export const createContext = async (
+  opts?: trpcNext.CreateNextContextOptions
+) => {
+  const req = opts?.req
+  const res = opts?.res
 
-  const user = JSON.parse(token.sub ?? '') as IAuthorDetails
-  return { req, res, user }
+  await connectDb()
+  const session =
+    req && res && (await getServerSession(req, res, nextAuthOptions))
+
+  return {
+    req,
+    res,
+    session,
+  }
 }
 
-export type Context = ReturnType<typeof createContext>
+export type Context = trpc.inferAsyncReturnType<typeof createContext>
+
+export const createRouter = () => trpc.router<Context>()

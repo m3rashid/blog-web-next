@@ -1,26 +1,19 @@
 import * as trpc from '@trpc/server'
-import { HydratedDocument, isValidObjectId } from 'mongoose'
+import { HydratedDocument } from 'mongoose'
 
-import { createRouter } from 'server/createRouter'
-import { bannedWordsForSlug } from 'utils/bannedWordsForSlug'
-import { Category, ICategory } from 'server/models/category'
 import {
   createCategorySchema,
   deleteCategorySchema,
   editCategorySchema,
 } from 'server/schema/category'
+import { Category, ICategory } from 'server/models/category'
+import { bannedWordsForSlug } from 'utils/bannedWordsForSlug'
+import { createProtectedRouter } from 'server/protectedRouter'
 
-export const categoryRouter = createRouter()
-  .mutation('create-category', {
+export const protectedCategoryRouter = createProtectedRouter()
+  .mutation('createCategory', {
     input: createCategorySchema,
     async resolve({ ctx, input }) {
-      if (!(await ctx).user) {
-        throw new trpc.TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'You must be logged in to comment',
-        })
-      }
-
       if (bannedWordsForSlug.includes(input.slug)) {
         throw new trpc.TRPCError({
           code: 'BAD_REQUEST',
@@ -28,25 +21,16 @@ export const categoryRouter = createRouter()
         })
       }
 
-      const category: HydratedDocument<ICategory> = new Category({
-        name: input.name,
-        slug: input.slug,
-      })
+      const { name, slug } = input
+      const category: HydratedDocument<ICategory> = new Category({ name, slug })
 
       const saved = await category.save()
       return saved
     },
   })
-  .mutation('edit-category', {
+  .mutation('editCategory', {
     input: editCategorySchema,
     async resolve({ ctx, input }) {
-      if (!(await ctx).user) {
-        throw new trpc.TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'You must be logged in to comment',
-        })
-      }
-
       const category = await Category.findById(input.categoryId)
       if (!category) {
         throw new trpc.TRPCError({
@@ -69,16 +53,9 @@ export const categoryRouter = createRouter()
       return newCategory
     },
   })
-  .mutation('delete-category', {
+  .mutation('deleteCategory', {
     input: deleteCategorySchema,
     async resolve({ ctx, input }) {
-      if (!(await ctx).user) {
-        throw new trpc.TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'You must be logged in to comment',
-        })
-      }
-
       const deleted = await Category.deleteOne({ _id: input.categoryId })
       if (!deleted) {
         throw new trpc.TRPCError({
@@ -88,13 +65,5 @@ export const categoryRouter = createRouter()
       }
 
       return 'Category Deleted'
-    },
-  })
-  .query('get-categories', {
-    async resolve({ ctx }) {
-      const categories = await Category.aggregate([
-        { $project: { createdAt: 0, updatedAt: 0, __v: 0 } },
-      ])
-      return categories
     },
   })

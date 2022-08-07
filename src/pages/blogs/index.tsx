@@ -9,6 +9,7 @@ import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { IPostCardForCard } from 'components/helpers/types'
 import { useHomePageStyles, useStyles } from 'components/styles/home'
+import { trpc } from 'utils/trpc'
 
 interface IProps {
   posts: IPostCardForCard[]

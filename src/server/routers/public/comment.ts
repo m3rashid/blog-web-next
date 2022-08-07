@@ -1,12 +1,12 @@
 import * as trpc from '@trpc/server'
 import { HydratedDocument, isValidObjectId } from 'mongoose'
 
-import { createCommentSchema } from 'server/schema/comment'
 import { Post } from 'server/models/post'
 import { createRouter } from 'server/createRouter'
 import { Comment, IComment } from 'server/models/comment'
+import { createCommentSchema } from 'server/schema/comment'
 
-export const commentRouter = createRouter().mutation('create-comment', {
+export const commentRouter = createRouter().mutation('createComment', {
   input: createCommentSchema,
   async resolve({ ctx, input }) {
     if (!isValidObjectId(input.postId)) {
@@ -23,8 +23,7 @@ export const commentRouter = createRouter().mutation('create-comment', {
 
     await Post.findOneAndUpdate(
       { _id: input.postId },
-      // @ts-ignore
-      { $push: { comments: saved._id } }
+      { comments: { $push: saved._id } }
     )
     return saved
   },

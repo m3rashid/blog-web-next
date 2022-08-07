@@ -1,110 +1,14 @@
-import * as trpc from '@trpc/server'
-import { HydratedDocument, isValidObjectId } from 'mongoose'
-
-import { Post, IPost } from 'server/models/post'
-import { createRouter } from 'server/createRouter'
 import {
-  createPostSchema,
-  deletePostSchema,
-  editPostSchema,
   getPostByCategorySchema,
   getPostDetailsSchema,
-  getPostForAuthorSchema,
   getPostForCardSchema,
 } from 'server/schema/post'
-import { bannedWordsForSlug } from 'utils/bannedWordsForSlug'
+import { Post } from 'server/models/post'
 import { Category } from 'server/models/category'
+import { createRouter } from 'server/createRouter'
 
 export const postRouter = createRouter()
-  .mutation('create-post', {
-    input: createPostSchema,
-    async resolve({ ctx, input }) {
-      if (!(await ctx).user) {
-        throw new trpc.TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'You must be logged in to comment',
-        })
-      }
-
-      if (bannedWordsForSlug.includes(input.slug)) {
-        throw new trpc.TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Invalid slug',
-        })
-      }
-      const post: HydratedDocument<IPost> = new Post({
-        title: input.title,
-        slug: input.slug,
-        data: input.data,
-        keywords: input.keywords,
-        bannerImageUrl: input.bannerImageUrl,
-        categories: input.categories,
-        published: input.published,
-      })
-      const saved = await post.save()
-      return saved
-    },
-  })
-  .mutation('edit-post', {
-    input: editPostSchema,
-    async resolve({ ctx, input }) {
-      if (!(await ctx).user) {
-        throw new trpc.TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'You must be logged in to comment',
-        })
-      }
-
-      if (!isValidObjectId(input.postId)) {
-        throw new trpc.TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Invalid postId',
-        })
-      }
-
-      const post = await Post.findById(input.postId)
-      if (!post) {
-        throw new trpc.TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Post not found',
-        })
-      }
-
-      const updated = await post.updateOne({
-        title: input.title,
-        data: input.data,
-        keywords: input.keywords,
-        bannerImageUrl: input.bannerImageUrl,
-        categories: input.categories,
-        published: input.published,
-      })
-      return updated
-    },
-  })
-  .mutation('delete-post', {
-    input: deletePostSchema,
-    async resolve({ ctx, input }) {
-      if (!(await ctx).user) {
-        throw new trpc.TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'You must be logged in to comment',
-        })
-      }
-      const post = await Post.findOneAndUpdate(
-        { slug: input.slug },
-        { deleted: true }
-      )
-      if (!post) {
-        throw new trpc.TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Post not found',
-        })
-      }
-
-      return 'Post deleted'
-    },
-  })
-  .mutation('get-post-details', {
+  .mutation('getPostDetails', {
     input: getPostDetailsSchema,
     async resolve({ ctx, input }) {
       const posts = await Post.aggregate([
@@ -212,7 +116,7 @@ export const postRouter = createRouter()
       }
     },
   })
-  .mutation('get-posts-card', {
+  .mutation('getPostsCard', {
     input: getPostForCardSchema,
     async resolve({ ctx, input }) {
       const posts = await Post.aggregate([
@@ -237,7 +141,7 @@ export const postRouter = createRouter()
       return posts
     },
   })
-  .mutation('get-posts-by-category', {
+  .mutation('getPostsByCategory', {
     input: getPostByCategorySchema,
     async resolve({ ctx, input }) {
       const posts = await Category.aggregate([
@@ -274,39 +178,6 @@ export const postRouter = createRouter()
       if (!posts || posts.length === 0) {
         return []
       }
-      return posts
-    },
-  })
-  .mutation('get-posts-for-author', {
-    input: getPostForAuthorSchema,
-    async resolve({ ctx, input }) {
-      if (!(await ctx).user) {
-        throw new trpc.TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'You must be logged in to comment',
-        })
-      }
-
-      const posts = await Post.aggregate([
-        {
-          $lookup: {
-            from: 'categories',
-            localField: 'categories',
-            foreignField: '_id',
-            as: 'categories',
-          },
-        },
-        {
-          $project: {
-            title: 1,
-            slug: 1,
-            bannerImageUrl: 1,
-            published: 1,
-            categories: { name: 1, slug: 1, _id: 1 },
-          },
-        },
-      ])
-
       return posts
     },
   })
