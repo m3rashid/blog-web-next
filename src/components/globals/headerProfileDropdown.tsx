@@ -5,16 +5,16 @@ import {
   Notification,
   User,
 } from 'tabler-icons-react'
-import React from 'react'
 import { useRouter } from 'next/router'
 import { Avatar, Divider, Menu } from '@mantine/core'
 import { signOut, useSession } from 'next-auth/react'
 import { showNotification } from '@mantine/notifications'
+import { Dispatch, FC, SetStateAction, useState } from 'react'
 
 import CreateCategoryModal from 'components/globals/createCategoryModal'
 
-const LoggedInActions: React.FC<{
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+const LoggedInActions: FC<{
+  setModalOpen: Dispatch<SetStateAction<boolean>>
 }> = ({ setModalOpen }) => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -61,9 +61,9 @@ const LoggedInActions: React.FC<{
 
 interface IProps {}
 
-const HeaderProfileDropdown: React.FC<IProps> = () => {
+const HeaderProfileDropdown: FC<IProps> = () => {
   const { data: session } = useSession()
-  const [modalOpen, setModalOpen] = React.useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
 
   return (
     <>

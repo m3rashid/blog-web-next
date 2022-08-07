@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { Container, createStyles } from '@mantine/core'
 
 import BreadCrumbs from 'components/globals/breadCrumbs'
@@ -21,7 +21,7 @@ interface IProps {
   children: any
 }
 
-const PageWrapper: React.FC<IProps> = ({ children }) => {
+const PageWrapper: FC<IProps> = ({ children }) => {
   const { classes } = useStyles()
 
   return (

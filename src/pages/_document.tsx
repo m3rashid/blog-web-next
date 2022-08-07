@@ -6,7 +6,7 @@ import Document, {
   Main,
   NextScript,
 } from 'next/document'
-import React from 'react'
+import { ReactElement } from 'react'
 
 class MyDocument extends Document {
   static async getInitialProps(
@@ -16,7 +16,7 @@ class MyDocument extends Document {
     return initialProps
   }
 
-  render(): React.ReactElement {
+  render(): ReactElement {
     return (
       <Html>
         <Head></Head>

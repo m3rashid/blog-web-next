@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { createStyles, Group, Image, Paper, Text, Title } from '@mantine/core'
@@ -26,7 +26,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-const RelatedPosts: React.FC<IProps> = ({ relatedPosts }) => {
+const RelatedPosts: FC<IProps> = ({ relatedPosts }) => {
   const router = useRouter()
 
   const { classes } = useStyles()

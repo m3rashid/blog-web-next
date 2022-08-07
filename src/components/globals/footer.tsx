@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import {
   createStyles,
   Container,
@@ -88,7 +88,7 @@ const footerMap = (isDark: Boolean) => [
   },
 ]
 
-const Footer: React.FC<IProps> = () => {
+const Footer: FC<IProps> = () => {
   const { classes } = useStyles()
   const theme = useMantineColorScheme()
 

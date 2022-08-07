@@ -5,8 +5,6 @@ import {
   Paper,
   TextInput,
 } from '@mantine/core'
-import React from 'react'
-import { useRecoilValue } from 'recoil'
 import {
   Article,
   Webhook,
@@ -14,6 +12,8 @@ import {
   Notification,
   ListCheck,
 } from 'tabler-icons-react'
+import { useRecoilValue } from 'recoil'
+import { ChangeEvent, Dispatch, FC, SetStateAction } from 'react'
 
 import { categoryAtom } from 'components/atoms/categories'
 
@@ -42,14 +42,14 @@ export interface IPostMeta {
 
 interface IProps {
   postMeta: IPostMeta
-  setPostMeta: React.Dispatch<React.SetStateAction<IPostMeta>>
+  setPostMeta: Dispatch<SetStateAction<IPostMeta>>
 }
 
-const TitleSlug: React.FC<IProps> = ({ postMeta, setPostMeta }) => {
+const TitleSlug: FC<IProps> = ({ postMeta, setPostMeta }) => {
   const { classes } = useStyles()
   const categories = useRecoilValue(categoryAtom)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setPostMeta((prev) => ({ ...prev, [name]: value }))
   }

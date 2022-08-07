@@ -6,7 +6,7 @@ import {
   Paper,
   Textarea,
 } from '@mantine/core'
-import React from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { AlertOctagon } from 'tabler-icons-react'
 import { showNotification } from '@mantine/notifications'
@@ -36,10 +36,10 @@ interface IProps {
   id: string
 }
 
-const CreateOrEditPost: React.FC<IProps> = ({ id }) => {
+const CreateOrEditPost: FC<IProps> = ({ id }) => {
   const [data, setData] = useRecoilState(postAtom)
   const concerned = data.find((section) => section.id === id)
-  const [content, setContent] = React.useState(concerned?.content || '')
+  const [content, setContent] = useState(concerned?.content || '')
   const { classes } = useStyles()
 
   const setType = (val: PostType) => {
@@ -52,7 +52,7 @@ const CreateOrEditPost: React.FC<IProps> = ({ id }) => {
   }
 
   // sync global state with local state
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setData((prev) => {
         const newData = deepClone<ICreatePost>(prev)
@@ -71,7 +71,7 @@ const CreateOrEditPost: React.FC<IProps> = ({ id }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content])
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (concerned?.type === 'text' && e.target.value.includes('```')) {
       showNotification({
         title: 'No code inside content container',

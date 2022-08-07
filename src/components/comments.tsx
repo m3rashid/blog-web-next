@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React from 'react'
+import { FC } from 'react'
 import { Avatar, Box, Group, Paper, Stack, Text, Title } from '@mantine/core'
 
 import { SingleSectionRender } from 'components/post/showRender'
@@ -8,7 +8,7 @@ interface IProps {
   comments: any[]
 }
 
-const Comments: React.FC<IProps> = ({ comments }) => {
+const Comments: FC<IProps> = ({ comments }) => {
   return (
     <>
       <Paper

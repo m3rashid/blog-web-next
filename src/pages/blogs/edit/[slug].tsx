@@ -7,7 +7,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core'
-import React from 'react'
+import { FC, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { nanoid } from 'nanoid'
 import dynamic from 'next/dynamic'
@@ -29,14 +29,14 @@ const CreateOrEditPost = dynamic(
 
 interface IProps {}
 
-const EditPost: React.FC<IProps> = () => {
+const EditPost: FC<IProps> = () => {
   const router = useRouter()
   const { loading, request } = useHttp('save-and-publish')
   const { data: session } = useSession()
   const [data, setData] = useRecoilState(postAtom)
-  const [type, setType] = React.useState<PostType>('text')
+  const [type, setType] = useState<PostType>('text')
   const { classes } = useStyles()
-  const [postData, setPostData] = React.useState({
+  const [postData, setPostData] = useState({
     title: '',
     publish: true,
     slug: '',
@@ -59,7 +59,7 @@ const EditPost: React.FC<IProps> = () => {
     })
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!session) {
       router.replace('/auth')
       return

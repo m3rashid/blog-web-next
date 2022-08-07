@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import Head from 'next/head'
 import { Box, Group, SimpleGrid } from '@mantine/core'
 
@@ -15,7 +15,7 @@ interface IProps {
   posts: IPostCardForCard[]
 }
 
-const Blogs: React.FC<IProps> = ({ posts }) => {
+const Blogs: FC<IProps> = ({ posts }) => {
   const { classes } = useStyles()
   const { classes: thisPageClasses } = useHomePageStyles()
 
@@ -97,7 +97,7 @@ export async function getStaticProps() {
     const res = await instance.post('/post/card')
     return { props: { posts: res.data || [] }, revalidate: 100 }
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     return { props: {}, revalidate: 100 }
   }
 }

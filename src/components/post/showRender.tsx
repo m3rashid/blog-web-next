@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
 import DOMPurify from 'isomorphic-dompurify'
@@ -34,7 +34,7 @@ interface IProps {
   data: ICreatePost[]
 }
 
-export const SingleSectionRender: React.FC<{ data: string }> = ({ data }) => {
+export const SingleSectionRender: FC<{ data: string }> = ({ data }) => {
   return (
     <Box style={{ padding: '0 5px', overflowX: 'auto' }}>
       <Box
@@ -46,7 +46,7 @@ export const SingleSectionRender: React.FC<{ data: string }> = ({ data }) => {
   )
 }
 
-const ShowRender: React.FC<IProps> = ({ data }) => {
+const ShowRender: FC<IProps> = ({ data }) => {
   const { classes } = useStyles()
 
   return (

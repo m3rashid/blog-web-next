@@ -4,7 +4,7 @@ import {
   ColorScheme,
   MantineThemeOverride,
 } from '@mantine/core'
-import React from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import { RecoilRoot } from 'recoil'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
@@ -14,11 +14,11 @@ import TopHeader from 'components/globals/header'
 import ScrollToTop from 'components/globals/scrollToTop'
 
 interface IProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
-const RootWrapper: React.FC<IProps> = ({ children }) => {
-  const [colorScheme, setColorScheme] = React.useState<ColorScheme>('dark')
+const RootWrapper: FC<IProps> = ({ children }) => {
+  const [colorScheme, setColorScheme] = useState<ColorScheme>('dark')
 
   const toggleColorScheme = (value?: ColorScheme) => {
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
@@ -32,7 +32,7 @@ const RootWrapper: React.FC<IProps> = ({ children }) => {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const localTheme = window.localStorage.getItem('theme')
     if (localTheme) setColorScheme(localTheme as ColorScheme)
 

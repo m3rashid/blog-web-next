@@ -1,5 +1,5 @@
-import React from 'react'
 import { useRouter } from 'next/router'
+import { FC, memo, useMemo } from 'react'
 import { Breadcrumbs, createStyles, Text } from '@mantine/core'
 
 const useStyles = createStyles((theme) => ({
@@ -13,11 +13,11 @@ const useStyles = createStyles((theme) => ({
 
 interface IProps {}
 
-const BreadCrumbs: React.FC<IProps> = () => {
+const BreadCrumbs: FC<IProps> = () => {
   const { classes } = useStyles()
   const { asPath: path } = useRouter()
 
-  const paths = React.useMemo(() => {
+  const paths = useMemo(() => {
     if (path === '/') return null
     const pathItems = path.split('/').slice(1)
 
@@ -36,4 +36,4 @@ const BreadCrumbs: React.FC<IProps> = () => {
   )
 }
 
-export default React.memo(BreadCrumbs)
+export default memo(BreadCrumbs)

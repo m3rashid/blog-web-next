@@ -1,4 +1,3 @@
-import React from 'react'
 import { CircleCheck, Error404 } from 'tabler-icons-react'
 import { showNotification, updateNotification } from '@mantine/notifications'
 

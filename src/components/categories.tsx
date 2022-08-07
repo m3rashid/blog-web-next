@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import Link from 'next/link'
 import { useRecoilValue } from 'recoil'
 import { Anchor, Box, Paper, Title } from '@mantine/core'
@@ -7,7 +7,7 @@ import { categoryAtom } from 'components/atoms/categories'
 
 interface IProps {}
 
-const Categories: React.FC<IProps> = () => {
+const Categories: FC<IProps> = () => {
   const categories = useRecoilValue(categoryAtom)
 
   return (

@@ -8,7 +8,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core'
-import React from 'react'
+import { FC, useState } from 'react'
 import { AlphabetLatin } from 'tabler-icons-react'
 
 import useHttp from 'components/helpers/useHttp'
@@ -32,22 +32,22 @@ interface IComment {
   remember: boolean
 }
 
-const CreateComment: React.FC<IProps> = ({ postId }) => {
+const CreateComment: FC<IProps> = ({ postId }) => {
   const { classes } = useStyles()
   const { loading, request } = useHttp('create-comment')
-  const [comment, setComment] = React.useState<IComment>({
+  const [comment, setComment] = useState<IComment>({
     name: window.localStorage.getItem('myName') || '',
     comment: '',
     remember: true,
   })
-  const addCommentQuery = trpc.useMutation([
-    'comment.createComment',
-    {
-      name: comment.name,
-      comment: comment.comment,
-      postId: postId,
-    },
-  ])
+  // const addCommentQuery = trpc.useMutation([
+  //   'comment.createComment',
+  //   {
+  //     name: comment.name,
+  //     comment: comment.comment,
+  //     postId: postId,
+  //   },
+  // ])
 
   const handleAddComment = async () => {
     if (comment.remember) window.localStorage.setItem('myName', comment.name)

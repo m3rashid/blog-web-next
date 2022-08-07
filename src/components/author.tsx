@@ -6,14 +6,14 @@ import {
   BrandYoutube,
   World,
 } from 'tabler-icons-react'
-import React from 'react'
+import { FC } from 'react'
 import { Anchor, Avatar, Box, Group, Paper, Title } from '@mantine/core'
 
 import { authorDetails } from 'components/data/userDetail'
 
 interface IProps {}
 
-const Author: React.FC<IProps> = () => {
+const Author: FC<IProps> = () => {
   return (
     <Paper shadow="xs" radius="md" p={20}>
       <Group>

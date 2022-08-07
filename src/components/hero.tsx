@@ -1,9 +1,9 @@
-import React from 'react'
+import { FC } from 'react'
 import { Box, Group, Image, Text, Title } from '@mantine/core'
 
 interface IProps {}
 
-const Hero: React.FC<IProps> = () => {
+const Hero: FC<IProps> = () => {
   return (
     <Group
       sx={(theme) => ({

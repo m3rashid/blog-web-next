@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import {
   createStyles,
   Paper,
@@ -50,7 +50,7 @@ interface IProps {
   slug: string
 }
 
-const PostCard: React.FC<IProps> = ({ image, title, categories, slug }) => {
+const PostCard: FC<IProps> = ({ image, title, categories, slug }) => {
   const { classes } = useStyles()
   const router = useRouter()
 

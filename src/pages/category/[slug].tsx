@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Group, Loader, SimpleGrid, Title } from '@mantine/core'
@@ -14,13 +14,13 @@ interface IProps {
   posts: IPostCardForCard[]
 }
 
-const Category: React.FC<IProps> = ({ posts }) => {
+const Category: FC<IProps> = ({ posts }) => {
   const router = useRouter()
 
   const { classes } = useStyles()
   const { classes: thisPageClasses } = useCategoryStyles()
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0)
   }, [router.query.slug])
 
@@ -99,7 +99,7 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
     const res = await instance.post('/post/by-category', { slug: params.slug })
     return { props: { posts: res.data }, revalidate: 20 }
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     return { props: {}, revalidate: 20 }
   }
 }
@@ -118,7 +118,7 @@ export async function getStaticPaths() {
       fallback: true,
     }
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     return { paths: [], fallback: true }
   }
 }

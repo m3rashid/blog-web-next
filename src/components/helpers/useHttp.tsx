@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 
 import {
   INotifState,
@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const useHttp = (id: string) => {
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = useState(false)
   const { loadingNotif, updateFailureNotif, updateSuccessNotif } =
     useNotification({ id })
 
@@ -31,7 +31,7 @@ const useHttp = (id: string) => {
       else updateSuccessNotif({})
       return { data: res.data }
     } catch (err: any) {
-      console.log(err)
+      // console.log(err)
       setLoading(false)
 
       if (errorMsg) updateFailureNotif({ errorMsg })

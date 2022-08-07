@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -7,18 +7,14 @@ import { Table, Anchor, ScrollArea, Button } from '@mantine/core'
 
 import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
-// import { AuthContext } from 'components/atoms/auth'
 
 interface IProps {}
 
-const MyPosts: React.FC<IProps> = () => {
+const MyPosts: FC<IProps> = () => {
   const router = useRouter()
 
   const { data: session } = useSession()
-  const [posts, setPosts] = React.useState<any[]>([])
-
-  // const sessionCheck = React.useContext(AuthContext)
-  // console.log({ sessionCheck })
+  const [posts, setPosts] = useState<any[]>([])
 
   const getAuthorPosts = async () => {
     const res = await instance.post('/post/author', {})
@@ -26,7 +22,7 @@ const MyPosts: React.FC<IProps> = () => {
     setPosts(res.data)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!session) {
       router.replace('/auth')
       return

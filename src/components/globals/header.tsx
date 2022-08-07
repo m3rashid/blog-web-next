@@ -9,7 +9,7 @@ import {
   Paper,
   Transition,
 } from '@mantine/core'
-import React from 'react'
+import { FC, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useSetRecoilState } from 'recoil'
 import { Moon, Sun } from 'tabler-icons-react'
@@ -158,7 +158,7 @@ interface IProps {
   toggleColorScheme: () => void
 }
 
-const TopHeader: React.FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
+const TopHeader: FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
   const setCategories = useSetRecoilState(categoryAtom)
   const getAllCategories = async () => {
     const res = await instance.post('/category/all')
@@ -170,7 +170,7 @@ const TopHeader: React.FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
     setCategories(data)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAllCategories().then().catch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

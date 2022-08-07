@@ -7,8 +7,8 @@ import {
   SimpleGrid,
   Title,
 } from '@mantine/core'
-import React from 'react'
 import Head from 'next/head'
+import { FC, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
@@ -44,11 +44,11 @@ interface IProps {
   relatedPosts: IRelatedPosts[]
 }
 
-const Post: React.FC<IProps> = ({ postDetail, relatedPosts }) => {
+const Post: FC<IProps> = ({ postDetail, relatedPosts }) => {
   const router = useRouter()
   const { classes } = useStyles()
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0)
   }, [router.query.slug])
 
@@ -134,7 +134,7 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
       revalidate: 100,
     }
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     return { props: {}, revalidate: 100 }
   }
 }
@@ -151,7 +151,7 @@ export async function getStaticPaths() {
       fallback: true,
     }
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     return { paths: [], fallback: true }
   }
 }

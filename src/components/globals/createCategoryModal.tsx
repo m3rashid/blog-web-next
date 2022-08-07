@@ -5,15 +5,15 @@ import {
   SimpleGrid,
   TextInput,
 } from '@mantine/core'
-import React from 'react'
 import { AlphabetLatin, Webhook } from 'tabler-icons-react'
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react'
 
 import useHttp from 'components/helpers/useHttp'
 import { trpc } from 'utils/trpc'
 
 interface IProps {
   modalOpen: boolean
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
 const useStyles = createStyles((theme) => ({
@@ -26,28 +26,28 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-const CreateCategoryModal: React.FC<IProps> = ({ modalOpen, setModalOpen }) => {
+const CreateCategoryModal: FC<IProps> = ({ modalOpen, setModalOpen }) => {
   const { loading, request } = useHttp('create-category')
-  const [category, setCategory] = React.useState({ name: '', slug: '' })
+  const [category, setCategory] = useState({ name: '', slug: '' })
   const { classes } = useStyles()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setCategory((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleCreateCategory = async () => {
     if (category.name.trim() === '' || category.slug.trim() === '') return
-    const { data } = trpc.useMutation([
-      'pro_category.create-category',
-      { name: category.name, slug: category.slug },
-    ])
+    // const { data } = trpc.useMutation([
+    //   'pro_category.create-category',
+    //   { name: category.name, slug: category.slug },
+    // ])
     // const { data: saveRes } = await request({
     //   endpoint: '/category/create',
     //   body: category,
     // })
     setModalOpen(false)
-    if (!saveRes) return
+    // if (!saveRes) return
     setCategory({ name: '', slug: '' })
   }
 

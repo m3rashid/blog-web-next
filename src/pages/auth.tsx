@@ -6,7 +6,7 @@ import {
   Button,
   Container,
 } from '@mantine/core'
-import React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSession, signIn } from 'next-auth/react'
@@ -20,14 +20,14 @@ const Auth = () => {
   const { loadingNotif, updateFailureNotif, updateSuccessNotif } =
     useNotification({ id: 'login-signup' })
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (session) router.replace('/')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  const [loading, setLoading] = React.useState(false)
-  const usernameRef = React.useRef<HTMLInputElement>(null)
-  const passwordRef = React.useRef<HTMLInputElement>(null)
+  const [loading, setLoading] = useState(false)
+  const usernameRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
 
   const handleSubmit = async () => {
     setLoading(true)

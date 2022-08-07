@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { createStyles, Select } from '@mantine/core'
 
 import { PostType } from 'components/atoms/post'
@@ -16,7 +16,7 @@ interface IProps {
   showLabel?: boolean
 }
 
-const ChooseTypeButton: React.FC<IProps> = ({
+const ChooseTypeButton: FC<IProps> = ({
   value,
   setValue,
   labelType,

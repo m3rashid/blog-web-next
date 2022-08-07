@@ -1,13 +1,5 @@
-import {
-  Box,
-  Button,
-  createStyles,
-  Group,
-  Paper,
-  Switch,
-  Title,
-} from '@mantine/core'
-import React from 'react'
+import { Box, Button, Group, Paper, Switch, Title } from '@mantine/core'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
@@ -24,15 +16,15 @@ import { useStyles } from 'components/styles/createPost'
 
 interface IProps {}
 
-const CreatePost: React.FC<IProps> = () => {
+const CreatePost: FC<IProps> = () => {
   const router = useRouter()
   const { classes } = useStyles()
   const { data: session } = useSession()
   const [data, setData] = useRecoilState(postAtom)
-  const [publish, setPublish] = React.useState(true)
+  const [publish, setPublish] = useState(true)
   const { loading, request } = useHttp('create-post')
-  const [type, setType] = React.useState<PostType>('text')
-  const postMetaInitialState: IPostMeta = React.useMemo(
+  const [type, setType] = useState<PostType>('text')
+  const postMetaInitialState: IPostMeta = useMemo(
     () => ({
       title: '',
       slug: '',
@@ -43,15 +35,14 @@ const CreatePost: React.FC<IProps> = () => {
     []
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!session) {
       router.replace('/auth')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  const [postMeta, setPostMeta] =
-    React.useState<IPostMeta>(postMetaInitialState)
+  const [postMeta, setPostMeta] = useState<IPostMeta>(postMetaInitialState)
 
   const saveAndPublish = async () => {
     const { data: saveRes } = await request({
