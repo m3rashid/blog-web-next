@@ -39,12 +39,6 @@ export const userLinks: ISocialAccounts = {
     type: 'twitter',
     icon: BrandTwitter,
   },
-  //   devto: {
-  //     url: 'https://dev.to/m3rashid',
-  //     label: 'Dev Account',
-  //     type: 'gray',
-  //     icon: '',
-  //   },
   linkedin: {
     url: 'https://www.linkedin.com/in/m3rashid/',
     label: 'LinkedIn Account',

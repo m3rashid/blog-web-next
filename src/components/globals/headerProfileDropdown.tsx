@@ -2,10 +2,8 @@ import {
   ArrowsLeftRight,
   Article,
   Edit,
-  Login,
   Notification,
   User,
-  UserOff,
 } from 'tabler-icons-react'
 import React from 'react'
 import { useRouter } from 'next/router'
@@ -61,22 +59,6 @@ const LoggedInActions: React.FC<{
   )
 }
 
-const NotLoggedInActions = () => {
-  const router = useRouter()
-
-  return (
-    <>
-      <Menu.Label>Session</Menu.Label>
-      <Menu.Item
-        icon={<Login size={14} />}
-        onClick={() => router.push('/auth')}
-      >
-        Login
-      </Menu.Item>
-    </>
-  )
-}
-
 interface IProps {}
 
 const HeaderProfileDropdown: React.FC<IProps> = () => {
@@ -86,24 +68,22 @@ const HeaderProfileDropdown: React.FC<IProps> = () => {
   return (
     <>
       <CreateCategoryModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
-      <Menu
-        control={
-          <Avatar
-            radius={100}
-            size={30}
-            color="yellow"
-            style={{ cursor: 'pointer' }}
-          >
-            {session ? <User /> : <UserOff />}
-          </Avatar>
-        }
-      >
-        {session ? (
+      {session && (
+        <Menu
+          control={
+            <Avatar
+              radius={100}
+              size={30}
+              color="yellow"
+              style={{ cursor: 'pointer' }}
+            >
+              <User />
+            </Avatar>
+          }
+        >
           <LoggedInActions setModalOpen={setModalOpen} />
-        ) : (
-          <NotLoggedInActions />
-        )}
-      </Menu>
+        </Menu>
+      )}
     </>
   )
 }
