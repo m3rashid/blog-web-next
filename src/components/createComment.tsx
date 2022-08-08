@@ -13,7 +13,6 @@ import { AlphabetLatin } from 'tabler-icons-react'
 
 import useHttp from 'components/helpers/useHttp'
 import { SingleSectionRender } from 'components/post/showRender'
-import { trpc } from 'utils/trpc'
 
 const useStyles = createStyles((theme) => ({
   input: {
@@ -40,15 +39,6 @@ const CreateComment: FC<IProps> = ({ postId }) => {
     comment: '',
     remember: true,
   })
-  // const addCommentQuery = trpc.useMutation([
-  //   'comment.createComment',
-  //   {
-  //     name: comment.name,
-  //     comment: comment.comment,
-  //     postId: postId,
-  //   },
-  // ])
-
   const handleAddComment = async () => {
     if (comment.remember) window.localStorage.setItem('myName', comment.name)
     else window.localStorage.removeItem('myName')

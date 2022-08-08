@@ -160,24 +160,18 @@ interface IProps {
 
 const TopHeader: FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
   const setCategories = useSetRecoilState(categoryAtom)
-  const getAllCategories = async () => {
-    const res = await instance.post('/category/all')
-    const data = res.data.map((cat: any) => ({
-      label: cat.name,
-      slug: cat.slug,
-      value: cat._id,
-    }))
-    setCategories(data)
-  }
-
-  useEffect(() => {
-    getAllCategories().then().catch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const [opened, toggleOpened] = useBooleanToggle(false)
   const router = useRouter()
   const { classes } = useStyles()
+
+  useEffect(() => {
+    instance
+      .post('/category/all')
+      .then((res) => setCategories(res.data))
+      .catch(console.log)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const imgLogo = '/favicon.png'
   const Icon = colorScheme === 'dark' ? Sun : Moon

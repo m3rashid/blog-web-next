@@ -9,10 +9,10 @@ import useHttp from 'components/helpers/useHttp'
 import ShowRender from 'components/post/showRender'
 import ChooseTypeButton from 'components/post/select'
 import PageWrapper from 'components/globals/pageWrapper'
+import { useStyles } from 'components/styles/createPost'
 import { postAtom, PostType } from 'components/atoms/post'
 import CreateOrEditPost from 'components/post/createOrEditPost'
 import TitleSlug, { IPostMeta } from 'components/post/titleSlug'
-import { useStyles } from 'components/styles/createPost'
 
 interface IProps {}
 
@@ -36,9 +36,7 @@ const CreatePost: FC<IProps> = () => {
   )
 
   useEffect(() => {
-    if (!session) {
-      router.replace('/auth')
-    }
+    if (!session) router.replace('/auth')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 

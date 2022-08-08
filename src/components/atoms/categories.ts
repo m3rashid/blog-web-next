@@ -1,8 +1,8 @@
 import { atom } from 'recoil'
 
 interface ICategory {
-  label: string
-  value: string
+  _id: string
+  name: string
   slug: string
 }
 

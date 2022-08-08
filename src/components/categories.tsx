@@ -19,17 +19,18 @@ const Categories: FC<IProps> = () => {
         Categories
       </Title>
       <Box>
-        {categories.map((cat) => (
-          <Box key={cat.value}>
-            <Anchor
-              style={{ fontWeight: 600 }}
-              component={Link}
-              href={`/category/${cat.slug}`}
-            >
-              {cat.label}
-            </Anchor>
-          </Box>
-        ))}
+        {categories.length > 0 &&
+          categories.map((cat) => (
+            <Box key={cat._id}>
+              <Anchor
+                style={{ fontWeight: 600 }}
+                component={Link}
+                href={`/category/${cat.slug}`}
+              >
+                {cat.name}
+              </Anchor>
+            </Box>
+          ))}
       </Box>
     </Paper>
   )

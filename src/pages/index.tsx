@@ -9,7 +9,6 @@ import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { IPostCardForCard } from 'components/helpers/types'
 import { useHomePageStyles, useStyles } from 'components/styles/home'
-import { trpc } from 'utils/trpc'
 
 interface IProps {
   posts: IPostCardForCard[]
@@ -97,7 +96,7 @@ export async function getStaticProps() {
     const res = await instance.post('/post/card')
     return { props: { posts: res.data || [] }, revalidate: 100 }
   } catch (err) {
-    // console.log(err)
+    console.log(err)
     return { props: {}, revalidate: 100 }
   }
 }

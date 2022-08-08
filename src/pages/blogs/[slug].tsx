@@ -134,7 +134,7 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
       revalidate: 100,
     }
   } catch (err) {
-    // console.log(err)
+    console.log(err)
     return { props: {}, revalidate: 100 }
   }
 }
@@ -151,7 +151,7 @@ export async function getStaticPaths() {
       fallback: true,
     }
   } catch (err) {
-    // console.log(err)
+    console.log(err)
     return { paths: [], fallback: true }
   }
 }

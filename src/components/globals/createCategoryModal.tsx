@@ -8,8 +8,10 @@ import {
 import { AlphabetLatin, Webhook } from 'tabler-icons-react'
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react'
 
+import { instance } from 'components/helpers/instance'
 import useHttp from 'components/helpers/useHttp'
-import { trpc } from 'utils/trpc'
+import { useSetRecoilState } from 'recoil'
+import { categoryAtom } from 'components/atoms/categories'
 
 interface IProps {
   modalOpen: boolean
@@ -27,9 +29,10 @@ const useStyles = createStyles((theme) => ({
 }))
 
 const CreateCategoryModal: FC<IProps> = ({ modalOpen, setModalOpen }) => {
-  const { loading, request } = useHttp('create-category')
   const [category, setCategory] = useState({ name: '', slug: '' })
+  const setGlobalCategories = useSetRecoilState(categoryAtom)
   const { classes } = useStyles()
+  const { loading, request } = useHttp('create-category')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -38,17 +41,14 @@ const CreateCategoryModal: FC<IProps> = ({ modalOpen, setModalOpen }) => {
 
   const handleCreateCategory = async () => {
     if (category.name.trim() === '' || category.slug.trim() === '') return
-    // const { data } = trpc.useMutation([
-    //   'pro_category.create-category',
-    //   { name: category.name, slug: category.slug },
-    // ])
-    // const { data: saveRes } = await request({
-    //   endpoint: '/category/create',
-    //   body: category,
-    // })
+    const { data: saveRes } = await request({
+      endpoint: '/category/create',
+      body: category,
+    })
     setModalOpen(false)
-    // if (!saveRes) return
+    if (!saveRes) return
     setCategory({ name: '', slug: '' })
+    setGlobalCategories((prev) => [...prev, saveRes])
   }
 
   return (

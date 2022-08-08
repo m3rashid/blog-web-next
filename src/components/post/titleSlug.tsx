@@ -48,6 +48,11 @@ interface IProps {
 const TitleSlug: FC<IProps> = ({ postMeta, setPostMeta }) => {
   const { classes } = useStyles()
   const categories = useRecoilValue(categoryAtom)
+  const categoriesToShow = categories.map((cat) => ({
+    value: cat._id,
+    label: cat.name,
+    slug: cat.slug,
+  }))
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -99,7 +104,7 @@ const TitleSlug: FC<IProps> = ({ postMeta, setPostMeta }) => {
         placeholder="Enter banner image Url"
       />
       <MultiSelect
-        data={categories}
+        data={categoriesToShow}
         value={postMeta.categories}
         onChange={handleMultiSelectChange}
         icon={<Notification />}

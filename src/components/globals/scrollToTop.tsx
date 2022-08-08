@@ -11,11 +11,9 @@ const ScrollToTop = () => {
         {(transitionStyles) => (
           <Button
             leftIcon={<ArrowNarrowUp />}
-            style={transitionStyles}
+            style={{ ...transitionStyles, paddingLeft: 10, paddingRight: 0 }}
             onClick={() => scrollTo({ y: 0 })}
-          >
-            Scroll to top
-          </Button>
+          />
         )}
       </Transition>
     </Affix>
