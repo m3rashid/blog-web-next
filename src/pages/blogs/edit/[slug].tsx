@@ -8,6 +8,7 @@ import {
   Title,
 } from '@mantine/core'
 import { FC, useEffect, useState } from 'react'
+import axios from 'axios'
 import Head from 'next/head'
 import { nanoid } from 'nanoid'
 import dynamic from 'next/dynamic'
@@ -19,7 +20,6 @@ import { Article, Photo } from 'tabler-icons-react'
 import useHttp from 'components/helpers/useHttp'
 import ShowRender from 'components/post/showRender'
 import ChooseTypeButton from 'components/post/select'
-import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { PostType, postAtom } from 'components/atoms/post'
 import { useStyles } from 'components/styles/createPost'
@@ -45,7 +45,7 @@ const EditPost: FC<IProps> = () => {
   })
 
   const getPost = async () => {
-    const res = await instance.post('/post/details', {
+    const res = await axios.post('/api/post/details', {
       slug: router.query.slug,
     })
     if (!res) return
@@ -70,7 +70,7 @@ const EditPost: FC<IProps> = () => {
 
   const saveAndPublish = async () => {
     const { data: saveAndPublishRes } = await request({
-      endpoint: '/post/edit',
+      endpoint: '/api/post/edit',
       body: {
         data: data,
         postId: postData.postId,

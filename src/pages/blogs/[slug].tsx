@@ -7,20 +7,21 @@ import {
   SimpleGrid,
   Title,
 } from '@mantine/core'
+import axios from 'axios'
 import Head from 'next/head'
-import { FC, useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import { FC, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import Author from 'components/author'
 import Comments from 'components/comments'
 import Categories from 'components/categories'
 import RelatedPosts from 'components/relatedPosts'
+import { useStyles } from 'components/styles/home'
 import ShowRender from 'components/post/showRender'
 import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 import { ICategory, IRelatedPosts } from 'components/helpers/types'
-import { useStyles } from 'components/styles/home'
 const CreateComment = dynamic(() => import('components/createComment'), {
   ssr: false,
 })
@@ -125,7 +126,9 @@ export default Post
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
   try {
-    const res = await instance.post('/post/details', { slug: params.slug })
+    const res = await axios.post(instance + '/api/post/details', {
+      slug: params.slug,
+    })
     return {
       props: {
         postDetail: res.data.postDetail,
@@ -141,13 +144,13 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
 
 export async function getStaticPaths() {
   try {
-    const res = await instance.post('/post/card', {})
+    const res = await axios.post(instance + '/api/post/card', {})
     const posts = res.data
     return {
       paths:
-        posts.length > 0
-          ? posts.map(({ slug }: { slug: string }) => ({ params: { slug } }))
-          : [],
+        posts.length === 0
+          ? []
+          : posts.map(({ slug }: { slug: string }) => ({ params: { slug } })),
       fallback: true,
     }
   } catch (err) {

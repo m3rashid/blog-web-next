@@ -1,5 +1,6 @@
-import { FC, useEffect } from 'react'
+import axios from 'axios'
 import Head from 'next/head'
+import { FC, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Group, Loader, SimpleGrid, Title } from '@mantine/core'
 
@@ -96,7 +97,9 @@ export default Category
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
   try {
-    const res = await instance.post('/post/by-category', { slug: params.slug })
+    const res = await axios.post(instance + '/api/post/by-category', {
+      slug: params.slug,
+    })
     return { props: { posts: res.data }, revalidate: 20 }
   } catch (err) {
     // console.log(err)
@@ -106,7 +109,7 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
 
 export async function getStaticPaths() {
   try {
-    const res = await instance.post('/category/all', {})
+    const res = await axios.post(instance + '/api/category/all', {})
     const categories = res.data
     return {
       paths:

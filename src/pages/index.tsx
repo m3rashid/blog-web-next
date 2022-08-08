@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { FC } from 'react'
 import Head from 'next/head'
 import { Box, Group, SimpleGrid } from '@mantine/core'
@@ -93,8 +94,13 @@ export default Blogs
 
 export async function getStaticProps() {
   try {
-    const res = await instance.post('/post/card')
-    return { props: { posts: res.data || [] }, revalidate: 100 }
+    const res = await axios.post(instance + '/api/post/card/')
+    return {
+      props: {
+        posts: res.data.length > 0 ? res.data : [],
+      },
+      revalidate: 100,
+    }
   } catch (err) {
     console.log(err)
     return { props: {}, revalidate: 100 }

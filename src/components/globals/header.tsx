@@ -15,9 +15,9 @@ import { useSetRecoilState } from 'recoil'
 import { Moon, Sun } from 'tabler-icons-react'
 import { useBooleanToggle } from '@mantine/hooks'
 
-import { instance } from 'components/helpers/instance'
 import { categoryAtom } from 'components/atoms/categories'
 import HeaderProfileDropdown from 'components/globals/headerProfileDropdown'
+import axios from 'axios'
 
 export const HEADER_HEIGHT = 70
 export const useStyles = createStyles((theme) => ({
@@ -166,8 +166,8 @@ const TopHeader: FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
   const { classes } = useStyles()
 
   useEffect(() => {
-    instance
-      .post('/category/all')
+    axios
+      .post('/api/category/all', {})
       .then((res) => setCategories(res.data))
       .catch(console.log)
     // eslint-disable-next-line react-hooks/exhaustive-deps

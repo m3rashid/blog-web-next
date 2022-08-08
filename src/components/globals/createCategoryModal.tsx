@@ -8,7 +8,6 @@ import {
 import { AlphabetLatin, Webhook } from 'tabler-icons-react'
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react'
 
-import { instance } from 'components/helpers/instance'
 import useHttp from 'components/helpers/useHttp'
 import { useSetRecoilState } from 'recoil'
 import { categoryAtom } from 'components/atoms/categories'
@@ -42,7 +41,7 @@ const CreateCategoryModal: FC<IProps> = ({ modalOpen, setModalOpen }) => {
   const handleCreateCategory = async () => {
     if (category.name.trim() === '' || category.slug.trim() === '') return
     const { data: saveRes } = await request({
-      endpoint: '/category/create',
+      endpoint: '/api/category/create',
       body: category,
     })
     setModalOpen(false)

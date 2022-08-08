@@ -1,11 +1,11 @@
-import { FC, useContext, useEffect, useState } from 'react'
+import axios from 'axios'
 import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import { FC, useEffect, useState } from 'react'
 import { Table, Anchor, ScrollArea, Button } from '@mantine/core'
 
-import { instance } from 'components/helpers/instance'
 import PageWrapper from 'components/globals/pageWrapper'
 
 interface IProps {}
@@ -17,7 +17,7 @@ const MyPosts: FC<IProps> = () => {
   const [posts, setPosts] = useState<any[]>([])
 
   const getAuthorPosts = async () => {
-    const res = await instance.post('/post/author', {})
+    const res = await axios.post('/api/post/author', {})
     if (!res) return
     setPosts(res.data)
   }
