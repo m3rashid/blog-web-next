@@ -97,19 +97,16 @@ export default Category
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
   try {
-    const res = await axios.post(instance + '/api/post/by-category', {
-      slug: params.slug,
-    })
+    const res = await instance.post('/post/category', { slug: params.slug })
     return { props: { posts: res.data }, revalidate: 20 }
   } catch (err) {
-    // console.log(err)
     return { props: {}, revalidate: 20 }
   }
 }
 
 export async function getStaticPaths() {
   try {
-    const res = await axios.post(instance + '/api/category/all', {})
+    const res = await instance.post('/category/all', {})
     const categories = res.data
     return {
       paths:
@@ -121,7 +118,6 @@ export async function getStaticPaths() {
       fallback: true,
     }
   } catch (err) {
-    // console.log(err)
     return { paths: [], fallback: true }
   }
 }

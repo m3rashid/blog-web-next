@@ -44,7 +44,7 @@ const CreateComment: FC<IProps> = ({ postId }) => {
     else window.localStorage.removeItem('myName')
 
     const { data: saveRes } = await request({
-      endpoint: '/api/comment/create',
+      endpoint: '/comment/create',
       body: {
         name: comment.name,
         comment: comment.comment,

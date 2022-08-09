@@ -1,13 +1,13 @@
 import { FC } from 'react'
 import { createStyles, Select } from '@mantine/core'
 
-import { PostType } from 'components/atoms/post'
-
 const useStyles = createStyles((theme) => ({
   select: {
     flexGrow: 1,
   },
 }))
+
+export type PostType = 'text' | 'code'
 
 interface IProps {
   value: PostType

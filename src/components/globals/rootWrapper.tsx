@@ -4,21 +4,26 @@ import {
   ColorScheme,
   MantineThemeOverride,
 } from '@mantine/core'
-import { FC, ReactNode, useEffect, useState } from 'react'
-import { RecoilRoot } from 'recoil'
+import { FC, ReactNode, useEffect, useState, createContext } from 'react'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 
 import Footer from 'components/globals/footer'
 import TopHeader from 'components/globals/header'
 import ScrollToTop from 'components/globals/scrollToTop'
+import { ICategory } from 'components/helpers/types'
+import axios from 'axios'
+import { SERVER_URL } from 'components/helpers/instance'
 
 interface IProps {
   children: ReactNode
 }
 
+export const categoryContext = createContext<ICategory[]>([])
+
 const RootWrapper: FC<IProps> = ({ children }) => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('dark')
+  const [categories, setCategories] = useState<ICategory[]>([])
 
   const toggleColorScheme = (value?: ColorScheme) => {
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
@@ -32,7 +37,14 @@ const RootWrapper: FC<IProps> = ({ children }) => {
     }
   }
 
+  const getCategories = async () => {
+    const res = await axios.post(`${SERVER_URL}/category/all`)
+    if (!res) return
+    setCategories(res.data)
+  }
+
   useEffect(() => {
+    getCategories().then().catch()
     const localTheme = window.localStorage.getItem('theme')
     if (localTheme) setColorScheme(localTheme as ColorScheme)
 
@@ -54,33 +66,33 @@ const RootWrapper: FC<IProps> = ({ children }) => {
   }
 
   return (
-    <RecoilRoot>
-      <ColorSchemeProvider
-        colorScheme={colorScheme}
-        toggleColorScheme={toggleColorScheme}
+    <ColorSchemeProvider
+      colorScheme={colorScheme}
+      toggleColorScheme={toggleColorScheme}
+    >
+      <MantineProvider
+        theme={{
+          ...theme,
+          colors: { ...theme.colors, brand: ['#15AABF'] },
+        }}
+        withGlobalStyles
+        withNormalizeCSS
       >
-        <MantineProvider
-          theme={{
-            ...theme,
-            colors: { ...theme.colors, brand: ['#15AABF'] },
-          }}
-          withGlobalStyles
-          withNormalizeCSS
-        >
-          <NotificationsProvider limit={5} position="top-right">
-            <ModalsProvider>
-              <TopHeader
-                colorScheme={colorScheme}
-                toggleColorScheme={toggleColorScheme}
-              />
+        <NotificationsProvider limit={5} position="top-right">
+          <ModalsProvider>
+            <TopHeader
+              colorScheme={colorScheme}
+              toggleColorScheme={toggleColorScheme}
+            />
+            <categoryContext.Provider value={categories}>
               {children}
-              <Footer />
-              <ScrollToTop />
-            </ModalsProvider>
-          </NotificationsProvider>
-        </MantineProvider>
-      </ColorSchemeProvider>
-    </RecoilRoot>
+            </categoryContext.Provider>
+            <Footer />
+            <ScrollToTop />
+          </ModalsProvider>
+        </NotificationsProvider>
+      </MantineProvider>
+    </ColorSchemeProvider>
   )
 }
 

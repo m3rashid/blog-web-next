@@ -9,15 +9,10 @@ import {
   Paper,
   Transition,
 } from '@mantine/core'
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { useRouter } from 'next/router'
-import { useSetRecoilState } from 'recoil'
 import { Moon, Sun } from 'tabler-icons-react'
 import { useBooleanToggle } from '@mantine/hooks'
-
-import { categoryAtom } from 'components/atoms/categories'
-import HeaderProfileDropdown from 'components/globals/headerProfileDropdown'
-import axios from 'axios'
 
 export const HEADER_HEIGHT = 70
 export const useStyles = createStyles((theme) => ({
@@ -159,19 +154,9 @@ interface IProps {
 }
 
 const TopHeader: FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
-  const setCategories = useSetRecoilState(categoryAtom)
-
   const [opened, toggleOpened] = useBooleanToggle(false)
   const router = useRouter()
   const { classes } = useStyles()
-
-  useEffect(() => {
-    axios
-      .post('/api/category/all', {})
-      .then((res) => setCategories(res.data))
-      .catch(console.log)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const imgLogo = '/favicon.png'
   const Icon = colorScheme === 'dark' ? Sun : Moon
@@ -198,7 +183,6 @@ const TopHeader: FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
         </div>
 
         <Group spacing={5} className={classes.links}>
-          <HeaderProfileDropdown />
           <ThemeChanger />
         </Group>
 
@@ -212,7 +196,6 @@ const TopHeader: FC<IProps> = ({ colorScheme, toggleColorScheme }) => {
         <Transition transition="pop-top-right" duration={200} mounted={opened}>
           {(styles) => (
             <Paper className={classes.dropdown} style={{ ...styles }}>
-              <HeaderProfileDropdown />
               <ThemeChanger />
             </Paper>
           )}

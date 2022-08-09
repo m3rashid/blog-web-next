@@ -5,6 +5,7 @@ import {
   INotifState,
   useNotification,
 } from 'components/helpers/useNotification'
+import { instance } from 'components/helpers/instance'
 
 interface IProps {
   body: any
@@ -22,7 +23,7 @@ const useHttp = (id: string) => {
     try {
       setLoading(true)
       loadingNotif()
-      const res = await axios.post(endpoint, body)
+      const res = await instance.post(endpoint, body)
       if (!res) {
         throw new Error('No response from the server')
       }
@@ -31,7 +32,6 @@ const useHttp = (id: string) => {
       else updateSuccessNotif({})
       return { data: res.data }
     } catch (err: any) {
-      // console.log(err)
       setLoading(false)
 
       if (errorMsg) updateFailureNotif({ errorMsg })

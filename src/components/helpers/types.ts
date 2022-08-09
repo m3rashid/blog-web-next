@@ -16,7 +16,7 @@ export interface IAuthor {
 }
 
 export interface ICategory {
-  _id?: string
+  _id: string
   name: string
   slug: string
 }

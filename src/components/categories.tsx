@@ -1,14 +1,12 @@
-import { FC } from 'react'
+import { FC, useContext } from 'react'
 import Link from 'next/link'
-import { useRecoilValue } from 'recoil'
 import { Anchor, Box, Paper, Title } from '@mantine/core'
-
-import { categoryAtom } from 'components/atoms/categories'
+import { categoryContext } from './globals/rootWrapper'
 
 interface IProps {}
 
 const Categories: FC<IProps> = () => {
-  const categories = useRecoilValue(categoryAtom)
+  const categories = useContext(categoryContext)
 
   return (
     <Paper shadow="xs" radius="md" p={20}>

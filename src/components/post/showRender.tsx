@@ -4,8 +4,13 @@ import hljs from 'highlight.js'
 import DOMPurify from 'isomorphic-dompurify'
 import 'highlight.js/styles/github-dark-dimmed.css'
 import { Box, Code, createStyles } from '@mantine/core'
+import { PostType } from 'components/post/select'
 
-import { ICreatePost } from 'components/atoms/post'
+export interface ICreatePost {
+  id: string
+  type: PostType
+  content: string
+}
 
 marked.setOptions({
   langPrefix: 'hljs language-',

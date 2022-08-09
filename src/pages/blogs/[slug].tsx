@@ -126,9 +126,7 @@ export default Post
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
   try {
-    const res = await axios.post(instance + '/api/post/details', {
-      slug: params.slug,
-    })
+    const res = await instance.post('/post/details', { slug: params.slug })
     return {
       props: {
         postDetail: res.data.postDetail,
@@ -137,14 +135,13 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
       revalidate: 100,
     }
   } catch (err) {
-    console.log(err)
     return { props: {}, revalidate: 100 }
   }
 }
 
 export async function getStaticPaths() {
   try {
-    const res = await axios.post(instance + '/api/post/card', {})
+    const res = await instance.post('/post/card', {})
     const posts = res.data
     return {
       paths:
@@ -154,7 +151,6 @@ export async function getStaticPaths() {
       fallback: true,
     }
   } catch (err) {
-    console.log(err)
     return { paths: [], fallback: true }
   }
 }

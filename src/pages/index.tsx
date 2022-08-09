@@ -19,8 +19,6 @@ const Blogs: FC<IProps> = ({ posts }) => {
   const { classes } = useStyles()
   const { classes: thisPageClasses } = useHomePageStyles()
 
-  if (!posts) return null
-
   return (
     <PageWrapper>
       <Head>
@@ -66,7 +64,7 @@ const Blogs: FC<IProps> = ({ posts }) => {
       <Group style={{ alignItems: 'flex-start' }}>
         <SimpleGrid spacing={20} className={classes.firstChild}>
           <SimpleGrid className={thisPageClasses.inner} spacing={20}>
-            {posts.length > 0
+            {posts && posts.length > 0
               ? posts.map((post) => (
                   <PostCard
                     key={post._id}
@@ -94,7 +92,7 @@ export default Blogs
 
 export async function getStaticProps() {
   try {
-    const res = await axios.post(instance + '/api/post/card/')
+    const res = await instance.post('/post/card/')
     return {
       props: {
         posts: res.data.length > 0 ? res.data : [],
@@ -102,7 +100,6 @@ export async function getStaticProps() {
       revalidate: 100,
     }
   } catch (err) {
-    console.log(err)
     return { props: {}, revalidate: 100 }
   }
 }
