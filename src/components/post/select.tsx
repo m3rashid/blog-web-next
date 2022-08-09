@@ -2,9 +2,7 @@ import { FC } from 'react'
 import { createStyles, Select } from '@mantine/core'
 
 const useStyles = createStyles((theme) => ({
-  select: {
-    flexGrow: 1,
-  },
+  select: { flexGrow: 1 },
 }))
 
 export type PostType = 'text' | 'code'
