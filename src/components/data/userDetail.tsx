@@ -12,7 +12,7 @@ import { Image } from '@mantine/core'
 export const authorDetails = {
   id: 'admin-user-mdrashidhussain',
   name: 'MD Rashid Hussain',
-  avatar: 'https://m3rashid.netlify.app/images/rashid.png',
+  avatar: 'https://m3rashid.netlify.app/images/rashid.jpg',
   github: 'https://github.com/m3rashid',
   twitter: 'https://twitter.com/m3_rashid',
   linkedIn: 'https://www.linkedin.com/in/m3rashid/',
