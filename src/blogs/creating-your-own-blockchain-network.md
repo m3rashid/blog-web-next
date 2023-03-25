@@ -48,7 +48,7 @@ class Blockchain(object):
         return guess_hash[:4] == "0000"
 
     def new_block(self, proof, previous_hash=None):
-        # This creates new blocks 
+        # This creates new blocks
         # and then adds to the existing chain
         block = {
             'index': len(self.chain) + 1,
@@ -63,9 +63,9 @@ class Blockchain(object):
 
     def new_transaction(self, sender, recipient, amount):
         # This adds a new transaction to already existing transactions
-        # This creates a new transaction 
+        # This creates a new transaction
         # which will be sent to the next block.
-        # It will contain three variables 
+        # It will contain three variables
         # including sender, recipient and amount
         self.current_transactions.append(
             {
@@ -110,7 +110,7 @@ def mine():
     last_proof = last_block['proof']
     proof = blockchain.proof_of_work(last_proof)
 
-    # rewarding the miner for his contribution. 
+    # rewarding the miner for his contribution.
     # 0 specifies new coin has been mined
     blockchain.new_transaction(
         sender="0",
@@ -161,8 +161,8 @@ if __name__ == '__main__':
 ```js
 // blockchain.js
 
-const uuid = require("uuid");
-const crypto = require("crypto");
+const uuid = require('uuid');
+const crypto = require('crypto');
 
 class BlockChain {
   constructor() {
@@ -181,11 +181,8 @@ class BlockChain {
 
   validProof(lastProof, proof) {
     const guess = `${lastProof}${proof}`.toString();
-    const hash = crypto
-        .createHash("sha256")
-        .update(guess)
-        .digest("hex");
-    return hash.startsWith("0000");
+    const hash = crypto.createHash('sha256').update(guess).digest('hex');
+    return hash.startsWith('0000');
   }
 
   newBlock(proof, previousHash = null) {
@@ -211,9 +208,9 @@ class BlockChain {
 
   hash(block) {
     return crypto
-      .createHash("sha256")
+      .createHash('sha256')
       .update(JSON.stringify(block))
-      .digest("hex");
+      .digest('hex');
   }
 
   lastBlock() {
@@ -223,13 +220,13 @@ class BlockChain {
 
 module.exports = {
   blockChain: new BlockChain(),
-  nodeIdentifier: uuid.v4().toString().replaceAll("-", ""),
+  nodeIdentifier: uuid.v4().toString().replaceAll('-', ''),
 };
 ```
 
 ```js
 // controllers.js
-const { blockChain, nodeIdentifier } = require("./blockchain");
+const { blockChain, nodeIdentifier } = require('./blockchain');
 
 const mine = (req, res) => {
   const lastBlock = blockChain.lastBlock();
@@ -242,17 +239,17 @@ const mine = (req, res) => {
   const block = blockChain.newBlock(proof, prevhash);
   return res.status(200).json({
     ...block,
-    message: "The new block has been forged",
+    message: 'The new block has been forged',
   });
 };
 
 const newTransaction = (req, res) => {
   const { sender, recipient, amount } = req.body;
-  if (!sender || !recipient || !amount) throw new Error("Invalid transaction");
+  if (!sender || !recipient || !amount) throw new Error('Invalid transaction');
 
   const index = blockChain.newTransaction(sender, recipient, amount);
   return res.status(201).json({
-    message: "Transaction is scheduled to be added to Block No. " + index,
+    message: 'Transaction is scheduled to be added to Block No. ' + index,
   });
 };
 
@@ -276,14 +273,14 @@ module.exports = {
 
 ```js
 // index.js
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
 
 const {
   chainRouter,
   mineRouter,
   newTransactionRouter,
-} = require("./controllers");
+} = require('./controllers');
 
 const app = express();
 app.use(express.json());
@@ -291,28 +288,28 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: 'http://localhost:3000',
     optionsSuccessStatus: 200,
   })
 );
 
-app.get("/mine", mineRouter);
-app.post("/transactions/new", newTransactionRouter);
-app.get("/chain", chainRouter);
+app.get('/mine', mineRouter);
+app.post('/transactions/new', newTransactionRouter);
+app.get('/chain', chainRouter);
 
-app.all("/", (_, res) => {
-  return res.json({ message: "Server is OK" });
+app.all('/', (_, res) => {
+  return res.json({ message: 'Server is OK' });
 });
 
 // Global error handler
 app.use((err, req, res, _) => {
   console.error(err);
   return res.status(500).json({
-    message: err.message || "INTERNAL SERVER ERROR",
+    message: err.message || 'INTERNAL SERVER ERROR',
   });
 });
 
-process.on("uncaughtException", (error) => {
+process.on('uncaughtException', (error) => {
   console.error(error);
   process.exit(1);
 });

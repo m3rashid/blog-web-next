@@ -4,25 +4,17 @@ Object-oriented programming is about creating objects that contain both data and
 
 Object-oriented programming has several advantages over procedural programming:
 
-*   OOP is faster and easier to execute
-    
-*   OOP provides a clear structure for the programs
-    
-*   OOP helps to keep the Java code DRY "Don't Repeat Yourself", and makes the code easier to maintain, modify and debug.
-    
-*   OOP makes it possible to create fully reusable applications with less code and shorter development time
-    
+- OOP is faster and easier to execute
+- OOP provides a clear structure for the programs
+- OOP helps to keep the Java code DRY "Don't Repeat Yourself", and makes the code easier to maintain, modify and debug.
+- OOP makes it possible to create fully reusable applications with less code and shorter development time
 
 There are certain features or mechanisms which make a Language Object-Oriented like:
 
-*   Classes
-    
-*   Object
-    
-*   Encapsulation
-    
-*   Inheritance
-    
+- Classes
+- Object
+- Encapsulation
+- Inheritance
 
 #### Classes Objects and Methods
 
@@ -51,7 +43,7 @@ class Human {
   getDetails() {
     return `${this.name} is a ${this.gender}, born on ${this.dob}`;
   }
-};
+}
 
 const p1 = new Human('Rahul', 'boy', '31-01-2001');
 const p2 = new Human('Abdul', 'boy', '01-01-1970');
@@ -75,13 +67,15 @@ class Human {
   }
 
   getDetails() {
-    return `${this.name} was born on ${this.dob}. ${this.add ? "Lives in " + this.add : ""}`;
+    return `${this.name} was born on ${this.dob}. ${
+      this.add ? 'Lives in ' + this.add : ''
+    }`;
   }
 
   addAddress(add) {
     this.add = add;
   }
-};
+}
 
 const p1 = new Human('Raju', 'boy', '21-02-1999');
 p1.addAddress('Jamia Nagar, New Delhi');
@@ -103,12 +97,12 @@ class Male extends Human {
   }
 
   work() {
-    if(!this.lifeSpan) this.lifeSpan = 60;
+    if (!this.lifeSpan) this.lifeSpan = 60;
     this.lifeSpan -= 5;
   }
 
-  overWork () {
-    if(!this.lifeSpan) this.lifeSpan = 60;
+  overWork() {
+    if (!this.lifeSpan) this.lifeSpan = 60;
     this.lifeSpan -= 10;
     this.enjoy = false;
   }

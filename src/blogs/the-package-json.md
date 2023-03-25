@@ -38,8 +38,6 @@ Your package.json fills several roles in the lifecycle of your project, some of 
 
 Your project also must include a package.json before any packages can be installed from NPM. This is probably the top reason why you need one for your project.
 
-  
-
 ## Important sections
 
 ### The LICENCE Section
@@ -50,24 +48,15 @@ The value of this field will usually be the license's identifier code -- a strin
 
 #### Popular Licences
 
-*   [Apache License 2.0](https://opensource.org/licenses/Apache-2.0)
-    
-*   [BSD 3-Clause "New" or "Revised" license](https://opensource.org/licenses/BSD-3-Clause)
-    
-*   [BSD 2-Clause "Simplified" or "FreeBSD" license](https://opensource.org/licenses/BSD-2-Clause)
-    
-*   [GNU General Public License (GPL)](https://opensource.org/licenses/gpl-license)
-    
-*   [GNU Library or "Lesser" General Public License (LGPL)](https://opensource.org/licenses/lgpl-license)
-    
-*   [MIT license](https://opensource.org/licenses/MIT)
-    
-*   [Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0)
-    
-*   [Common Development and Distribution License](https://opensource.org/licenses/CDDL-1.0)
-    
-*   [Eclipse Public License version 2.0](https://opensource.org/licenses/EPL-2.0)
-    
+- [Apache License 2.0](https://opensource.org/licenses/Apache-2.0)
+- [BSD 3-Clause "New" or "Revised" license](https://opensource.org/licenses/BSD-3-Clause)
+- [BSD 2-Clause "Simplified" or "FreeBSD" license](https://opensource.org/licenses/BSD-2-Clause)
+- [GNU General Public License (GPL)](https://opensource.org/licenses/gpl-license)
+- [GNU Library or "Lesser" General Public License (LGPL)](https://opensource.org/licenses/lgpl-license)
+- [MIT license](https://opensource.org/licenses/MIT)
+- [Mozilla Public License 2.0](https://opensource.org/licenses/MPL-2.0)
+- [Common Development and Distribution License](https://opensource.org/licenses/CDDL-1.0)
+- [Eclipse Public License version 2.0](https://opensource.org/licenses/EPL-2.0)
 
 ### Scripts Section
 
@@ -118,31 +107,18 @@ You can specify the version of the node that your stuff works on. This is extrem
 
 Besides these, there are some commonly known fields, I have not discussed them here, because they are more or less self-explanatory. Some of them are
 
-*   name (name of the project)
-    
-*   description (description of the project)
-    
-*   dependencies (other npm/... packages on which the code depends)
-    
-*   devDependencies (same as dependencies, but these are not needed in the production)
-    
-*   version (version of the project)
-    
-*   keywords (keywords for searching this project, useful when publishing your code as an npm package)
-    
-*   homepage (homepage of the page, if it is a website)
-    
-*   main (starting position (root) of the project)
-    
-*   bugs (where to report bugs, if found)
-    
-*   author (main author of the project)
-    
-*   contributors (other contributors of the project)
-    
-*   funding (who all funded this project)
-    
-*   repository (about the repository, if the codebase is hosted somewhere)
-    
+- name (name of the project)
+- description (description of the project)
+- dependencies (other npm/... packages on which the code depends)
+- devDependencies (same as dependencies, but these are not needed in the production)
+- version (version of the project)
+- keywords (keywords for searching this project, useful when publishing your code as an npm package)
+- homepage (homepage of the page, if it is a website)
+- main (starting position (root) of the project)
+- bugs (where to report bugs, if found)
+- author (main author of the project)
+- contributors (other contributors of the project)
+- funding (who all funded this project)
+- repository (about the repository, if the codebase is hosted somewhere)
 
 To learn more, you can read the official [NPM documentation](https://docs.npmjs.com/cli/v8/configuring-npm/package-json)

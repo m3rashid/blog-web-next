@@ -9,10 +9,3 @@ export interface IPostCardForCard {
   bannerImageUrl: string;
   categories: ICategory[];
 }
-
-export interface IRelatedPosts {
-  title: string;
-  slug: string;
-  bannerImageUrl: string;
-  createdAt: string;
-}

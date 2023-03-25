@@ -117,13 +117,8 @@ Here, I have tried to make this file as readable and expressive as possible. I h
     "typescript": "^4.7.4"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "eslint",
-      "prettier --write"
-    ],
-    "*.json": [
-      "prettier --write"
-    ]
+    "*.{js,ts,tsx}": ["eslint", "prettier --write"],
+    "*.json": ["prettier --write"]
   }
 }
 ```
@@ -177,16 +172,11 @@ web: yarn prod
 
 Ignore the required files
 
-*   \`\`\`.gitignore\`\`\` to ignore files from git
-    
-*   \`\`\`.eslintignore\`\`\` to ignore files from eslint checks
-    
-*   \`\`\`.prettierignore\`\`\` to ignore files from prettier checks
-    
-*   \`\`\`.dockerignore\`\`\` to ignore files from docker builds
-    
-*   \`\`\`.slugignore\`\`\` to ignore files from Heroku builds
-    
+- \`\`\`.gitignore\`\`\` to ignore files from git
+- \`\`\`.eslintignore\`\`\` to ignore files from eslint checks
+- \`\`\`.prettierignore\`\`\` to ignore files from prettier checks
+- \`\`\`.dockerignore\`\`\` to ignore files from docker builds
+- \`\`\`.slugignore\`\`\` to ignore files from Heroku builds
 
 Use .env to store all the actual dependencies and .env.sample to give a glimpse of what all environment variables are required in the project. For example
 
@@ -204,23 +194,23 @@ The \`\``tsconfig.json`\`\` file is responsible for defining standards and confi
 // tsconfig.json
 {
   "compilerOptions": {
-    "target": "es2016", 
-    "lib": [ "ES6" ],
+    "target": "es2016",
+    "lib": ["ES6"],
     "module": "commonjs",
-    "typeRoots": [ "./@types" ], 
+    "typeRoots": ["./@types"],
     "allowJs": true,
     "checkJs": true,
     "outDir": "./build",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true, 
+    "strict": true,
     "skipLibCheck": true,
-    "baseUrl": "./",
+    "baseUrl": "./"
   },
   "exclude": ["node_modules", "client"]
 }
 
-// the baseUrl: "./" can make our imports relative to the root directory and save from ../../../ syntax, we can use absolute-like imports. for example, import { User } from "modules/auth/user.model.ts" rather than "../../modules/auth/user.model.ts" 
+// the baseUrl: "./" can make our imports relative to the root directory and save from ../../../ syntax, we can use absolute-like imports. for example, import { User } from "modules/auth/user.model.ts" rather than "../../modules/auth/user.model.ts"
 
 // exclude the node_modules and client folders to opt out of type checkings in those folders, to speed up incremental builds
 ```
@@ -242,74 +232,74 @@ After this step, on installing any npm package, there would be an additional mes
 
 ```typescript
 // index.ts
-import { config } from 'dotenv'
-config()
-import cors from 'cors'
-import helmet from 'helmet'
-import xss from 'xss-clean'
-import mongoose from 'mongoose'
+import { config } from 'dotenv';
+config();
+import cors from 'cors';
+import helmet from 'helmet';
+import xss from 'xss-clean';
+import mongoose from 'mongoose';
 
-import express, { NextFunction, Request, Response } from 'express'
-import { appConfig, isProduction, startLog } from './utils/appConfig'
-import { auth } from './modules'
+import express, { NextFunction, Request, Response } from 'express';
+import { appConfig, isProduction, startLog } from './utils/appConfig';
+import { auth } from './modules';
 
-const app = express() // inititializing an app instance
-app.use(helmet())  // helmet to get rid of some bad headers 
-app.use(xss())  // to prevent xss attacks
-app.use(cors(appConfig.cors))  // for cross origin resourse sharing, as this is just an API server and the client is probabbly completely secluded from the server
-app.use(express.json())  // to accept/send json as request/response 
-app.use(express.urlencoded({ extended: true }))  // passing the request body to req.body object and parsing it as json
-mongoose.set('debug', !isProduction)  // to see which queries are run on the database when in development environment
+const app = express(); // inititializing an app instance
+app.use(helmet()); // helmet to get rid of some bad headers
+app.use(xss()); // to prevent xss attacks
+app.use(cors(appConfig.cors)); // for cross origin resourse sharing, as this is just an API server and the client is probabbly completely secluded from the server
+app.use(express.json()); // to accept/send json as request/response
+app.use(express.urlencoded({ extended: true })); // passing the request body to req.body object and parsing it as json
+mongoose.set('debug', !isProduction); // to see which queries are run on the database when in development environment
 
-app.use(auth.authRouter)  // adding the router as a middleware
+app.use(auth.authRouter); // adding the router as a middleware
 // other routes
 
 // to get server status
 app.all('/', (_: Request, res: Response) => {
-  return res.json({ message: 'Server is OK' })
-})
+  return res.json({ message: 'Server is OK' });
+});
 
 // Global error handler
 // here, we can run scripts to get mail/sms to get notified
 app.use((err: any, req: Request, res: Response, _: NextFunction) => {
-  console.error(err)
+  console.error(err);
   return res.status(500).json({
     message: appConfig.errorMessage,
-  })
-})
+  });
+});
 
-// to gracefully stop the server in case of any failure/exception 
+// to gracefully stop the server in case of any failure/exception
 // here, we can run scripts to get mail/sms to get notified
 process.on('uncaughtException', (error: Error) => {
-  console.error(error)
-  process.exit(1)
-})
+  console.error(error);
+  process.exit(1);
+});
 
 // running the server
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 app.listen(port, async () => {
   try {
-    await mongoose.connect(appConfig.mongodbUri)
-    console.log('Mongoose is connected')
-    console.log(startLog(port))
+    await mongoose.connect(appConfig.mongodbUri);
+    console.log('Mongoose is connected');
+    console.log(startLog(port));
   } catch (err) {
-    console.error('MongoDB connection error')
-    console.error(JSON.stringify(err))
-    process.exit(1)
+    console.error('MongoDB connection error');
+    console.error(JSON.stringify(err));
+    process.exit(1);
   }
-})
+});
 ```
 
 This file contains all the configuration options for the website. Right now, it contains only some of the things, but this file is usually large and contains a lot of configurations
 
 ```typescript
 // utils/appConfig.ts
-import { CorsOptions } from 'cors'
+import { CorsOptions } from 'cors';
 
 export interface IAppConfig {
-  cors: CorsOptions
-  errorMessage: string | ((err: any) => string)
-  mongodbUri: string
+  cors: CorsOptions;
+  errorMessage: string | ((err: any) => string);
+  mongodbUri: string;
 }
 
 const devConfig: IAppConfig = {
@@ -321,7 +311,7 @@ const devConfig: IAppConfig = {
   errorMessage: (err: any) =>
     JSON.stringify(err.message) || 'Internal Server Error',
   mongodbUri: '...',
-}
+};
 
 const prodConfig: IAppConfig = {
   cors: {
@@ -333,76 +323,77 @@ const prodConfig: IAppConfig = {
   },
   errorMessage: 'Internal Server Error',
   mongodbUri: `...`,
-}
+};
 
-export const isProduction = process.env.NODE_ENV === 'production'
+export const isProduction = process.env.NODE_ENV === 'production';
 export const startLog = (port: number | string) =>
-  `Ready on port:${port}, env:${process.env.NODE_ENV}`
+  `Ready on port:${port}, env:${process.env.NODE_ENV}`;
 
-export const appConfig = isProduction ? prodConfig : devConfig
+export const appConfig = isProduction ? prodConfig : devConfig;
 ```
 
 Rate-limiting users is a very important feature of the server. This prevents users from the same IP from spamming the server with multiple requests. This can prevent DOS and malicious hackers from spamming the server with pre-scripted requests.
 
 ```typescript
 // utils/rateLimiters.ts
-import rateLimit, { Options } from 'express-rate-limit'
+import rateLimit, { Options } from 'express-rate-limit';
 
 const authRateLimitConfig: Partial<Options> = {
   windowMs: 5 * 60 * 1000, // 5 minutes
   max: 20, // Limit each IP to 20 requests per `window`
   standardHeaders: true,
-}
+};
 
 const regularRateLimitConfig: Partial<Options> = {
   windowMs: 5 * 60 * 1000, // 5 minutes
   max: 100, // Limit each IP to 100 requests per `window`
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-}
+};
 
-export const authRateLimiter = rateLimit(authRateLimitConfig)
-export const regularRateLimiter = rateLimit(regularRateLimitConfig)
+export const authRateLimiter = rateLimit(authRateLimitConfig);
+export const regularRateLimiter = rateLimit(regularRateLimitConfig);
 ```
 
 This contains scripts to be used for all routers in the codebase. Here, I have put a make-safe function, which gets wrapped on the routes to automatically catch the errors, so there is no need to use try/catch for any controllers, you can throw errors directly inside the controllers without thinking about ways to catch the error. This reduces the code size and makes it more readable and maintainable.
 
 ```typescript
 // utils/initRouter.ts
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction } from 'express';
 
-import { verifyJWT } from 'modules/auth/helpers'
+import { verifyJWT } from 'modules/auth/helpers';
 
 // Global error checker
 export const makeSafe =
   (check: Function) => (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(check(req, res, next)).catch(next)
-  }
+    Promise.resolve(check(req, res, next)).catch(next);
+  };
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers['authorization']
+  const token = req.headers['authorization'];
   if (!token) {
-    return res.status(401).json('Unauthorized')
+    return res.status(401).json('Unauthorized');
   }
-  const { expired, payload } = verifyJWT(token)
+  const { expired, payload } = verifyJWT(token);
   if (expired) {
-    return res.status(401).json('Unauthorized')
+    return res.status(401).json('Unauthorized');
   }
   // @ts-ignore
-  req.userId = payload?.userId
-  next()
-}
+  req.userId = payload?.userId;
+  next();
+};
 ```
 
 ```typescript
 // utils/initValidator.ts
-import { NextFunction, Request, Response } from 'express'
-import Joi from 'joi'
+import { NextFunction, Request, Response } from 'express';
+import Joi from 'joi';
 
-export const initValidator = (schema: Joi.ObjectSchema) =>
+export const initValidator =
+  (schema: Joi.ObjectSchema) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    await schema.validateAsync({ ...req.body })
-    next()
-  }
+    await schema.validateAsync({ ...req.body });
+    next();
+  };
 ```
 
 ### Creating the auth module
@@ -413,84 +404,84 @@ This module can go anywhere from level 0 to level 100 and can involve a lot of c
 
 ```typescript
 // modules/auth/controllers.ts
-import { Request, Response } from 'express'
+import { Request, Response } from 'express';
 
 export const getUser = async (req: Request, res: Response) => {
   // ... getting user from the userId got from jwt ...
-}
+};
 
 // add your logic for these controllers
-export const login = async (req: Request, res: Response) => {}
-export const register = async (req: Request, res: Response) => {}
-export const forgotPassword = async (req: Request, res: Response) => {}
-export const resetPassword = async (req: Request, res: Response) => {}
-export const deleteUser = async (req: Request, res: Response) => {}
-export const recoverDeletedUser = async (req: Request, res: Response) => {}
+export const login = async (req: Request, res: Response) => {};
+export const register = async (req: Request, res: Response) => {};
+export const forgotPassword = async (req: Request, res: Response) => {};
+export const resetPassword = async (req: Request, res: Response) => {};
+export const deleteUser = async (req: Request, res: Response) => {};
+export const recoverDeletedUser = async (req: Request, res: Response) => {};
 ```
 
 ```javascript
 // modules/auth/generatekeyPair.js
-const fs = require('fs')
-const crypto = require('crypto')
+const fs = require('fs');
+const crypto = require('crypto');
 
 const genKeyPair = () => {
   const keyPair = crypto.generateKeyPairSync('rsa', {
     modulusLength: 4096,
     publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
     privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
-  })
-  fs.writeFileSync(__dirname + '/keys/public.pem', keyPair.publicKey)
-  fs.writeFileSync(__dirname + '/keys/private.pem', keyPair.privateKey)
-}
+  });
+  fs.writeFileSync(__dirname + '/keys/public.pem', keyPair.publicKey);
+  fs.writeFileSync(__dirname + '/keys/private.pem', keyPair.privateKey);
+};
 
-genKeyPair()
+genKeyPair();
 ```
 
 ```typescript
 // modules/auth/helpers.ts
-import fs from 'fs'
-import path from 'path'
-import JWT from 'jsonwebtoken'
-import mongoose from 'mongoose'
+import fs from 'fs';
+import path from 'path';
+import JWT from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 const privateKey = fs.readFileSync(
   path.join(__dirname, './keys/private.pem'),
   'utf8'
-)
+);
 const publicKey = fs.readFileSync(
   path.join(__dirname, './keys/public.pem'),
   'utf8'
-)
+);
 
 export const issueJWT = (userId: mongoose.Types.ObjectId) => {
   const signedToken = JWT.sign({ userId }, privateKey, {
     algorithm: 'RS256',
     expiresIn: '1d',
-  })
-  return 'Bearer ' + signedToken
-}
+  });
+  return 'Bearer ' + signedToken;
+};
 
 export const verifyJWT = (token: string) => {
   try {
-    const extractedToken = token.split(' ')[1]
-    const payload = JWT.verify(extractedToken, publicKey)
-    return { expired: false, payload }
+    const extractedToken = token.split(' ')[1];
+    const payload = JWT.verify(extractedToken, publicKey);
+    return { expired: false, payload };
   } catch (err: any) {
-    console.error({ 'Verify JWT error': err })
+    console.error({ 'Verify JWT error': err });
     return {
       expired: err.message.includes('jwt expired'),
       payload: null,
-    }
+    };
   }
-}
+};
 ```
 
 ```typescript
 // modules/auth/routes.ts
-import { Router } from 'express'
+import { Router } from 'express';
 
-import { checkAuth, makeSafe } from 'utils/initRouter'
-import { authRateLimiter, regularRateLimiter } from 'utils/rateLimiters'
+import { checkAuth, makeSafe } from 'utils/initRouter';
+import { authRateLimiter, regularRateLimiter } from 'utils/rateLimiters';
 import {
   deleteUser,
   forgotPassword,
@@ -499,66 +490,68 @@ import {
   recoverDeletedUser,
   register,
   resetPassword,
-} from 'modules/auth/controllers'
+} from 'modules/auth/controllers';
 
-const r = Router()
+const r = Router();
 
-r.post('/auth/login', authRateLimiter, makeSafe(login))
-r.post('/auth/register', authRateLimiter, makeSafe(register))
-r.post('/auth', checkAuth, regularRateLimiter, makeSafe(getUser))
-r.post('/auth/forgot-password', authRateLimiter /* other middlewares */)
-r.post('/auth/reset-password', authRateLimiter /* other middlewares */)
+r.post('/auth/login', authRateLimiter, makeSafe(login));
+r.post('/auth/register', authRateLimiter, makeSafe(register));
+r.post('/auth', checkAuth, regularRateLimiter, makeSafe(getUser));
+r.post('/auth/forgot-password', authRateLimiter /* other middlewares */);
+r.post('/auth/reset-password', authRateLimiter /* other middlewares */);
 
-r.post('/auth/forgot-password', authRateLimiter, makeSafe(forgotPassword))
-r.post('/auth/reset-password', authRateLimiter, makeSafe(resetPassword))
-r.post('/auth/delete-user', authRateLimiter, makeSafe(deleteUser))
-r.post('/auth/recover-user', authRateLimiter, makeSafe(recoverDeletedUser))
+r.post('/auth/forgot-password', authRateLimiter, makeSafe(forgotPassword));
+r.post('/auth/reset-password', authRateLimiter, makeSafe(resetPassword));
+r.post('/auth/delete-user', authRateLimiter, makeSafe(deleteUser));
+r.post('/auth/recover-user', authRateLimiter, makeSafe(recoverDeletedUser));
 
-export const authRouter = r
+export const authRouter = r;
 ```
 
 ```typescript
 // modules/auth/user.model.ts
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 export interface IUser {
-  email: string
-  password: string
+  email: string;
+  password: string;
   // other fields
 }
 
-const userSchema = new mongoose.Schema<IUser>({
+const userSchema = new mongoose.Schema<IUser>(
+  {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     // ... other fields ...
-  }, { timestamps: true }
-)
+  },
+  { timestamps: true }
+);
 
-export const User = mongoose.model<IUser>('User', userSchema)
+export const User = mongoose.model<IUser>('User', userSchema);
 ```
 
 ```typescript
 // modules/auth/validator.ts
-import Joi from 'joi'
+import Joi from 'joi';
 
-import { initValidator } from 'utils/initValidator'
+import { initValidator } from 'utils/initValidator';
 
 const login = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
   // other fields you expect to have for login route
-})
+});
 
 // ... other validators for register and other routes
 
-export const loginValidator = initValidator(login)
+export const loginValidator = initValidator(login);
 // export other validators as this
 ```
 
 ```typescript
 // modules/auth/index.ts
-export * from 'modules/auth/user.model'
-export * from 'modules/auth/routes'
+export * from 'modules/auth/user.model';
+export * from 'modules/auth/routes';
 ```
 
 So, this was it. This is how I prefer things to be done while creating a nodejs API server. Again, this may not be the best approach, but a good approach.

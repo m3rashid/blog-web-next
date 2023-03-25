@@ -6,32 +6,30 @@ Whenever we commit, git keeps a snapshot of the project with timestamps. And whe
 
 I researched a bit and came up with 2 possible solutions.
 
-* The first was changing my system timing to something back in time. But I did not want to mess up with system timings and time zones.
-    
-* The second was to fool git itself. If I commit, the second step at GitHub is already evident. And after a bit of documentation, I realized I don’t even need to fool it. Git provides inbuilt functionality of ENVIRONMENT VARIABLES. Checkout at [https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables](https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables)
-    
+- The first was changing my system timing to something back in time. But I did not want to mess up with system timings and time zones.
+- The second was to fool git itself. If I commit, the second step at GitHub is already evident. And after a bit of documentation, I realized I don’t even need to fool it. Git provides inbuilt functionality of ENVIRONMENT VARIABLES. Checkout at [https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables](https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables)
 
 I read through it and came across these lines.
 
 > **Committing**
-> 
+>
 > The final creation of a Git commit object is usually done by `git-commit-tree`, which uses these environment variables as its primary source of information, falling back to configuration values only if these aren’t present.
-> 
+>
 > `GIT_AUTHOR_NAME` is the human-readable name in the “author” field.
-> 
+>
 > `GIT_AUTHOR_EMAIL` is the email for the “author” field.
-> 
+>
 > `GIT_AUTHOR_DATE` is the timestamp used for the “author” field.
-> 
+>
 > `GIT_COMMITTER_NAME` sets the human name for the “committer” field.
-> 
+>
 > `GIT_COMMITTER_EMAIL` is the email address for the “committer” field.
-> 
+>
 > `GIT_COMMITTER_DATE` is used for the timestamp in the “committer” field.
-> 
-> `EMAIL` is the fallback email address in case the [`user.email`](http://user.email) configuration value isn’t set. If ***this*** isn’t set, Git falls back to the system user and host names.
+>
+> `EMAIL` is the fallback email address in case the [`user.email`](http://user.email) configuration value isn’t set. If **_this_** isn’t set, Git falls back to the system user and host names.
 
-Notice the fields GIT\_COMMITTER\_DATE and GIT\_AUTHOR\_DATE. We need to modify these two puppies.
+Notice the fields GIT_COMMITTER_DATE and GIT_AUTHOR_DATE. We need to modify these two puppies.
 
 So, I created an empty repository ([https://github.com/m3rashid/timestone](https://github.com/m3rashid/timestone)) and created a file ([README.md](http://README.md)) in it. And run the following git commands
 
@@ -45,11 +43,11 @@ I wanted to go further with timestamps. But the UNIX timestamps limit us from 1 
 
 ```javascript
 // Earliest known timestamp
-new Date(000000000000).toISOString()
+new Date(000000000000).toISOString();
 // '1970-01-01T00:00:00.000Z'
 
 // UNIX timestamp doomsday (19 Jan 2038)
-new Date('January 19, 2038').toISOString()
+new Date('January 19, 2038').toISOString();
 // '2038-01-18T18:30:00.000Z'
 ```
 

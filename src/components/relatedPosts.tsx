@@ -2,10 +2,10 @@ import { FC } from 'react';
 import { useRouter } from 'next/router';
 import { createStyles, Group, Image, Paper, Text, Title } from '@mantine/core';
 
-import { IRelatedPosts } from 'components/helpers/types';
+import { IPostCardForCard } from 'components/helpers/types';
 
 interface IProps {
-  relatedPosts: IRelatedPosts[];
+  relatedPosts: IPostCardForCard[];
 }
 
 const useStyles = createStyles((theme) => ({
@@ -37,7 +37,7 @@ const RelatedPosts: FC<IProps> = ({ relatedPosts }) => {
         <Group
           noWrap
           spacing={0}
-          key={post._id}
+          key={post.slug}
           onClick={() => router.push(`/blogs/${post.slug}`)}
           style={{ marginBottom: '10px', cursor: 'pointer' }}
         >

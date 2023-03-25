@@ -17,7 +17,7 @@ import { useStyles } from 'components/styles/home';
 import ShowRender from 'components/post/showRender';
 import { instance } from 'components/helpers/instance';
 import PageWrapper from 'components/globals/pageWrapper';
-import { ICategory, IRelatedPosts } from 'components/helpers/types';
+import { ICategory, IPostCardForCard } from 'components/helpers/types';
 
 export interface IPost {
   bannerImageUrl: string;
@@ -35,7 +35,7 @@ export interface IPost {
 
 interface IProps {
   postDetail: IPost;
-  relatedPosts: IRelatedPosts[];
+  relatedPosts: IPostCardForCard[];
 }
 
 const Post: FC<IProps> = ({ postDetail, relatedPosts }) => {

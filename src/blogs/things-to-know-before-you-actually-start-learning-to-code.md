@@ -4,7 +4,7 @@ Learning to code for the first time is fun and in the beginning, with that much 
 
 Particularly on the development side, several things need to be right to be able to start with the least unknown errors at work. So, here I list some of the things that you need to learn before you start your development journey.
 
-* * *
+---
 
 ## 1\. Directory Structure --
 
@@ -26,6 +26,6 @@ There are times when a certain pc/laptop model is prone to some bugs and as a so
 
 In your journey of becoming a self-taught software developer, you are bound to excel. Just remember one thing, You are awesome, but your errors are not unique to you only. There are a lot of people like you having the same/similar errors and already got their solutions on StackOverflow. Remember, as a software dev, StackOverflow is your best friend. " Good Programmers borrow, Great Programmers steal" :)
 
-* * *
+---
 
 <center>!! Just start now !!</center>
