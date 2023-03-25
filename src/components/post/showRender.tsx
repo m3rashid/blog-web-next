@@ -1,42 +1,40 @@
-import { FC } from 'react'
-import { marked } from 'marked'
-import hljs from 'highlight.js'
-import DOMPurify from 'isomorphic-dompurify'
-import 'highlight.js/styles/github-dark-dimmed.css'
-import { Box, Code, createStyles } from '@mantine/core'
-import { PostType } from 'components/post/select'
+import { FC } from 'react';
+import { marked } from 'marked';
+import hljs from 'highlight.js';
+import DOMPurify from 'isomorphic-dompurify';
+import 'highlight.js/styles/github-dark-dimmed.css';
+import { Box, Code, createStyles } from '@mantine/core';
+
+export type PostType = 'text' | 'code';
 
 export interface ICreatePost {
-  id: string
-  type: PostType
-  content: string
+  id: string;
+  type: PostType;
+  content: string;
 }
 
 marked.setOptions({
   langPrefix: 'hljs language-',
   highlight: (code: string, lang: string) => {
-    return hljs.highlightAuto(code, [lang]).value
+    return hljs.highlightAuto(code, [lang]).value;
   },
-})
+});
 
 const useStyles = createStyles((theme) => ({
   background: {
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridGap: '20px',
-    color:
-      theme.colorScheme === 'dark'
-        ? theme.colors.gray[1]
-        : theme.colors.dark[5],
+    color: theme.colors.gray[1],
   },
   contentBox: {
     padding: '0 5px',
     overflowX: 'auto',
   },
-}))
+}));
 
 interface IProps {
-  data: ICreatePost[]
+  data: ICreatePost[];
 }
 
 export const SingleSectionRender: FC<{ data: string }> = ({ data }) => {
@@ -48,11 +46,11 @@ export const SingleSectionRender: FC<{ data: string }> = ({ data }) => {
         }}
       />
     </Box>
-  )
-}
+  );
+};
 
 const ShowRender: FC<IProps> = ({ data }) => {
-  const { classes } = useStyles()
+  const { classes } = useStyles();
 
   return (
     <Box className={classes.background}>
@@ -63,7 +61,7 @@ const ShowRender: FC<IProps> = ({ data }) => {
               __html: DOMPurify.sanitize(marked(section.content || '')),
             }}
           />
-        )
+        );
 
         if (section?.type === 'code') {
           return (
@@ -80,17 +78,17 @@ const ShowRender: FC<IProps> = ({ data }) => {
             >
               {render}
             </Code>
-          )
+          );
         } else if (section?.type === 'text') {
           return (
             <Box key={section.id} className={classes.contentBox}>
               {render}
             </Box>
-          )
-        } else return null
+          );
+        } else return null;
       })}
     </Box>
-  )
-}
+  );
+};
 
-export default ShowRender
+export default ShowRender;

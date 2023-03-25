@@ -1,7 +1,5 @@
-import { FC } from 'react'
-import { Container, createStyles } from '@mantine/core'
-
-import BreadCrumbs from 'components/globals/breadCrumbs'
+import { FC } from 'react';
+import { Container, createStyles } from '@mantine/core';
 
 export const useStyles = createStyles((theme) => ({
   root: {
@@ -10,28 +8,22 @@ export const useStyles = createStyles((theme) => ({
     overflowX: 'hidden',
     paddingTop: '10px',
     paddingBottom: '50px',
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[5]
-        : theme.colors.gray[1],
+    backgroundColor: theme.colors.dark[5],
   },
-}))
+}));
 
 interface IProps {
-  children: any
+  children: any;
 }
 
 const PageWrapper: FC<IProps> = ({ children }) => {
-  const { classes } = useStyles()
+  const { classes } = useStyles();
 
   return (
     <div className={classes.root}>
-      <Container size="lg">
-        <BreadCrumbs />
-        {children}
-      </Container>
+      <Container size='lg'>{children}</Container>
     </div>
-  )
-}
+  );
+};
 
-export default PageWrapper
+export default PageWrapper;

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC } from 'react';
 import {
   createStyles,
   Container,
@@ -6,8 +6,7 @@ import {
   ActionIcon,
   Image,
   Box,
-  useMantineColorScheme,
-} from '@mantine/core'
+} from '@mantine/core';
 import {
   BrandTwitter,
   BrandYoutube,
@@ -15,21 +14,16 @@ import {
   BrandGithub,
   BrandLinkedin,
   BrandGmail,
-} from 'tabler-icons-react'
+} from 'tabler-icons-react';
 
 const useStyles = createStyles((theme) => ({
   footer: {
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[6]
-        : theme.colors.gray[0],
+    backgroundColor: theme.colors.dark[6],
   },
-
   logo: {
     height: '100%',
     marginRight: '20px',
   },
-
   inner: {
     height: '150px',
     display: 'flex',
@@ -37,22 +31,20 @@ const useStyles = createStyles((theme) => ({
     alignItems: 'center',
     paddingTop: theme.spacing.xl,
     paddingBottom: theme.spacing.xl,
-
     [theme.fn.smallerThan('xs')]: {
       flexDirection: 'column',
     },
   },
-
   links: {
     [theme.fn.smallerThan('xs')]: {
       marginTop: theme.spacing.md,
     },
   },
-}))
+}));
 
 interface IProps {}
 
-const footerMap = (isDark: Boolean) => [
+const footerMap = [
   {
     url: 'https://github.com/m3rashid',
     icon: <BrandGithub size={18} />,
@@ -79,38 +71,32 @@ const footerMap = (isDark: Boolean) => [
   },
   {
     url: 'https://dev.to/m3rashid',
-    icon: (
-      <Image
-        src={isDark ? '/logos/dev_white.png' : '/logos/dev_black.png'}
-        alt="dev.to"
-      />
-    ),
+    icon: <Image src='/logos/dev_white.png' alt='dev.to' />,
   },
-]
+];
 
 const Footer: FC<IProps> = () => {
-  const { classes } = useStyles()
-  const theme = useMantineColorScheme()
+  const { classes } = useStyles();
 
   return (
     <Box className={classes.footer}>
-      <Container size="lg" className={classes.inner}>
+      <Container size='lg' className={classes.inner}>
         <Box>
           <Image
             className={classes.logo}
-            src="/favicon.png"
-            height="60px"
-            alt=""
+            src='/favicon.png'
+            height='60px'
+            alt=''
           />
         </Box>
-        <Group spacing={0} className={classes.links} position="right" noWrap>
-          {footerMap(theme.colorScheme === 'dark').map((item) => (
+        <Group spacing={0} className={classes.links} position='right' noWrap>
+          {footerMap.map((item) => (
             <ActionIcon
-              component="a"
+              component='a'
               href={item.url}
-              target="_blank"
+              target='_blank'
               key={item.url}
-              size="lg"
+              size='lg'
             >
               {item.icon}
             </ActionIcon>
@@ -118,7 +104,7 @@ const Footer: FC<IProps> = () => {
         </Group>
       </Container>
     </Box>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

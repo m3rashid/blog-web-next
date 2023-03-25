@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { Box, Group, Image, Text, Title } from '@mantine/core'
+import { FC } from 'react';
+import { Box, Group, Image, Text, Title } from '@mantine/core';
 
 interface IProps {}
 
@@ -26,10 +26,7 @@ const Hero: FC<IProps> = () => {
           <Text
             sx={(theme) => ({
               fontSize: '3rem',
-              color:
-                theme.colorScheme === 'dark'
-                  ? theme.colors.gray[1]
-                  : theme.colors.dark[5],
+              color: theme.colors.gray[1],
             })}
           >
             Cubicle
@@ -37,10 +34,7 @@ const Hero: FC<IProps> = () => {
           <Text
             sx={(theme) => ({
               fontSize: '2.5rem',
-              color:
-                theme.colorScheme === 'dark'
-                  ? theme.primaryColor
-                  : theme.colors.cyan[6],
+              color: theme.primaryColor,
             })}
           >
             Welcomes you
@@ -53,10 +47,10 @@ const Hero: FC<IProps> = () => {
         </Text>
       </Box>
       <Box style={{ flex: 1 }}>
-        <Image alt="Login Image" fit="cover" src="/hero.svg" />
+        <Image alt='Login Image' fit='cover' src='/hero.svg' />
       </Box>
     </Group>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;
