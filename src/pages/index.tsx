@@ -15,6 +15,7 @@ interface IProps {
 }
 
 const Blogs: FC<IProps> = ({ posts }) => {
+  console.log(posts);
   const { classes } = useStyles();
   const { classes: thisPageClasses } = useHomePageStyles();
 
@@ -91,19 +92,16 @@ export default Blogs;
 
 export async function getStaticProps() {
   try {
-    const result = await fetch('/api/posts', { method: 'GET' });
-    const res = result.json();
-    console.log({ res });
+    const result = await fetch('/api/post/card', {
+      method: 'POST',
+    });
+    const res = await result.json();
+    console.log(res);
     return {
       props: {
-        posts: [],
+        posts: res.data,
       },
       revalidate: 100,
-    };
-    return {
-      props: {
-        posts: [],
-      },
     };
   } catch (err) {
     return { props: {}, revalidate: 100 };
