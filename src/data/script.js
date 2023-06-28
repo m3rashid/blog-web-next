@@ -16,11 +16,8 @@ const files = [
 	'webhooks.md',
 ];
 
-
-
-
 const t = files.map((f) => {
-	const name = f.split('.')[0]
+	const name = f.split('.')[0];
 
 	return {
 		slug: name,
@@ -29,11 +26,13 @@ const t = files.map((f) => {
 			.map((w) => w[0].toUpperCase() + w.slice(1))
 			.join(' '),
 		bannerImageUrl: '',
-		categories: [{
-			name: '',
-			slug: ''
-		}]
-	}
+		categories: [
+			{
+				name: '',
+				slug: '',
+			},
+		],
+	};
 });
 
-console.log(JSON.stringify(t, null, 2))
+console.log(JSON.stringify(t, null, 2));
